@@ -19,10 +19,10 @@ class User extends Component {
     }
 
     async componentDidMount () {
-        await this.getUser();
+        await this.Get();
     }
 
-    async getUser (event) {
+    async Get (event) {
         let user_id = this.props.match.params.id;
         console.log(user_id)
 
@@ -61,7 +61,7 @@ class User extends Component {
                     <div className="row">
                         <div className="col-lg-12">
                             <div className="block-white">
-                                <img  className="" style={{maxWidth: "100%", borderRadius: '10px'}} src={this.state.user.personal_photo ? `${Config.urlServer}/${this.state.user.personal_photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
+                                <img  className="" style={{maxWidth: "100%", borderRadius: '10px'}} src={this.state.user.personal_photo ? `${global.urlServer}/${this.state.user.personal_photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
                             </div>
                         </div>
                     </div>

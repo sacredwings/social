@@ -4,6 +4,9 @@ import cookie from './utils/cookie';
 
 //Глобальные переменные
 global.gappkey = '6LceBPYZAAAAAJQ-wFlu66sLEQy2aFLupYqa4k7o' /* reCaptcha */
+global.urlServer = window.location.hostname
+if (global.urlServer === 'localhost')
+    global.urlServer = `${window.location.protocol}//localhost:${window.location.port}`
 
 //Состояние приложения
 const stateApp = {

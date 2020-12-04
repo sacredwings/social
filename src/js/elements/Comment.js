@@ -64,14 +64,14 @@ class Comments extends Component {
                 if (file.type === 'video/mp4')
                     return ( <div className="col-md-4" key={i}>
                         <Player>
-                            <source src={`${Config.urlServer}/${file.url}`}/>
+                            <source src={`${global.urlServer}/${file.url}`}/>
                         </Player>
                     </div>)
 
                 //картинка
                 if ((file.type === 'image/gif') || (file.type === 'image/png') || (file.type === 'image/jpeg'))
                     return ( <div className="col-md-4" key={i}>
-                        <img src={`${Config.urlServer}/${file.url}`} style={{width: '100%'}}/>
+                        <img src={`${global.urlServer}/${file.url}`} style={{width: '100%'}}/>
                     </div>)
 
             })}
@@ -87,7 +87,7 @@ class Comments extends Component {
                     return ( <div className="col-lg-6" key={i}>
                         <ul className="list-unstyled">
                             <li className="media">
-                                <img src={comment.user.personal_photo ? `${Config.urlServer}/${comment.user.personal_photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg"} className="mr-3" alt="..." style={{maxWidth: '64px', maxHeight: '64px', float: 'left'}}/>
+                                <img src={comment.user.personal_photo ? `${global.urlServer}/${comment.user.personal_photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg"} className="mr-3" alt="..." style={{maxWidth: '64px', maxHeight: '64px', float: 'left'}}/>
                                 <div className="media-body" >
                                     <h5 className="mt-0 mb-1">{comment.user.name}</h5>
                                     <p> {comment.text}</p>

@@ -43,14 +43,14 @@ class Topic extends Component {
                 if (file.type === 'video/mp4')
                     return ( <div className="col-md-4" key={i}>
                         <Player>
-                            <source src={`${Config.urlServer}/${file.url}`}/>
+                            <source src={`${global.urlServer}/${file.url}`}/>
                         </Player>
                     </div>)
 
                 //картинка
                 if ((file.type === 'image/gif') || (file.type === 'image/png') || (file.type === 'image/jpeg'))
                     return ( <div className="col-md-4" key={i}>
-                        <img src={`${Config.urlServer}/${file.url}`} style={{width: '100%'}}/>
+                        <img src={`${global.urlServer}/${file.url}`} style={{width: '100%'}}/>
                     </div>)
 
         })}

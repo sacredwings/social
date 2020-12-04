@@ -57,7 +57,7 @@ class Video extends Component {
                         <div className="card">
                             <div className="card-body">
                                 <Player>
-                                    <source src={`${Config.urlServer}/${video.file.url}`}/>
+                                    <source src={`${global.urlServer}/${video.file.url}`}/>
                                 </Player>
                                 <p className="card-text">
                                     <Link to={`/video/id${video.id}`} >{video.title}</Link>

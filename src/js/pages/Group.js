@@ -20,10 +20,10 @@ class User extends Component {
     }
 
     async componentDidMount () {
-        await this.get();
+        await this.Get();
     }
 
-    async get (event) {
+    async Get (event) {
         let group_id = this.props.match.params.id;
         console.log(group_id)
 
@@ -70,7 +70,7 @@ class User extends Component {
                     <div className="row">
                         <div className="col-lg-12">
                             <div className="block-white">
-                                <img style={{maxWidth: "100%", borderRadius: '10px'}} src={group.photo ? `${Config.urlServer}/${group.photo.url}` : "https://svgsilh.com/svg/479631.svg" }/>
+                                <img style={{maxWidth: "100%", borderRadius: '10px'}} src={group.photo ? `${global.urlServer}/${group.photo.url}` : "https://svgsilh.com/svg/479631.svg" }/>
                             </div>
                         </div>
                     </div>

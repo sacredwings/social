@@ -16,10 +16,10 @@ class Video extends Component {
     }
 
     async componentDidMount () {
-        await this.get();
+        await this.Get();
     }
 
-    async get (event) {
+    async Get (event) {
         let id = this.props.match.params.id;
 
         const url = `/api/video/getById?ids=${id}`;
@@ -40,7 +40,7 @@ class Video extends Component {
                     <h1>Видео</h1>
                     <h2>{video.title}</h2>
                     <Player>
-                        <source src={`${Config.urlServer}/${video.file.url}`}/>
+                        <source src={`${global.urlServer}/${video.file.url}`}/>
                     </Player>
                 </div>
             </div>
