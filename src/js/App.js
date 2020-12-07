@@ -16,6 +16,7 @@ import LeftMenu from "./elements/LeftMenu";
 
 //элементы
 import Auth from "./elements/Auth";
+import Reg from "./elements/Reg";
 
 //страницы
 import Landing from "./pages/Landing";
@@ -26,6 +27,7 @@ import NoPage from "./pages/NoPage";
 import MessagesUserId from "./pages/MessagesUserId";
 import Messages from "./pages/Messages";
 import GroupSettings from "./pages/GroupSettings";
+import RegActivate from "./pages/RegActivate";
 
 //контент
 import Topic from "./pages/Topic";
@@ -78,6 +80,8 @@ class App extends Component {
         //массив
         let pages = [
             {path: '/auth', component: Auth},
+            {path: '/reg', component: Reg},
+            {path: '/reg-activate/:code', component: RegActivate},
 
             /*
             {path: '/reg', component: Reg},
