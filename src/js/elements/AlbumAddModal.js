@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import {ReCaptcha} from 'recaptcha-v3-react';
 
-class GroupAddModal extends Component {
+class AlbumAddModal extends Component {
     constructor () {
         super();
         this.state = {
@@ -52,17 +52,23 @@ class GroupAddModal extends Component {
     }
 
     onFormSubmitFile (e) {
-        this.recaptcha.execute() /* сброс reCaptcha */
-
         let _this = this
+        console.log(this.state.file);
 
-        const url = '/api/group/add';
+
+        const url = '/api/video/addAlbum';
         const formData = new FormData();
+
+        console.log(this.state)
 
         formData.append('file', this.state.file)
         formData.append('title', this.state.inputTitle)
         formData.append('text', this.state.inputText)
         formData.append('gtoken', this.state.gtoken)
+
+        //если это группа, то отправляем ее id
+        if ((this.props.owner_id) && (this.props.owner_id<0))
+            formData.append('group_id', -this.props.owner_id)
 
         axios.post(url, formData, {
 
@@ -88,8 +94,7 @@ class GroupAddModal extends Component {
 
     render() {
         return (
-
-            <div className="modal fade" id="modalGroupAdd" tabIndex="-1" aria-labelledby="modalGroupAdd"
+            <div className="modal fade" id="modalAlbumAdd" tabIndex="-1" aria-labelledby="modalAlbumAdd"
                  aria-hidden="true">
 
                 <ReCaptcha
@@ -103,15 +108,16 @@ class GroupAddModal extends Component {
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">Новая группа</h5>
+                                <h5 className="modal-title" id="exampleModalLabel">Новый альбом</h5>
                                 <button type="button" className="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
 
-                                <p>Выберите изображение на своем устройстве</p>
+                                <p>Выберите видео файл на своем устройстве</p>
                                 <div className="mb-3 form-file">
-                                    <input type="file" className="form-file-input" id="inputFile" onChange={this.onChangeFile}/>
+                                    <input type="file" className="form-file-input" id="inputFile"
+                                           onChange={this.onChangeFile}/>
                                     <label className="form-file-label" htmlFor="inputFile">
                                         <span className="form-file-text">Выберите файл...</span>
                                         <span className="form-file-button">Обзор</span>
@@ -119,18 +125,26 @@ class GroupAddModal extends Component {
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="inputTitle" className="form-label">Название</label>
-                                    <input type="text" className="form-control" id="inputTitle" onChange={this.onChangeText} value={this.state.inputTitle}/>
+                                    <input type="text" className="form-control" id="inputTitle"
+                                           onChange={this.onChangeText} value={this.state.inputTitle}/>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="inputText" className="form-label">Описание</label>
-                                    <textarea className="form-control" id="inputText" rows="5" onChange={this.onChangeText} value={this.state.inputText}></textarea>
+                                    <textarea className="form-control" id="inputText" rows="5"
+                                              onChange={this.onChangeText} value={this.state.inputText}></textarea>
                                 </div>
 
-                                {((this.state.processBar >0) && (this.state.processBar <100)) ? <div className="mb-3"><p className="text-primary">Загружаю</p></div>:null}
-                                {(this.state.processBar === 100) ? <div className="mb-3"><p className="text-success">Загружено</p></div>:null}
+                                {((this.state.processBar > 0) && (this.state.processBar < 100)) ?
+                                    <div className="mb-3"><p className="text-primary">Загружаю</p></div> : null}
+                                {(this.state.processBar === 100) ?
+                                    <div className="mb-3"><p className="text-success">Загружено</p></div> : null}
                                 <div className="progress">
-                                    <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style={{width: `${this.state.processBar}%`}} aria-valuenow={this.state.processBar} aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div className="progress-bar progress-bar-striped progress-bar-animated"
+                                         role="progressbar" style={{width: `${this.state.processBar}%`}}
+                                         aria-valuenow={this.state.processBar} aria-valuemin="0"
+                                         aria-valuemax="100"></div>
                                 </div>
+
 
                             </div>
                             <div className="modal-footer">
@@ -158,5 +172,5 @@ export default connect (
     dispatch => ({
 
     })
-)(GroupAddModal);
+)(AlbumAddModal);
 

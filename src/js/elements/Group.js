@@ -79,7 +79,7 @@ class Group extends Component {
                     <div className="col-lg-12 block-white">
 
                         <p className="h3">
-                            {access ? <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#modalGroupAdd">+</button> : null} Группы
+                            {access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalGroupAdd">+</button> : null} Группы
                         </p>
 
                         <ul className="list-group">

@@ -84,7 +84,7 @@ class User extends Component {
                         </div>
                     </div>
 
-                    <ElementVideo owner_id={Number (this.props.match.params.id)} access={access}/>
+                    <ElementVideo owner={'user'} owner_id={Number (this.props.match.params.id)} access={access}/>
                     <ElementTopic owner_id={Number (this.props.match.params.id)} access={access}/>
                     <ElementGroup owner_id={Number (this.props.match.params.id)} access={access}/>
 

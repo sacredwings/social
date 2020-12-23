@@ -6,7 +6,7 @@ import {Player} from "video-react";
 import Config from "../../config.json";
 import Comment from "../elements/Comment";
 
-class Topic extends Component {
+class TopicId extends Component {
     constructor () {
         super();
 
@@ -99,5 +99,5 @@ export default connect (
     dispatch => ({
 
     })
-)(Topic);
+)(TopicId);
 

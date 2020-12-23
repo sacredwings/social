@@ -17,6 +17,7 @@ import LeftMenu from "./elements/LeftMenu";
 //элементы
 import Auth from "./elements/Auth";
 import Reg from "./elements/Reg";
+import Video from "./pages/Video";
 
 //страницы
 import Landing from "./pages/Landing";
@@ -28,11 +29,10 @@ import MessagesUserId from "./pages/MessagesUserId";
 import Messages from "./pages/Messages";
 import GroupSettings from "./pages/GroupSettings";
 import RegActivate from "./pages/RegActivate";
-
-//контент
-import Topic from "./pages/Topic";
+import TopicId from "./pages/TopicId";
 import Post from "./pages/Post";
-import Video from "./pages/Video";
+import VideoId from "./pages/VideoId";
+import Search from "./pages/Search";
 
 /*
 import Reg from "./pages/Reg";
@@ -123,9 +123,13 @@ class App extends Component {
                                 <Route exact path="/user/id:id" component={User} />
                                 <Route exact path="/group/id:id" component={Group} />
 
-                                <Route exact path="/topic/id:id" component={Topic} />
-                                <Route exact path="/post/id:id" component={Post} />
-                                <Route exact path="/video/id:id" component={Video} />
+                                <Route exact path="/topic/id:id" component={TopicId} />
+                                <Route exact path="/video/id:id" component={VideoId} />
+
+                                <Route exact path="/:owner/id:id/video" component={Video} />
+                                <Route exact path="/:owner/id:id/video/album_id:album_id" component={Video} />
+
+                                <Route exact path="/search/" component={Search} />
 
                                 {(auth) ? this.pageAuth() : this.pageNoAuth()}
 

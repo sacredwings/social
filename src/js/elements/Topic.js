@@ -69,7 +69,7 @@ class Topic extends Component {
                     <div className="col-lg-12 block-white">
 
                         <p className="h3">
-                            {access ? <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#modalTopicAdd">+</button> : null} Обсуждения
+                            {access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalTopicAdd">+</button> : null} Обсуждения
                         </p>
 
                         <ul className="list-group">

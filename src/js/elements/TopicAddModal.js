@@ -94,7 +94,8 @@ class TopicAddModal extends Component {
     render() {
         return (
 
-            <div className="modal fade" id="modalTopicAdd" tabIndex="-1" aria-labelledby="modalTopicAdd" aria-hidden="true">
+            <div className="modal fade" id="modalTopicAdd" tabIndex="-1" aria-labelledby="modalTopicAdd"
+                 aria-hidden="true">
 
                 <ReCaptcha
                     ref={ref => this.recaptcha = ref}
@@ -102,17 +103,17 @@ class TopicAddModal extends Component {
                     sitekey={global.gappkey}
                     verifyCallback={token => this.setState({gtoken: token})}
                 />
+                <form onSubmit={this.onFormSubmitFile}>
 
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <form onSubmit={this.onFormSubmit}>
+                    <div className="modal-dialog">
+                        <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title" id="exampleModalLabel">Новое обсуждение</h5>
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.onFormClose}>
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
+
                                 <div className="mb-3">
                                     <label htmlFor="inputTitle" className="form-label">Название</label>
                                     <input type="text" className="form-control" id="inputTitle" onChange={this.onChangeText} value={this.state.inputTitle}/>
@@ -138,14 +139,17 @@ class TopicAddModal extends Component {
 
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.onFormClose}>Закрыть</button>
-                                <button type="submit" className="btn btn-primary" disabled={(this.state.processBar !== 0) ? true : false}>Добавить</button>
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal"
+                                        onClick={this.onFormClose}>Закрыть
+                                </button>
+                                <button type="submit" className="btn btn-primary"
+                                        disabled={(this.state.processBar !== 0) ? true : false}>Добавить
+                                </button>
                             </div>
-                        </form>
-
+                        </div>
 
                     </div>
-                </div>
+                </form>
             </div>
         )
     }
