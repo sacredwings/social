@@ -13,15 +13,12 @@ class Reg extends Component {
             password: '',
             email: '',
 
-            gender: 1,
-            name: '',
-
             requestStatus: null
         };
 
         this.onChange = this.onChange.bind(this);
         this.onClickReg = this.onClickReg.bind(this);
-        this.onChangeRadio = this.onChangeRadio.bind(this);
+        //this.onChangeRadio = this.onChangeRadio.bind(this);
     }
 
     async componentDidMount () {
@@ -33,10 +30,9 @@ class Reg extends Component {
 
         //проверка полей
         if (
-            (this.state.login.length >= 5) &&
-            (this.state.password.length >= 8) &&
             (this.state.email.length >= 5) &&
-            (this.state.name.length >= 3)
+            (this.state.login.length >= 5) &&
+            (this.state.password.length >= 8)
         ) {
 
             this.recaptcha.execute() /* сброс reCaptcha */
@@ -45,9 +41,6 @@ class Reg extends Component {
                 login: this.state.login,
                 password: this.state.password,
                 email: this.state.email,
-
-                gender: this.state.gender,
-                name: this.state.name,
 
                 gtoken: this.state.gtoken
             });
@@ -76,13 +69,14 @@ class Reg extends Component {
         this.setState({info: null})
     }
 
+    /*
     onChangeRadio (event) {
         if (event.target.id === 'gender1')
             this.setState({gender: 1})
         else
             this.setState({gender: 0})
 
-    }
+    }*/
 
     Form () {
         return <div className="card card-block login-block shadow my-3 mx-auto">
@@ -96,29 +90,16 @@ class Reg extends Component {
 
                 <form onSubmit={this.onClickReg}>
                     <div className="mb-3">
+                        <label htmlFor="email" className="form-label">Email</label>
+                        <input type="text" className="form-control" id="email" name="email" minLength="8" maxLength="100" value={this.state.email} onChange={this.onChange} autoComplete=""/>
+                    </div>
+                    <div className="mb-3">
                         <label htmlFor="login" className="form-label">Логин</label>
                         <input type="text" className="form-control" id="login" name="login" minLength="5" maxLength="50" value={this.state.login} onChange={this.onChange}/>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">Придумайте пароль</label>
                         <input type="password" className="form-control" id="password" name="password" minLength="8" maxLength="60" value={this.state.password} onChange={this.onChange} autoComplete=""/>
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="email" className="form-label">Email</label>
-                        <input type="text" className="form-control" id="email" name="email" minLength="8" maxLength="100" value={this.state.email} onChange={this.onChange} autoComplete=""/>
-                    </div>
-
-                    <div className="form-check">
-                        <input className="form-check-input" type="radio" name="gender" id="gender1" onChange={this.onChangeRadio} checked={this.state.gender ? true : false}/>
-                        <label className="form-check-label" htmlFor="flexRadioDefault1">
-                            Женский
-                        </label>
-                    </div>
-                    <div className="form-check">
-                        <input className="form-check-input" type="radio" name="gender" id="gender2" onChange={this.onChangeRadio} checked={this.state.gender ? false : true}/>
-                        <label className="form-check-label" htmlFor="flexRadioDefault2">
-                            Мужской
-                        </label>
                     </div>
 
                     <div className="mb-3">
