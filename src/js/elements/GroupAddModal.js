@@ -61,7 +61,7 @@ class GroupAddModal extends Component {
 
         formData.append('file', this.state.file)
         formData.append('title', this.state.inputTitle)
-        formData.append('text', this.state.inputText)
+        formData.append('info', this.state.inputText)
         formData.append('gtoken', this.state.gtoken)
 
         axios.post(url, formData, {

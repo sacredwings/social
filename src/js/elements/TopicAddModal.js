@@ -51,6 +51,8 @@ class TopicAddModal extends Component {
     }
 
     onFormSubmit (e) {
+        e.preventDefault() // Stop form submit
+
         this.recaptcha.execute() /* сброс reCaptcha */
         let _this = this
 
@@ -86,9 +88,6 @@ class TopicAddModal extends Component {
             },
 
         })
-
-
-        e.preventDefault() // Stop form submit
     }
 
     render() {
@@ -103,7 +102,7 @@ class TopicAddModal extends Component {
                     sitekey={global.gappkey}
                     verifyCallback={token => this.setState({gtoken: token})}
                 />
-                <form onSubmit={this.onFormSubmitFile}>
+                <form onSubmit={this.onFormSubmit}>
 
                     <div className="modal-dialog">
                         <div className="modal-content">

@@ -79,7 +79,7 @@ class User extends Component {
 
                     <div className="row">
                         <div className="col-lg-12 block-white">
-                            <h1 className="display-6">{this.state.user.name} {this.state.user.last_name}</h1>
+                            <h1 className="display-6">{this.state.user.first_name} {this.state.user.last_name}</h1>
 
                         </div>
                     </div>
