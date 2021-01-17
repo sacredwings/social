@@ -1,86 +1,65 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
+import React, {useState, useEffect} from 'react';
+import SearchUser from "../elements/SearchUser";
 import axios from "axios";
-import TopicAddModal from "../elements/TopicAddModal";
+import {Link} from "react-router-dom";
 
-class SearchUser extends Component {
-    constructor () {
-        super();
+export default function ({q}) {
+    //настройки запроса
+    const count = 2 //количество элементов в запросе
 
-        this.state = {
-            response: {
-                count: 0,
-                items: []
-            },
-            count: 20,
-            offset: 0,
-            arUser: [],
-            q: ''
-        }
-    }
+    //запрос
+    let [response, setResponse] = useState({
+        offset: 0, //смещение для запроса
+        count: 0, //количество записей в результате запроса
+        items: []
+    })
 
-    static async getDerivedStateFromProps(props, state) {
-        console.log(this)
-        console.log(props.q)
-    }
+    //отслеживаем изменение props
+    useEffect (async ()=>{
+        await Get()
+    }, [q])
 
-    async componentDidMount () {
-        await this.Get();
-    }
-
-    async Get (event) {
-        let q = this.props.q;
-
-        const url = `/api/user/search?q=${q}&offset=${this.state.offset}&count=${this.state.count}`;
+    async function Get () {
+        //запрос
+        const url = `/api/user/search?q=${q}&offset=${response.offset}&count=${count}`;
 
         let result = await axios.get(url);
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
 
-        if (!result.response) return
-
-        this.setState(prevState => ({
-            response: result.response,
-            arUser: [...prevState.arUser, ...result.response.items],
-            offset: prevState.offset + prevState.count
+        setResponse(prev => ({
+            offset: prev.offset + count,
+            count: result.response.count,
+            items: [...prev.items, ...result.response.items]
         }))
     }
 
-    arUser (arUser) {
-        return (
-            <div className="row">
-                Здесь пользователи
-                { arUser.map(function (user, i) {
+    function Result (result) {
+        return <div className="row">
+
+            <div className="col-lg-12">
+                Найдено по запросу {response.count}
+                { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/user/id${user.id}`} className="list-group-item list-group-item-action">{user.name}</Link>
+                        <Link to={`/user/id${item.id}`} className="list-group-item list-group-item-action">
+                            <img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item.photo) ? item.photo : "https://www.freelancejob.ru/upload/663/32785854535177.jpg"} />
+                            {item.first_name}
+                        </Link>
                     </div>)
                 })}
             </div>
-        )
-    }
 
-    render() {
-        let q = this.props.q;
-
-        return (
-            <div className="row">
-                <div className="col-lg-12">
-                    {(this.state.arUser.length) ? this.arUser(this.state.arUser) : <p>Пользователи не найдены</p>}
-                </div>
+            <div className="col-lg-12">
+                {(result.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={Get}>еще ...</button> : null}
             </div>
-        )
+
+        </div>
     }
 
+    return (
+        <>
+            {(response.items.length) ? Result(response.items) : <p>Пользователи не найдены</p>}
+        </>
+    );
 }
-
-export default connect (
-    state => ({
-        myUser: state.myUser,
-    }),
-    dispatch => ({
-
-    })
-)(SearchUser);
-

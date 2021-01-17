@@ -1,69 +1,38 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
-import axios from "axios";
+import React, {useState, useEffect} from 'react';
 import SearchUser from "../elements/SearchUser";
 
-class Search extends Component {
-    constructor () {
-        super();
+export default function ({}) {
+    let [search, setSearch] = useState('')
+    let [q, setQ] = useState('')
 
-        this.state = {
-            q: '', //текущее изменение поля
-        }
-        this.onChangeText = this.onChangeText.bind(this)
-        this.onFormSubmit = this.onFormSubmit.bind(this)
-    }
-
-    async componentDidMount () {
-
-    }
-
-    onChangeText(e) {
+    function onChangeText(e) {
         let name = e.target.id;
         let value = e.target.value;
 
-        this.setState({[name]:value})
+        setSearch(value)
     }
 
-    async onFormSubmit (e) {
+    async function onFormSubmit (e) {
         e.preventDefault() // Stop form submit
 
-        /*
-        this.setState(prevState => ({
-            queryQ: prevState.q,
-        }))*/
+        setQ(search)
     }
 
-    render() {
+    return (
+        <div className="row">
+            <div className="col-lg-12">
 
-        return (
-            <div className="row">
-                <div className="col-lg-12">
+                <form className="row g-3" onSubmit={onFormSubmit}>
+                    <div className="col-9">
+                        <input type="text" className="form-control" id="q" placeholder="Поиск" value={search} onChange={onChangeText}/>
+                    </div>
+                    <div className="col-auto">
+                        <button type="submit" className="btn btn-primary mb-3">Найти</button>
+                    </div>
+                </form>
 
-                    <form className="row g-3" onSubmit={this.onFormSubmit}>
-                        <div className="col-9">
-                            <input type="text" className="form-control" id="q" placeholder="Поиск" value={this.state.q} onChange={this.onChangeText}/>
-                        </div>
-                        <div className="col-auto">
-                            <button type="submit" className="btn btn-primary mb-3">Найти</button>
-                        </div>
-                    </form>
-
-                    <SearchUser q={this.state.q}/>
-                </div>
+                <SearchUser q={q}/>
             </div>
-        )
-    }
-
+        </div>
+    );
 }
-
-export default connect (
-    state => ({
-        myUser: state.myUser,
-    }),
-    dispatch => ({
-
-    })
-)(Search);
-
