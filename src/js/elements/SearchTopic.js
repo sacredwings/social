@@ -21,7 +21,7 @@ export default function ({q}) {
 
     async function Get (start) {
         //запрос
-        const url = `/api/user/search?q=${q}&offset=${(start) ? 0 : response.offset + count}&count=${count}`;
+        const url = `/api/topic/search?q=${q}&offset=${(start) ? 0 : response.offset + count}&count=${count}`;
 
         let result = await axios.get(url);
 
@@ -39,13 +39,10 @@ export default function ({q}) {
         return <div className="row">
 
             <div className="col-lg-12">
-                Пользователей найдено: <strong>{response.count}</strong>
+                Обсуждений найдено: <strong>{response.count}</strong>
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/user/id${item.id}`} className="list-group-item list-group-item-action">
-                            <img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item.photo) ? item.photo : "https://www.freelancejob.ru/upload/663/32785854535177.jpg"} />
-                            {item.first_name}
-                        </Link>
+                        <Link to={`/topic/id${item.id}`} className="list-group-item list-group-item-action">{item.title}</Link>
                     </div>)
                 })}
             </div>
@@ -59,7 +56,7 @@ export default function ({q}) {
 
     return (
         <>
-            {(response.items.length) ? Result(response.items) : <p>Пользователи не найдены</p>}
+            {(response.items.length) ? Result(response.items) : <p>Обсуждений не найдено</p>}
         </>
     );
 }

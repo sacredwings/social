@@ -21,7 +21,7 @@ export default function ({q}) {
 
     async function Get (start) {
         //запрос
-        const url = `/api/user/search?q=${q}&offset=${(start) ? 0 : response.offset + count}&count=${count}`;
+        const url = `/api/group/search?q=${q}&offset=${(start) ? 0 : response.offset + count}&count=${count}`;
 
         let result = await axios.get(url);
 
@@ -39,12 +39,12 @@ export default function ({q}) {
         return <div className="row">
 
             <div className="col-lg-12">
-                Пользователей найдено: <strong>{response.count}</strong>
+                Групп найдено: <strong>{response.count}</strong>
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/user/id${item.id}`} className="list-group-item list-group-item-action">
-                            <img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item.photo) ? item.photo : "https://www.freelancejob.ru/upload/663/32785854535177.jpg"} />
-                            {item.first_name}
+                        <Link to={`/group/id${item.id}`} className="list-group-item list-group-item-action">
+                            <img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item.photo) ? `${global.urlServer}/${item.photo.url}` : "https://www.freelancejob.ru/upload/663/32785854535177.jpg"} />
+                            {item.title}
                         </Link>
                     </div>)
                 })}
@@ -59,7 +59,7 @@ export default function ({q}) {
 
     return (
         <>
-            {(response.items.length) ? Result(response.items) : <p>Пользователи не найдены</p>}
+            {(response.items.length) ? Result(response.items) : <p>Группы не найдены</p>}
         </>
     );
 }

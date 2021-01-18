@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import SearchUser from "../elements/SearchUser";
+import SearchGroup from "../elements/SearchGroup";
+import SearchTopic from "../elements/SearchTopic";
 
 export default function ({}) {
     let [search, setSearch] = useState('')
@@ -32,6 +34,10 @@ export default function ({}) {
                 </form>
 
                 <SearchUser q={q}/>
+                <hr/>
+                <SearchGroup q={q}/>
+                <hr/>
+                <SearchTopic q={q}/>
             </div>
         </div>
     );
