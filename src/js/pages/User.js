@@ -68,7 +68,7 @@ class User extends Component {
 
                     {access ? null :
                         <div className="d-grid gap-2">
-                            <button type="button" className="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#modalMessageAdd">Написать сообщение</button>
+                            <button type="button" className="btn btn-primary btn-sm btn-block" data-bs-toggle="modal" data-bs-target="#modalMessageAdd">Написать сообщение</button>
                         </div>
                     }
                     <ElementMessageAdd user_id={user_id}/>

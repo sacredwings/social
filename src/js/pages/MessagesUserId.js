@@ -20,7 +20,7 @@ class MessagesId extends Component {
     async GetUsers (event) {
 
         //запрос
-        let result = await axios.get(`/api/message/getByUserId?user_id=${this.props.match.params.id}`);
+        let result = await axios.get(`/api/message/getByUserId?to_id=${this.props.match.params.id}`);
         result = result.data;
         console.log(result)
 
