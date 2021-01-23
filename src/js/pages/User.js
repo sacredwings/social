@@ -1,57 +1,48 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
+import React, {useState, useEffect, useReducer} from 'react';
 import axios from "axios";
+import {Link} from "react-router-dom";
+import ElementMessageAdd from "../elements/MessageAddModal";
 import ElementVideo from "../elements/Video";
 import ElementTopic from "../elements/Topic";
 import ElementGroup from "../elements/Group";
-import ElementMessageAdd from "../elements/MessageAddModal";
-import Config from "../../config.json";
+import {connect} from "react-redux";
 
-class User extends Component {
-    constructor () {
-        super();
+function User (props) {
+    let [state, dispatch] = useReducer(null)
+    let [user, setUser] = useState(null)
 
-        this.state = {
-            pageLoad: false,
-            user:null
-        }
-    }
+    //отслеживаем изменение props
+    useEffect (async ()=>{
+        await Get(props.match.params.id);
+    }, [props.match.params.id])
 
-    async componentDidMount () {
-        await this.Get();
-    }
-
-    async Get (event) {
-        let user_id = this.props.match.params.id;
-        console.log(user_id)
+    async function Get (userId) {
 
         //запрос
-        let result = await axios.get(`/api/user/getById?ids=${user_id}`, {});
+        let result = await axios.get(`/api/user/getById?ids=${userId}`, {});
         console.log(result)
         result = result.data;
 
         //ответ со всеми значениями
         if ((result) && (result.err === 0)) {
 
-            this.setState({pageLoad: true});
             if ((result.response) && (result.response[0]))
-                this.setState({user: result.response[0]});
+                setUser(result.response[0]);
             else
-                this.setState({user: false});
+                setUser(false);
 
         }
 
     }
 
-    User() {
+    function User(userId) {
 
-        let user_id = Number (this.props.match.params.id);
+        let user_id = Number (userId);
         if (!user_id)
             user_id = this.props.myUser.id;
 
         let access = false
-        if (user_id === this.props.myUser.id) access = true
+        if (user_id === props.myUser.id) access = true
 
         return (
 
@@ -61,7 +52,7 @@ class User extends Component {
                     <div className="row">
                         <div className="col-lg-12">
                             <div className="block-white">
-                                <img  className="" style={{maxWidth: "100%", borderRadius: '10px'}} src={this.state.user.personal_photo ? `${global.urlServer}/${this.state.user.personal_photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
+                                <img  className="" style={{maxWidth: "100%", borderRadius: '10px'}} src={user.personal_photo ? `${global.urlServer}/${user.personal_photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
                             </div>
                         </div>
                     </div>
@@ -71,7 +62,7 @@ class User extends Component {
                             <button type="button" className="btn btn-primary btn-sm btn-block" data-bs-toggle="modal" data-bs-target="#modalMessageAdd">Написать сообщение</button>
                         </div>
                     }
-                    <ElementMessageAdd user_id={user_id}/>
+                    <ElementMessageAdd user_id={userId}/>
 
 
                 </div>
@@ -79,14 +70,14 @@ class User extends Component {
 
                     <div className="row">
                         <div className="col-lg-12 block-white">
-                            <h1 className="display-6">{this.state.user.first_name} {this.state.user.last_name}</h1>
+                            <h1 className="display-6">{user.first_name} {user.last_name}</h1>
 
                         </div>
                     </div>
 
-                    <ElementVideo owner={'user'} owner_id={Number (this.props.match.params.id)} access={access}/>
-                    <ElementTopic owner_id={Number (this.props.match.params.id)} access={access}/>
-                    <ElementGroup owner_id={Number (this.props.match.params.id)} access={access}/>
+                    <ElementVideo owner={'user'} owner_id={Number (props.match.params.id)} access={access}/>
+                    <ElementTopic owner_id={Number (props.match.params.id)} access={access}/>
+                    <ElementGroup owner_id={Number (props.match.params.id)} access={access}/>
 
 
                 </div>
@@ -94,16 +85,12 @@ class User extends Component {
 
         )
     }
-//<ElementBlog />
 
-    render() {
-        console.log('this.state.user')
-        console.log(this.state.user)
-        return (
-            (this.state.user ? this.User(this.state.user) : null)
-        )
-    }
-
+    return (
+        <>
+            {(user ? User(props.match.params.id) : null)}
+        </>
+    );
 }
 
 export default connect (
@@ -116,4 +103,3 @@ export default connect (
         }
     })
 )(User);
-
