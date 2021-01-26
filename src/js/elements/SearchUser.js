@@ -43,7 +43,7 @@ export default function ({q}) {
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
                         <Link to={`/user/id${item.id}`} className="list-group-item list-group-item-action">
-                            <img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item.photo) ? item.photo : "https://www.freelancejob.ru/upload/663/32785854535177.jpg"} />
+                            <img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item.photo) ? `${global.urlServer}/${item.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg"} />
                             {item.first_name}
                         </Link>
                     </div>)

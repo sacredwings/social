@@ -8,7 +8,6 @@ import ElementGroup from "../elements/Group";
 import {connect} from "react-redux";
 
 function User (props) {
-    let [state, dispatch] = useReducer(null)
     let [user, setUser] = useState(null)
 
     //отслеживаем изменение props
@@ -39,7 +38,7 @@ function User (props) {
 
         let user_id = Number (userId);
         if (!user_id)
-            user_id = this.props.myUser.id;
+            user_id = props.myUser.id;
 
         let access = false
         if (user_id === props.myUser.id) access = true
@@ -52,7 +51,7 @@ function User (props) {
                     <div className="row">
                         <div className="col-lg-12">
                             <div className="block-white">
-                                <img  className="" style={{maxWidth: "100%", borderRadius: '10px'}} src={user.personal_photo ? `${global.urlServer}/${user.personal_photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
+                                <img  className="" style={{maxWidth: "100%", borderRadius: '10px'}} src={user.photo ? `${global.urlServer}/${user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
                             </div>
                         </div>
                     </div>

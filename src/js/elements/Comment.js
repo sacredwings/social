@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import CommentAdd from "./CommentAdd";
@@ -6,57 +6,51 @@ import axios from "axios";
 import {Player} from "video-react";
 import Config from "../../config.json";
 
-class Comments extends Component {
-    constructor () {
-        super();
+function Comments (props) {
+    //настройки запроса
+    const count = 20 //количество элементов в запросе
 
-        this.state = {
-            response: {
-                count: 0,
-                items: [],
-                users: []
-            },
-            count: 20,
-            offset: 0,
-            arComments: [],
-            arUsers: []
-        }
+    //запрос
+    let [response, setResponse] = useState({
+        offset: 0, //смещение для запроса
+        count: 0, //количество записей в результате запроса
+        items: [],
+        arUsers: []
+    })
 
-    }
+    //отслеживаем изменение props
+    useEffect (async ()=>{
+        await Get(true) //с обнулением
+    }, [])
 
-    async componentDidMount () {
-        await this.Get();
-    }
+    async function Get (start) {
+        let module = props.module;
+        let object_id = props.object_id;
 
-    async Get (event) {
-        let module = this.props.module;
-        let object_id = this.props.object_id;
-
-        const url = `/api/comment/get?module=${module}&object_id=${object_id}&offset=${0}&count=${20}`;
+        //запрос
+        const url = `/api/comment/get?module=${module}&object_id=${object_id}&offset=${(start) ? 0 : response.offset + count}&count=${count}`;
 
         let result = await axios.get(url);
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
 
-        if (!result.response) return
-
-        this.setState(prevState => ({
-            response: result.response,
-            arComments: [...prevState.arComments, ...result.response.items],
-            arUsers: [...prevState.arComments, ...result.response.users],
-            offset: prevState.offset + prevState.count
+        setResponse(prev => ({
+            offset: (start) ? 0 : prev.offset + count,
+            count: result.response.count,
+            items: (start) ? result.response.items : [...prev.items, ...result.response.items],
+            arUsers: [...prev.arUsers, ...result.response.users],
         }))
-
     }
 
-    SearchUser (id) {
-        for (let user of this.state.arUsers) {
+    const SearchUser = (id) => {
+        for (let user of response.arUsers) {
             if (id === user.id) return user
         }
+
     }
 
-    ElementFiles (files) {
+    const ElementFiles = (files) => {
         return <>
             { files.map((file, i) => {
 
@@ -78,49 +72,53 @@ class Comments extends Component {
         </>
     }
 
-    List (comments) {
-        let _this = this
+    const List = (comments) => {
         return (
             <>
                 { comments.map(function (comment, i) {
-                    comment.user = _this.SearchUser(comment.from_id)
-                    return ( <div className="col-lg-6" key={i}>
-                        <ul className="list-unstyled">
-                            <li className="media">
-                                <img src={comment.user.photo ? `${global.urlServer}/${comment.user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg"} className="mr-3" alt="..." style={{maxWidth: '64px', maxHeight: '64px', float: 'left'}}/>
-                                <div className="media-body" >
-                                    <h5 className="mt-0 mb-1">{comment.user.name}</h5>
-                                    <p> {comment.text}</p>
-                                    <div className="row">
-                                        {comment.files ? _this.ElementFiles(comment.files) : null}
+                    comment.user = SearchUser(comment.from_id)
+                    return ( <div className="row" key={i}>
+                        <div className="col-lg-12" >
+                            <ul className="list-unstyled">
+                                <li className="media">
+                                    <img src={comment.user.photo ? `${global.urlServer}/${comment.user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg"} className="mr-3" alt="..." style={{maxWidth: '64px', maxHeight: '64px', float: 'left'}}/>
+                                    <div className="media-body" >
+                                        <h5 className="mt-0 mb-1">{comment.user.first_name}</h5>
+                                        <p> {comment.text}</p>
+                                        <div className="row">
+                                            {comment.files ? ElementFiles(comment.files) : null}
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>)
                 })}
-            </>
-        )
-    }
 
-    render() {
-
-
-        return (
-            <>
-                <div className="row">
-                    <div className="col-lg-12">
-                        <hr/>
-                        {this.List(this.state.arComments)}
-                        <hr/>
-                        {this.props.myUser.auth ? <CommentAdd module={this.props.module} object_id={this.props.object_id}/> : null}
-                    </div>
+                <div className="col-lg-12">
+                    {(comments.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={() => {Get()}}>еще ...</button> : null}
                 </div>
-
             </>
         )
     }
 
+    return (
+        <>
+            <div className="row">
+                <div className="col-lg-12">
+                    <hr/>
+                    {List(response.items)}
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-lg-12">
+                    <hr/>
+                    {props.myUser.auth ? <CommentAdd module={props.module} object_id={props.object_id}/> : null}
+                </div>
+            </div>
+
+        </>
+    )
 }
 
 export default connect (
