@@ -1,44 +1,53 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
+import SearchUser from "../elements/SearchUser";
 import axios from "axios";
+import {Link} from "react-router-dom";
 import ElementMessageAdd from "../elements/MessageAdd";
 
-class Messages extends Component {
-    constructor () {
-        super();
+function Messages () {
+    //настройки запроса
+    const count = 20 //количество элементов в запросе
 
-        this.state = {
-            arMessages: [],
-            page: 0
-        }
-    }
+    //запрос
+    let [response, setResponse] = useState({
+        offset: 0, //смещение для запроса
+        count: 0, //количество записей в результате запроса
+        items: [],
+        arUsers: []
+    })
 
-    async componentDidMount () {
-        await this.GetUsers();
-    }
+    //отслеживаем изменение props
+    useEffect (async ()=>{
+        await Get(true) //с обнулением
+    }, [])
 
-    async GetUsers (event) {
+    const Get = async (start) => {
 
         //запрос
-        let result = await axios.get(`/api/message/get`);
+        const url = `/api/message/get`;
+
+        let result = await axios.get(url);
+
         result = result.data;
-        console.log(result)
+        if (result.err) return; //ошибка, не продолжаем обработку
 
-        //ответ со всеми значениями
-        if ((result) && (result.err === 0)) {
+        setResponse(prev => ({
+            offset: (start) ? 0 : prev.offset + count,
+            count: result.response.count,
+            items: (start) ? result.response.items : [...prev.items, ...result.response.items],
+            arUsers: [...prev.arUsers, ...result.response.users],
+        }))
+    }
 
-            if (result.response)
-                this.setState({arMessages: result.response});
-            else
-                this.setState({arMessages: []});
-
+    const SearchUser = (id) => {
+        for (let user of response.arUsers) {
+            if (id === user.id) return user
         }
-
     }
 
     //подготовка текста сообщения
-    MessageInRead (message) {
+    const MessageInRead = (message) => {
         //входящие
         let result = <p>Вы: &crarr; {message.message}</p>
 
@@ -55,15 +64,15 @@ class Messages extends Component {
 
     }
 
-    arMessages (arMessages) {
-        let _this = this
-        console.log(this)
+    const result = (arMessages) => {
         return (
             <div className="row">
                 {arMessages.map(function (message, i) {
 
+                    //получить пользователя
+                    message.user = SearchUser(message.user_id)
                     return <div key={i} className="list-group">
-                        <Link to={`/messages/id${message.user_id}`} className="list-group-item list-group-item-action">
+                        <Link to={`/messages/id${message.user.id}`} className="list-group-item list-group-item-action">
                             <div className="row">
                                 <div className="col-12">
                                     <div style={{
@@ -75,13 +84,13 @@ class Messages extends Component {
                                     </div>
                                     <div style={{marginLeft: '75px'}}>
                                         <div>
-                                            <b>{message.user_name}</b>
+                                            <b>{message.user.first_name}</b>
                                             <button style={{float: 'right'}} type="button" className="close" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div>
-                                            {_this.MessageInRead(message)}
+                                            {MessageInRead(message)}
                                         </div>
                                     </div>
                                 </div>
@@ -94,18 +103,13 @@ class Messages extends Component {
         )
     }
 
-    render() {
-        console.log(this.state.arMessages)
-        return (
-            <div className='row'>
-                <div className='col-lg-12'>
-                    {this.arMessages(this.state.arMessages)}
-                </div>
+    return (
+        <div className='row'>
+            <div className='col-lg-12'>
+                {result(response.items)}
             </div>
-
-        )
-    }
-
+        </div>
+    );
 }
 
 export default connect (
