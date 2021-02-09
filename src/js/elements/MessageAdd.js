@@ -57,7 +57,7 @@ function MessageAdd (props) {
             <div className="row">
                 <div className="col-12">
                     <label htmlFor="message" className="form-label">Новое сообщение</label>
-                    <textarea className="form-control" id="message" rows="5" onChange={onChangeText}></textarea>
+                    <textarea className="form-control" id="message" rows="5" onChange={onChangeText} value={message}></textarea>
                 </div>
             </div>
             <div className="row">

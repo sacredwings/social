@@ -1,61 +1,57 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
 import axios from "axios";
 import {ReCaptcha} from "recaptcha-v3-react";
 
-class CommentsAdd extends Component {
-    constructor () {
-        super();
+function CommentsAdd (props) {
+    let [gtoken, setGtoken] = useState('')
+    let [form, setForm] = useState({
+        files: null,
+        inputText: '',
+        processBarLoaded: 0,
+        processBarTotal: 0,
+        processBar: 0,
+        add: false
+    })
 
-        this.state = {
+    let recaptcha;
+
+    const onChangeFiles = (e) => {
+        setForm(prev => ({...prev, files: e.target.files}))
+    }
+
+    const onChangeText = (e) => {
+        setForm(prev => ({...prev, inputText: e.target.value}))
+    }
+
+    const FormNull = () => {
+        setForm(prev => ({
             files: null,
             inputText: '',
+            processBar: 0,
             processBarLoaded: 0,
             processBarTotal: 0,
-            processBar: 0
-        }
-
-        this.onFormSubmitFile = this.onFormSubmitFile.bind(this)
-        this.onChangeFiles = this.onChangeFiles.bind(this)
-        this.onChangeText = this.onChangeText.bind(this)
+            add: true
+        }))
     }
 
-    async componentDidMount () {
+    const onFormSubmitFile = async (e) => {
+        recaptcha.execute() /* сброс reCaptcha */
 
-    }
-
-    onChangeFiles(e) {
-        this.setState({files:e.target.files})
-        console.log(e.target.files)
-    }
-
-    onChangeText(e) {
-        let name = e.target.id;
-        let value = e.target.value;
-
-        this.setState({[name]:value})
-    }
-
-    onFormSubmitFile (e) {
-        this.recaptcha.execute() /* сброс reCaptcha */
-
-        let module = this.props.module;
-        let object_id = this.props.object_id;
-
-        let _this = this
+        let module = props.module;
+        let object_id = props.object_id;
 
         const url = '/api/comment/add';
         const formData = new FormData();
 
-        if ((this.state.files) && (this.state.files.length))
-            for (let i=0; i < this.state.files.length; i++)
-                formData.append(`files[${i}]`, this.state.files[i])
+        if ((form.files) && (form.files.length))
+            for (let i=0; i < form.files.length; i++)
+                formData.append(`files[${i}]`, form.files[i])
 
         formData.append('module', module)
         formData.append('object_id', object_id)
-        formData.append('text', this.state.inputText)
-        formData.append('gtoken', this.state.gtoken)
+        formData.append('text', form.inputText)
+        formData.append('gtoken', gtoken)
 
         axios.post(url, formData, {
 
@@ -63,12 +59,22 @@ class CommentsAdd extends Component {
                 'Content-Type': 'multipart/form-data'
             },
             onUploadProgress: function (progressEvent) {
-                console.log(progressEvent)
+                //известен размер данных формы
                 if (progressEvent.lengthComputable) {
+                    //процент загрузки
                     let percentage = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
-                    console.log(progressEvent.loaded + ' ' + progressEvent.total + ' ' + percentage);
-                    _this.setState({processBar: percentage, processBarLoaded: progressEvent.loaded, processBarTotal: progressEvent.total})
 
+                    if (percentage < 100)
+                        setForm(prev => ({
+                            ...prev,
+                            ...{
+                                processBar: percentage,
+                                processBarLoaded: progressEvent.loaded,
+                                processBarTotal: progressEvent.total
+                            }
+                        }))
+                    else
+                        FormNull() //обнуляем форму
                 }
                 // Do whatever you want with the native progress event
             },
@@ -79,49 +85,59 @@ class CommentsAdd extends Component {
         e.preventDefault() // Stop form submit
     }
 
-    render() {
+    const Form = () => {
         return (
             <>
                 <div className="row">
 
                     <ReCaptcha
-                        ref={ref => this.recaptcha = ref}
+                        ref={ref => recaptcha = ref}
                         action='settings'
                         sitekey={global.gappkey}
-                        verifyCallback={token => this.setState({gtoken: token})}
+                        verifyCallback={token => setGtoken(token)}
                     />
 
-                    <div className="col-lg-12">
-                        <form onSubmit={this.onFormSubmitFile}>
+                    <div className="col-lg-12 m-3">
+                        <form onSubmit={onFormSubmitFile}>
 
                             <div className="mb-3">
                                 <label htmlFor="inputText" className="form-label">Новый комментарий</label>
-                                <textarea className="form-control" id="inputText" rows="5" onChange={this.onChangeText} value={this.state.inputText}></textarea>
+                                <textarea className="form-control" id="inputText" rows="5" onChange={onChangeText} value={form.inputText}></textarea>
                             </div>
-                            <p>Прикрепить файлы</p>
-                            <div className="mb-3 form-file">
-                                <input type="file" className="form-file-input" id="inputFile" onChange={this.onChangeFiles} multiple={true}/>
-                                <label className="form-file-label" htmlFor="inputFile">
-                                    <span className="form-file-text">Выберите файл...</span>
-                                    <span className="form-file-button">Обзор</span>
-                                </label>
+                            <div className="mb-3">
+                                <label htmlFor="inputFile" className="form-label">Прикрепить файлы</label>
+                                <input className="form-control form-control-sm" id="inputFile" type="file" onChange={onChangeFiles} multiple={true}/>
                             </div>
 
-                            {((this.state.processBar >0) && (this.state.processBar <100)) ? <div className="mb-3"><p className="text-primary">Загружаю</p></div>:null}
-                            {(this.state.processBar === 100) ? <div className="mb-3"><p className="text-success">Загружено</p></div>:null}
+                            {((form.processBar >0) && (form.processBar <100)) ? <div className="mb-3"><p className="text-primary">Загружаю</p></div>:null}
+                            {(form.processBar === 100) ? <div className="mb-3"><p className="text-success">Загружено</p></div>:null}
                             <div className="progress">
-                                <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style={{width: `${this.state.processBar}%`}} aria-valuenow={this.state.processBar} aria-valuemin="0" aria-valuemax="100"></div>
+                                <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style={{width: `${form.processBar}%`}} aria-valuenow={form.processBar} aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                             <br/>
-                            <button type="submit" className="btn btn-primary" disabled={(this.state.processBar !== 0) ? true : false}>Добавить комментарий</button>
-
+                            <button type="submit" className="btn btn-primary" disabled={(form.processBar !== 0) ? true : false}>Добавить комментарий</button>
                         </form>
+
                     </div>
                 </div>
 
             </>
         )
     }
+
+    const FormGood = () => {
+        return <div className="alert alert-success" role="alert">
+            Комментарий добавлен
+        </div>
+    }
+
+    return (
+        <>
+            {(form.add) ? FormGood() : Form()}
+
+        </>
+    )
+
 }
 
 export default connect (
