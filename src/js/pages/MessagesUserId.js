@@ -1,48 +1,118 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
+import SearchUser from "../elements/SearchUser";
 import axios from "axios";
+import {Link} from "react-router-dom";
 import ElementMessageAdd from "../elements/MessageAdd";
 
-class MessagesId extends Component {
-    constructor () {
-        super();
+function Messages (props) {
+    //настройки запроса
+    const count = 20 //количество элементов в запросе
 
-        this.state = {
-            arMessages: []
+    //запрос
+    let [response, setResponse] = useState({
+        offset: 0, //смещение для запроса
+        count: 0, //количество записей в результате запроса
+        items: [],
+        arUsers: []
+    })
+
+    //отслеживаем изменение props
+    useEffect (async ()=>{
+        await Get(true) //с обнулением
+    }, [props.match.params.id])
+
+    const Delete = async (id) => {
+
+        //удаляет из массива
+        await ElementDelete(id)
+
+        let arFields = {
+            ids: id,
         }
-    }
-
-    async componentDidMount () {
-        await this.GetUsers();
-    }
-
-    async GetUsers (event) {
 
         //запрос
-        let result = await axios.get(`/api/message/getByUserId?to_id=${this.props.match.params.id}`);
+        const url = `/api/message/delete`;
+
+        let result = await axios.post(url, arFields);
+
         result = result.data;
-        console.log(result)
+        if (result.err) return; //ошибка, не продолжаем обработку
+    }
 
-        //ответ со всеми значениями
-        if ((result) && (result.err === 0)) {
+    const Get = async (start) => {
 
-            if (result.response)
-                this.setState({arMessages: result.response});
-            else
-                this.setState({arMessages: []});
+        //запрос
+        let result = await axios.get(`/api/message/getByUserId?to_id=${props.match.params.id}`);
 
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
+
+        setResponse(prev => ({
+            offset: (start) ? 0 : prev.offset + count,
+            count: result.response.count,
+            items: (start) ? result.response.items : [...prev.items, ...result.response.items],
+            arUsers: [...prev.arUsers, ...result.response.users],
+        }))
+    }
+
+    const SearchUser = (id) => {
+        for (let user of response.arUsers) {
+            if (id === user.id) return user
+        }
+    }
+
+    //удаляет из массива
+    const ElementDelete = async (id) => {
+        let items = response.items.filter((item, i)=>{
+            if (id === item.id) return false
+            return true
+        })
+
+        //обновляем
+        setResponse(prev => ({... prev, items}))
+    }
+
+    //добавляет в массив
+    const ElementAdd = async (arr) => {
+        let arFields = {
+            create_date: "",
+            delete_from: null,
+            delete_to: null,
+            files: null,
+            from_id: props.myUser.id,
+            to_id: props.match.params.id,
+            id: arr.id,
+            important: null,
+            in:false,
+            message: arr.message,
+            message_type: "P",
+            read: null,
+            user_id: props.myUser.id
         }
 
+        //обновляем
+        //обновляем
+        setResponse(prev => ({
+            ... prev,
+            items: [
+                ...prev.items,
+                arFields
+            ]
+        }))
     }
 
     //подготовка текста сообщения
-    MessageInRead (message) {
+    const MessageInRead = (message) => {
         //входящие
+        /*
         let result = <p>Вы: &crarr; {message.message}</p>
 
         if (message.in)
             result = <p>{message.message}</p>
+        */
+
+        let result = <p>{message.message}</p>
 
         //чтение
         if (message.read)
@@ -53,88 +123,78 @@ class MessagesId extends Component {
         </div>
 
     }
-    
-    arMessages (arMessages) {
-        let _this = this
-        console.log(this)
+
+    //сортировка массива
+    function compareNumericMessages(a, b) {
+        if (a.id > b.id) return 1;
+        if (a.id === b.id) return 0;
+        if (a.id < b.id) return -1;
+    }
+
+    const result = (arMessages) => {
+
+        arMessages = arMessages.sort(compareNumericMessages);
+
         return (
             <div className="row">
-                {arMessages.map(function (message, i) {
+                <div className="col-lg-12">
+                    {(arMessages.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={() => {Get()}}>еще ...</button> : null}
+                </div>
+                <div className="col-lg-12">
+                    {arMessages.map(function (message, i) {
 
-                    return <div key={i} className="list-group">
-                        <div className="list-group-item list-group-item-action">
-                            <div className="row">
-                                <div className="col-12">
-                                    <div style={{
-                                        maxHeight: '100px',
-                                        maxWidth: '100px',
-                                        float: 'left'
-                                    }}>
-                                        <img style={{maxHeight: '100px', maxWidth: '100px'}} src="https://www.freelancejob.ru/upload/663/32785854535177.jpg" alt="..."/>
-                                    </div>
-                                    <div style={{marginLeft: '75px'}}>
-                                        <div>
-                                            <b>{message.user_name}</b>
-                                            <button style={{float: 'right'}} type="button" className="close" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                        //получить пользователя
+                        message.user = SearchUser(message.from_id)
+
+                        return <div key={i} className="list-group">
+                            <div className="list-group-item list-group-item-action">
+                                <div className="row">
+                                    <div className="col-12">
+                                        <div style={{
+                                            maxHeight: '100px',
+                                            maxWidth: '100px',
+                                            float: 'left'
+                                        }}>
+                                            <img style={{maxHeight: '75px', maxWidth: '75px'}} src={message.user.photo ? `${global.urlServer}/${message.user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg"} alt="..."/>
                                         </div>
-                                        <div>
-                                            {_this.MessageInRead(message)}
+                                        <div style={{marginLeft: '100px'}}>
+                                            <div>
+                                                <b>{message.user.first_name}</b>
+                                                {message.create_date}
+                                                <button style={{float: 'right'}} type="button" className="btn-close" aria-label="Close" onClick={()=>{Delete(message.id)}}></button>
+                                            </div>
+                                            <div>
+                                                {MessageInRead(message)}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                })}
+                    })}
+                </div>
             </div>
 
         )
     }
 
-    /*
-                            <Link to={`/messages/id${message.user_id}`} className="list-group-item list-group-item-action">
-                            <div className="row">
-                                <div className="col-12">
-                                    <div style={{
-                                        maxHeight: '100px',
-                                        maxWidth: '100px',
-                                        float: 'left'
-                                    }}>
-                                        <img style={{maxHeight: '100px', maxWidth: '100px'}} src="https://www.freelancejob.ru/upload/663/32785854535177.jpg" alt="..."/>
-                                    </div>
-                                    <div style={{marginLeft: '75px'}}>
-                                        <div>
-                                            <b>{message.user_name}</b>
-                                        </div>
-                                        <div>
-                                            {_this.MessageInRead(message)}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Link>
-     */
-    render() {
-        console.log(this.state.arMessages)
-        return (
-            <>
-                <div className='row'>
-                    <div className='col-lg-12'>
-                        Сообщения пользователю id: {this.props.match.params.id}
-                        {this.arMessages(this.state.arMessages)}
-                    </div>
+    return (
+        <>
+            {console.log(response)}
+            <div className='row'>
+                <div className='col-lg-12'>
+                    Сообщения пользователю id: {props.match.params.id}
+                    {result(response.items)}
                 </div>
-                <div className='row'>
-                    <div className='col-lg-12'>
-                        <ElementMessageAdd user_id={2}/>
-                    </div>
+            </div>
+            <hr/>
+            <div className='row'>
+                <div className='col-lg-12'>
+                    <ElementMessageAdd add={ElementAdd} user_id={props.match.params.id}/>
                 </div>
-            </>
-        )
-    }
-
+            </div>
+        </>
+    );
 }
 
 export default connect (
@@ -144,5 +204,5 @@ export default connect (
     dispatch => ({
 
     })
-)(MessagesId);
+)(Messages);
 

@@ -101,11 +101,6 @@ class Reg extends Component {
                         <label htmlFor="password" className="form-label">Придумайте пароль</label>
                         <input type="password" className="form-control" id="password" name="password" minLength="8" maxLength="60" value={this.state.password} onChange={this.onChange} autoComplete=""/>
                     </div>
-
-                    <div className="mb-3">
-                        <label htmlFor="name" className="form-label">Ваше имя</label>
-                        <input type="text" className="form-control" id="name" name="name" minLength="5" maxLength="30" value={this.state.name} onChange={this.onChange} autoComplete=""/>
-                    </div>
                     <button type="submit" className="btn btn-primary">Зарегистрироваться</button>
                 </form>
             </div>

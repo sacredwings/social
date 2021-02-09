@@ -7,7 +7,7 @@ import ElementMessageAdd from "../elements/MessageAdd";
 
 function Messages () {
     //настройки запроса
-    const count = 20 //количество элементов в запросе
+    const count = 1000 //количество элементов в запросе
 
     //запрос
     let [response, setResponse] = useState({
@@ -25,7 +25,7 @@ function Messages () {
     const Get = async (start) => {
 
         //запрос
-        const url = `/api/message/get`;
+        const url = `/api/message/get?offset=${(start) ? 0 : response.offset + count}&count=${count}`;
 
         let result = await axios.get(url);
 
@@ -38,6 +38,21 @@ function Messages () {
             items: (start) ? result.response.items : [...prev.items, ...result.response.items],
             arUsers: [...prev.arUsers, ...result.response.users],
         }))
+    }
+
+    const DeleteAll = async (user_id) => {
+
+        let arFields = {
+            user_id: user_id,
+        }
+
+        //запрос
+        const url = `/api/message/deleteAll`;
+
+        let result = await axios.post(url, arFields);
+
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
     }
 
     const SearchUser = (id) => {
@@ -67,37 +82,43 @@ function Messages () {
     const result = (arMessages) => {
         return (
             <div className="row">
-                {arMessages.map(function (message, i) {
+                <div className="col-lg-12">
+                    {arMessages.map(function (message, i) {
 
-                    //получить пользователя
-                    message.user = SearchUser(message.user_id)
-                    return <div key={i} className="list-group">
-                        <Link to={`/messages/id${message.user.id}`} className="list-group-item list-group-item-action">
-                            <div className="row">
-                                <div className="col-12">
-                                    <div style={{
-                                        maxHeight: '100px',
-                                        maxWidth: '100px',
-                                        float: 'left'
-                                    }}>
-                                        <img style={{maxHeight: '100px', maxWidth: '100px'}} src="https://www.freelancejob.ru/upload/663/32785854535177.jpg" alt="..."/>
-                                    </div>
-                                    <div style={{marginLeft: '75px'}}>
-                                        <div>
-                                            <b>{message.user.first_name}</b>
-                                            <button style={{float: 'right'}} type="button" className="close" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                        //получить пользователя
+                        message.user = SearchUser(message.user_id)
+                        return <div key={i} className="list-group">
+                            <div  className="list-group-item list-group-item-action" aria-current="true">
+
+                                <div className="row">
+                                    <div className="col-12">
+                                        <div style={{
+                                            maxHeight: '100px',
+                                            maxWidth: '100px',
+                                            float: 'left'
+                                        }}>
+                                            <img style={{maxHeight: '75px', maxWidth: '75px'}} src="https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" alt="..."/>
                                         </div>
-                                        <div>
-                                            {MessageInRead(message)}
+                                        <div style={{marginLeft: '100px'}}>
+                                            <div>
+                                                <b>{message.user.first_name}</b>
+                                                <button style={{float: 'right'}} type="button" className="btn-close" aria-label="Close" onClick={()=>{DeleteAll(message.user.id)}}></button>
+                                            </div>
+                                            <Link to={`/messages/id${message.user.id}`}>
+                                                {MessageInRead(message)}
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
-                        </Link>
-                    </div>
-                })}
+                        </div>
+
+                    })}
+                </div>
+                <div className="col-lg-12">
+                    {(arMessages.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={() => {Get()}}>еще ...</button> : null}
+                </div>
             </div>
 
         )

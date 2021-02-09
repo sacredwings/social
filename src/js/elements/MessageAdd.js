@@ -1,43 +1,29 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
-import axios from "axios";
 import {ReCaptcha} from 'recaptcha-v3-react';
+import React, {useState, useEffect} from 'react';
+import {connect} from 'react-redux';
+import axios from "axios";
 
-class MessageAdd extends Component {
-    constructor () {
-        super();
-        this.state = {
-            message: ''
-        }
+function MessageAdd (props) {
+    let [message, setMessage] = useState('')
+    let [gtoken, setGtoken] = useState('')
 
-        this.onFormClose = this.onFormClose.bind(this)
-        this.onFormSubmit = this.onFormSubmit.bind(this)
-        this.onChangeText = this.onChangeText.bind(this)
+    let recaptcha;
+
+    const onChangeText = (e) => {
+        setMessage(e.target.value)
     }
 
-    async componentDidMount () {
-
-    }
-
-    onChangeText(e) {
-        let name = e.target.id;
-        let value = e.target.value;
-
-        this.setState({[name]:value})
-    }
-
-    async onFormSubmit (e) {
-        this.recaptcha.execute() /* сброс reCaptcha */
+    const onFormSubmit = async (e) => {
+        recaptcha.execute() /* сброс reCaptcha */
         e.preventDefault() // Stop form submit
 
-        let user_id = this.props.user_id
+        let user_id = props.user_id
 
         let arFields = {
-            to_id: this.props.user_id,
-            message: this.state.message,
+            to_id: props.user_id,
+            message: message,
 
-            gtoken: this.state.gtoken
+            gtoken: gtoken
         }
 
         const url = `/api/message/add`;
@@ -48,43 +34,42 @@ class MessageAdd extends Component {
 
         if (result.err) return; //ошибка, не продолжаем обработку
 
-    }
-
-    onFormClose() {
-        //сброс формы
-        this.setState({
-            message: '',
+        //добавление сообщения в список
+        props.add({
+            id: result.response.id,
+            message: message
         })
+
+        //очистка формы
+        setMessage('')
     }
 
-    render() {
-        return (
-            <form onSubmit={this.onFormSubmit}>
+    return (
+        <form onSubmit={onFormSubmit}>
 
-                <ReCaptcha
-                    ref={ref => this.recaptcha = ref}
-                    action='settings'
-                    sitekey={global.gappkey}
-                    verifyCallback={token => this.setState({gtoken: token})}
-                />
+            <ReCaptcha
+                ref={ref => recaptcha = ref}
+                action='settings'
+                sitekey={global.gappkey}
+                verifyCallback={token => setGtoken(token)}
+            />
 
-                <div className="row">
-                    <div className="col-12">
-                        <label htmlFor="message" className="form-label">Новое сообщение</label>
-                        <textarea className="form-control" id="message" rows="5" onChange={this.onChangeText}></textarea>
-                    </div>
+            <div className="row">
+                <div className="col-12">
+                    <label htmlFor="message" className="form-label">Новое сообщение</label>
+                    <textarea className="form-control" id="message" rows="5" onChange={onChangeText}></textarea>
                 </div>
-                <div className="row">
-                    <div className="col-12">
-                        <button type="submit" className="btn btn-primary">Отправить</button>
-                    </div>
+            </div>
+            <div className="row">
+                <div className="col-12">
+                    <button type="submit" className="btn btn-primary">Отправить</button>
                 </div>
-            </form>
+            </div>
+        </form>
 
-        )
-    }
-
+    )
 }
+
 
 export default connect (
     state => ({
