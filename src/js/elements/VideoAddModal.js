@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
 import axios from "axios";
 import {ReCaptcha} from 'recaptcha-v3-react';
 import SelectAlbum from "../objects/SelectAlbum";

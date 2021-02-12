@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
 import CommentAdd from "./CommentAdd";
 import axios from "axios";
 import {Player} from "video-react";
-import Config from "../../config.json";
 
 function Comments (props) {
     //настройки запроса

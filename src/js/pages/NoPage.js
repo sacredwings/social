@@ -1,10 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
-import axios from "axios";
-import ElementVideo from "../elements/Video";
-import ElementTopic from "../elements/Topic";
-import ElementBlog from "../elements/Blog";
 
 class NoPage extends Component {
     constructor () {

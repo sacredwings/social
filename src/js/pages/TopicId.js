@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
 import axios from "axios";
 import {Player} from "video-react";
-import Config from "../../config.json";
 import Comment from "../elements/Comment";
 
 class TopicId extends Component {

@@ -4,9 +4,6 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import ElementVideo from "../elements/Video";
 import ElementTopic from "../elements/Topic";
-import ElementGroup from "../elements/Group";
-import Config from "../../config.json";
-
 
 
 class User extends Component {

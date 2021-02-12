@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useReducer} from 'react';
 import axios from "axios";
-import {Link} from "react-router-dom";
 import ElementMessageAdd from "../elements/MessageAddModal";
 import ElementVideo from "../elements/Video";
 import ElementTopic from "../elements/Topic";

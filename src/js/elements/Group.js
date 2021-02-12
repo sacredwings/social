@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
 import GroupAddModal from "../elements/GroupAddModal";
-import Config from "../../config.json";
 
 class Group extends Component {
     constructor () {

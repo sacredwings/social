@@ -3,8 +3,6 @@ import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
 import AlbumAddModal from "./AlbumAddModal";
-import { Player } from 'video-react';
-import Config from "../../config.json";
 
 
 class Album extends Component {

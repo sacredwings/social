@@ -4,7 +4,6 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import VideoAddModal from "./VideoAddModal";
 import { Player } from 'video-react';
-import Config from "../../config.json";
 
 
 class Video extends Component {

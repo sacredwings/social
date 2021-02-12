@@ -5,8 +5,6 @@ import axios from "axios";
 import VideoAddModal from "../elements/VideoAddModal";
 import Album from "../elements/Album";
 import { Player } from 'video-react';
-import Config from "../../config.json";
-import AlbumAddModal from "../elements/AlbumAddModal";
 
 
 class Video extends Component {

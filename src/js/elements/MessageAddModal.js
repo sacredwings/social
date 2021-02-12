@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
 import axios from "axios";
-import Config from "../../config.json";
 import {ReCaptcha} from 'recaptcha-v3-react';
 
 class MessageAddModal extends Component {
