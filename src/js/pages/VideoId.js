@@ -37,8 +37,8 @@ class VideoId extends Component {
                 <div className="col-12">
                     <h1>Видео</h1>
                     <h2>{video.title}</h2>
-                    <video controls>
-                        <source src={`${global.urlServer}/${video.file.url}`} type="video/mp4"/>
+                    <video controls style={{width: '100%'}}>
+                        <source src={`${global.urlServer}/${video.file.url}`} type={video.file.type} />
                     </video>
                 </div>
             </div>

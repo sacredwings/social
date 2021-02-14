@@ -55,8 +55,8 @@ function Comments (props) {
                 //видео
                 if (file.type === 'video/mp4')
                     return ( <div className="col-md-4" key={i}>
-                        <video controls>
-                            <source src={`${global.urlServer}/${file.url}`} type="video/mp4"/>
+                        <video controls style={{width: '100%'}}>
+                            <source src={`${global.urlServer}/${file.url}`} type={file.type} />
                         </video>
                     </div>)
 

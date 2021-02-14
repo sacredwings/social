@@ -64,8 +64,8 @@ class Video extends Component {
                     return ( <div className="col-lg-6" key={i}>
                         <div className="card">
                             <div className="card-body">
-                                <video controls>
-                                    <source src={`${global.urlServer}/${video.file.url}`} type="video/mp4"/>
+                                <video controls style={{width: '100%'}}>
+                                    <source src={`${global.urlServer}/${video.file.url}`} type={video.file.type} />
                                 </video>
                                 <p className="card-text">
                                     <Link to={`/video/id${video.id}`} >{video.title}</Link>
