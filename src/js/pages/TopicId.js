@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import {Player} from "video-react";
+//import {Player} from "video-top-react";
 import Comment from "../elements/Comment";
 
 class TopicId extends Component {
@@ -40,9 +40,9 @@ class TopicId extends Component {
                 //видео
                 if (file.type === 'video/mp4')
                     return ( <div className="col-md-4" key={i}>
-                        <Player>
-                            <source src={`${global.urlServer}/${file.url}`}/>
-                        </Player>
+                        <video controls>
+                            <source src={`${global.urlServer}/${file.url}`} type="video/mp4"/>
+                        </video>
                     </div>)
 
                 //картинка

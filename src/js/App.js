@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {BrowserRouter as Router, Route, Redirect, Switch, Link} from 'react-router-dom';
-import {loadReCaptcha} from 'recaptcha-v3-react';
+import {loadReCaptcha} from 'react-top-recaptcha-v3';
 
 import 'bootstrap'; // подключаем бутстрап
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import '../sass/style.sass';
-import 'video-react/dist/video-react.css';
+//import 'video-react/dist/video-react.css';
 
 //import Processes from "./system/Processes";
 import TopMenu from "./elements/TopMenu";
@@ -48,15 +48,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        loadReCaptcha({
-            key: global.gappkey,
-        })
-            .then(id => {
-                console.log('ReCaptcha loaded')
-            })
-            .catch((e, id) => {
-                console.error('Error when load ReCaptcha', e)
-            })
+        loadReCaptcha(global.gappkey, ()=>{})
     }
 
     //страницы с авторизацией

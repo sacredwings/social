@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import VideoAddModal from "../elements/VideoAddModal";
 import Album from "../elements/Album";
-import { Player } from 'video-react';
+//import { Player } from 'video-top-react';
 
 
 class Video extends Component {
@@ -64,9 +64,9 @@ class Video extends Component {
                     return ( <div className="col-lg-6" key={i}>
                         <div className="card">
                             <div className="card-body">
-                                <Player>
-                                    <source src={`${global.urlServer}/${video.file.url}`}/>
-                                </Player>
+                                <video controls>
+                                    <source src={`${global.urlServer}/${video.file.url}`} type="video/mp4"/>
+                                </video>
                                 <p className="card-text">
                                     <Link to={`/video/id${video.id}`} >{video.title}</Link>
                                 </p>

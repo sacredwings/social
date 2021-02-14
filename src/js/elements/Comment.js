@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import CommentAdd from "./CommentAdd";
 import axios from "axios";
-import {Player} from "video-react";
+//import {Player} from "video-top-react";
 
 function Comments (props) {
     //настройки запроса
@@ -55,9 +55,9 @@ function Comments (props) {
                 //видео
                 if (file.type === 'video/mp4')
                     return ( <div className="col-md-4" key={i}>
-                        <Player>
-                            <source src={`${global.urlServer}/${file.url}`}/>
-                        </Player>
+                        <video controls>
+                            <source src={`${global.urlServer}/${file.url}`} type="video/mp4"/>
+                        </video>
                     </div>)
 
                 //картинка

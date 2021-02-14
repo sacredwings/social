@@ -1,4 +1,4 @@
-import {ReCaptcha} from 'recaptcha-v3-react';
+import {ReCaptcha} from 'react-top-recaptcha-v3';
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
