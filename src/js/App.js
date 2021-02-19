@@ -48,7 +48,15 @@ class App extends Component {
     }
 
     componentDidMount() {
-        loadReCaptcha(global.gappkey, ()=>{})
+        loadReCaptcha({
+            key: global.gappkey,
+        })
+            .then(id => {
+                console.log('ReCaptcha loaded')
+            })
+            .catch((e, id) => {
+                console.error('Error when load ReCaptcha', e)
+            })
     }
 
     //страницы с авторизацией
