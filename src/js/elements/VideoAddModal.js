@@ -7,8 +7,8 @@ import SelectAlbum from "../objects/SelectAlbum";
 function VideoAddModal (props) {
     let [gtoken, setGtoken] = useState('')
     let [form, setForm] = useState({
-        file_preview: null,
-        file: null,
+        inputFilePreview: null,
+        inputFile: null,
         inputTitle: '',
         inputText: '',
         processBarLoaded: 0,
@@ -92,13 +92,16 @@ function VideoAddModal (props) {
 
         console.log(form)
 
-        formData.append('file_preview', form.inputFilePreview)
         formData.append('file', form.inputFile)
-
         formData.append('title', form.inputTitle)
         formData.append('text', form.inputText)
         formData.append('gtoken', gtoken)
 
+        //файл есть
+        if (form.inputFilePreview)
+            formData.append('file_preview', form.inputFilePreview)
+
+        //альбомы выбраны
         if (form.arSelectAlbums.length)
             formData.append('albums', form.arSelectAlbums.join(','))
 
