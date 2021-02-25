@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useReducer} from 'react';
 import axios from "axios";
-import ElementMessageAdd from "../elements/MessageAddModal";
+import ElementMessageAddModal from "../elements/MessageAddModal";
 import ElementVideo from "../elements/Video";
 import ElementTopic from "../elements/Topic";
 import ElementGroup from "../elements/Group";
@@ -60,7 +60,7 @@ function User (props) {
                             <button type="button" className="btn btn-primary btn-sm btn-block" data-bs-toggle="modal" data-bs-target="#modalMessageAdd">Написать сообщение</button>
                         </div>
                     }
-                    <ElementMessageAdd user_id={userId}/>
+                    <ElementMessageAddModal user_id={userId}/>
 
 
                 </div>

@@ -34,7 +34,7 @@ function MessageAdd (props) {
 
         if (result.err) return; //ошибка, не продолжаем обработку
 
-        //добавление сообщения в список
+        //добавление сообщения в список (в модульном окне нет этой функции)
         props.add({
             id: result.response.id,
             message: message
@@ -60,6 +60,7 @@ function MessageAdd (props) {
                     <textarea className="form-control" id="message" rows="5" onChange={onChangeText} value={message}></textarea>
                 </div>
             </div>
+            <br/>
             <div className="row">
                 <div className="col-12">
                     <button type="submit" className="btn btn-primary">Отправить</button>
