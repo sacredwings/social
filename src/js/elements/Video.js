@@ -1,37 +1,36 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
 import VideoAddModal from "./VideoAddModal";
 import ElementVideo from '../objects/Video';
 
+function Video (props) {
+    //запрос
+    let [response, setResponse] = useState({
+        offset: 0, //смещение для запроса
+        count: 20, //количество элементов в запросе
+        itemsCount: 0, //количество записей в результате запроса
+        items: [],
+        arUsers: []
+    })
 
-class Video extends Component {
-    constructor () {
-        super();
+    let access = useRef(props.access)
+    let ownerId = useRef(Number (props.owner_id))
+    let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
 
-        this.state = {
-            response: {
-                count: 0,
-                items: [],
-                users: []
-            },
-            count: 4,
-            offset: 0,
-            arVideo: []
-        }
+    //отслеживаем изменение props
+    useEffect (async ()=>{
+        await Get(true) //с обнулением
+    }, [props])
 
-        this.Get = this.Get.bind(this)
-    }
+    const Get = async (start) => {
 
-    async componentDidMount () {
-        await this.Get();
-    }
+        let url = `/api/video/get?owner_id=${ownerId.current}&offset=${response.offset}&count=${response.count}`;
 
-    async Get () {
-        let owner_id = this.props.owner_id;
-
-        const url = `/api/video/get?owner_id=${owner_id}&offset=${this.state.offset}&count=${this.state.count}`;
+        //альбом существует
+        if (props.album_id)
+            url += `&album_id=${props.album_id}`
 
         let result = await axios.get(url);
 
@@ -40,14 +39,15 @@ class Video extends Component {
 
         if (!result.response) return
 
-        this.setState(prevState => ({
-            response: result.response,
-            arVideo: [...prevState.arVideo, ...result.response.items],
-            offset: prevState.offset + prevState.count
-        }))
+        setResponse(prev => ({...prev, ...{
+            offset: (start) ? 0 : prev.offset + prev.count,
+            itemsCount: result.response.count,
+            items: (start) ? result.response.items : [...prev.items, ...result.response.items],
+            arUsers: [...prev.arUsers, ...result.response.users],
+        }}))
     }
 
-    ListVideo (arVideo) {
+    const ListVideo = (arVideo) => {
         return (
             <div className="row">
                 { arVideo.map(function (video, i, arVideo) {
@@ -68,40 +68,25 @@ class Video extends Component {
         )
     }
 
+    return (
+        <>
+            <VideoAddModal owner_id={props.owner_id}/>
 
+            <div className="row">
+                <div className="col-lg-12 block-white">
+                    <p className="h3">
+                        {access.current ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalVideoAdd">+</button> : null}&#160;
+                        {(props.link) ? <Link to={linkUrl.current}>Все видео</Link> : 'Видео'}
+                    </p>
 
-    render() {
-        let access = this.props.access;
-        let url
-        if (this.props.owner_id > 0)
-            url = `/user/id${this.props.owner_id}/video`
-        else
-            url = `/group/id${-this.props.owner_id}/video`
+                    {(response.items.length) ? ListVideo(response.items) : <p>Видео еще не загружено</p>}
 
-        return (
-            <>
-                <VideoAddModal owner_id={this.props.owner_id}/>
+                    {(response.items.length < response.itemsCount) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={Get}>еще видео ...</button> : null}
 
-                <div className="row">
-                    <div className="col-lg-12 block-white">
-
-                        <p className="h3">
-                            {access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalVideoAdd">+</button> : null} <Link to={url}>Все видео</Link>
-                        </p>
-
-                        {(this.state.arVideo.length) ? this.ListVideo(this.state.arVideo) : <p>Видео еще не загружено</p>}
-
-                        {(this.state.arVideo.length < this.state.response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={this.Get}>еще видео ...</button> : null}
-
-                    </div>
                 </div>
-
-
-
-            </>
-        )
-    }
-
+            </div>
+        </>
+    )
 }
 
 export default connect (
@@ -112,4 +97,3 @@ export default connect (
 
     })
 )(Video);
-

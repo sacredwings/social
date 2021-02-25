@@ -44,8 +44,9 @@ class User extends Component {
     Group(group) {
 
         let access = false
-        if (group.create_id === this.props.myUser.id) access = true
+        if (group.create_id === this.props.myUser.id) access = true //создатель это я
 
+        let linkUrl = `/group/id${group.id}/video`
         return (
 
             <div className="row">
@@ -58,8 +59,8 @@ class User extends Component {
                         </div>
                     </div>
 
-                    <ElementVideo owner_id={-Number (this.props.match.params.id)} access={access}/>
-                    <ElementTopic owner_id={-Number (this.props.match.params.id)} access={access}/>
+                    <ElementVideo link={true} owner={'group'} owner_id={-group.id} access={access}/>
+                    <ElementTopic owner_id={-group.id} access={access}/>
 
                 </div>
                 <div className="col-lg-3">

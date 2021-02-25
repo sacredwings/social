@@ -35,12 +35,12 @@ function User (props) {
 
     function User(userId) {
 
-        let user_id = Number (userId);
-        if (!user_id)
-            user_id = props.myUser.id;
+        userId = Number (userId);
+        /*if (!user_id)
+            user_id = props.myUser.id;*/
 
         let access = false
-        if (user_id === props.myUser.id) access = true
+        if (userId === Number (props.myUser.id)) access = true
 
         return (
 
@@ -73,9 +73,9 @@ function User (props) {
                         </div>
                     </div>
 
-                    <ElementVideo owner={'user'} owner_id={Number (props.match.params.id)} access={access}/>
-                    <ElementTopic owner_id={Number (props.match.params.id)} access={access}/>
-                    <ElementGroup owner_id={Number (props.match.params.id)} access={access}/>
+                    <ElementVideo link={true} owner={'user'} owner_id={userId} access={access}/>
+                    <ElementTopic owner_id={userId} access={access}/>
+                    <ElementGroup owner_id={userId} access={access}/>
 
 
                 </div>
