@@ -2,13 +2,12 @@ import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import MessageAdd from "../elements/MessageAdd";
 import $ from 'jquery';
-window.jQuery = $;
 
 function MessageAddModal (props) {
 
     //при добавлении сообщения закрываем модульное окно
     const Add = () => {
-        window.jQuery('#modalMessageAdd').modal('hide');
+        $('#modalMessageAdd').modal('hide');
     }
 
     return (
