@@ -15,7 +15,7 @@ function Video (props) {
         arUsers: []
     })
 
-    let access = useRef(props.access)
+    //let [access, setAccess] = useState(false)
     let ownerId = useRef(Number (props.owner_id))
     let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
 
@@ -75,7 +75,7 @@ function Video (props) {
             <div className="row">
                 <div className="col-lg-12 block-white">
                     <p className="h3">
-                        {access.current ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalVideoAdd">+</button> : null}&#160;
+                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalVideoAdd">+</button> : null}&#160;
                         {(props.link) ? <Link to={linkUrl.current}>Все видео</Link> : 'Видео'}
                     </p>
 
