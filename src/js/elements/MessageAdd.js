@@ -4,18 +4,18 @@ import {connect} from 'react-redux';
 import axios from "axios";
 
 function MessageAdd (props) {
-    let [message, setMessage] = useState('')
+    let [recaptcha, setRecaptcha] = useState('')
     let [gtoken, setGtoken] = useState('')
-
-    let recaptcha;
+    let [message, setMessage] = useState('')
 
     const onChangeText = (e) => {
         setMessage(e.target.value)
     }
 
     const onFormSubmit = async (e) => {
-        recaptcha.execute() /* сброс reCaptcha */
         e.preventDefault() // Stop form submit
+
+        await recaptcha.execute() /* сброс reCaptcha */
 
         let user_id = props.user_id
 
@@ -48,7 +48,7 @@ function MessageAdd (props) {
         <form onSubmit={onFormSubmit}>
 
             <ReCaptcha
-                ref={ref => recaptcha = ref}
+                ref={ref => setRecaptcha(ref)}
                 action='settings'
                 sitekey={global.gappkey}
                 verifyCallback={token => setGtoken(token)}

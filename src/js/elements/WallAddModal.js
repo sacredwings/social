@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
 import {ReCaptcha} from "react-top-recaptcha-v3";
@@ -9,7 +9,6 @@ function TopicAddModal (props) {
     let [gtoken, setGtoken] = useState('')
     let [form, setForm] = useState({
         files: null,
-        inputTitle: '',
         inputText: '',
         processBarLoaded: 0,
         processBarTotal: 0,
@@ -37,7 +36,6 @@ function TopicAddModal (props) {
     const onFormClose = (e) => {
         setForm(prev => ({
             files: null,
-            inputTitle: '',
             inputText: '',
             processBarLoaded: 0,
             processBarTotal: 0,
@@ -50,14 +48,13 @@ function TopicAddModal (props) {
 
         await recaptcha.execute() /* сброс reCaptcha */
 
-        const url = '/api/topic/add';
+        const url = '/api/wall/add';
         const formData = new FormData();
 
         if ((form.files) && (form.files.length))
             for (let i=0; i < form.files.length; i++)
                 formData.append(`files[${i}]`, form.files[i])
 
-        formData.append('title', form.inputTitle)
         formData.append('text', form.inputText)
         formData.append('gtoken', gtoken)
 
@@ -91,7 +88,7 @@ function TopicAddModal (props) {
 
     return (
 
-        <div className="modal fade" id="modalTopicAdd" tabIndex="-1" aria-labelledby="modalTopicAdd"
+        <div className="modal fade" id="modalWallAdd" tabIndex="-1" aria-labelledby="modalWallAdd"
              aria-hidden="true">
 
             <ReCaptcha
@@ -105,18 +102,14 @@ function TopicAddModal (props) {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">Новое обсуждение</h5>
+                            <h5 className="modal-title" id="exampleModalLabel">Новая запись на стене</h5>
                             <button type="button" className="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
 
                             <div className="mb-3">
-                                <label htmlFor="inputTitle" className="form-label">Название</label>
-                                <input type="text" className="form-control" id="inputTitle" onChange={onChangeText} value={form.inputTitle}/>
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="inputText" className="form-label">Описание</label>
+                                <label htmlFor="inputText" className="form-label">Текст</label>
                                 <textarea className="form-control" id="inputText" rows="5" onChange={onChangeText} value={form.inputText}></textarea>
                             </div>
 

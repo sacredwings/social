@@ -4,6 +4,7 @@ import ElementMessageAddModal from "../elements/MessageAddModal";
 import ElementVideo from "../elements/Video";
 import ElementTopic from "../elements/Topic";
 import ElementGroup from "../elements/Group";
+import ElementWall from "../elements/Wall";
 import {connect} from "react-redux";
 
 function User (props) {
@@ -76,6 +77,7 @@ function User (props) {
                     <ElementVideo link={true} owner={'user'} owner_id={userId} access={access}/>
                     <ElementTopic owner_id={userId} access={access}/>
                     <ElementGroup owner_id={userId} access={access}/>
+                    <ElementWall owner_id={userId} access={access}/>
 
 
                 </div>

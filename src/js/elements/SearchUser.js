@@ -20,7 +20,7 @@ export default function ({q}) {
 
     async function Get (start) {
         //запрос
-        const url = `/api/user/search?q=${q}&offset=${(start) ? 0 : response.offset + count}&count=${count}`;
+        const url = `/api/user/search?q=${q}&offset=${(start) ? 0 : response.offset}&count=${count}`;
 
         let result = await axios.get(url);
 
@@ -28,7 +28,7 @@ export default function ({q}) {
         if (result.err) return; //ошибка, не продолжаем обработку
 
         setResponse(prev => ({
-            offset: (start) ? 0 : prev.offset + count,
+            offset: (start) ? count : prev.offset + count,
             count: result.response.count,
             items: (start) ? result.response.items : [...prev.items, ...result.response.items]
         }))

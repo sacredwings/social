@@ -4,7 +4,6 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import ElementVideo from "../elements/Video";
 import ElementTopic from "../elements/Topic";
-import ElementWall from "../elements/Wall";
 
 
 class User extends Component {
@@ -62,7 +61,6 @@ class User extends Component {
 
                     <ElementVideo link={true} owner={'group'} owner_id={-group.id} access={access}/>
                     <ElementTopic owner_id={-group.id} access={access}/>
-                    <ElementWall owner_id={-group.id} access={access}/>
 
                 </div>
                 <div className="col-lg-3">

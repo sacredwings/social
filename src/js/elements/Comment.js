@@ -26,7 +26,7 @@ function Comments (props) {
         let object_id = props.object_id;
 
         //запрос
-        const url = `/api/comment/get?module=${module}&object_id=${object_id}&offset=${(start) ? 0 : response.offset + count}&count=${count}`;
+        const url = `/api/comment/get?module=${module}&object_id=${object_id}&offset=${(start) ? 0 : response.offset}&count=${count}`;
 
         let result = await axios.get(url);
 
@@ -34,7 +34,7 @@ function Comments (props) {
         if (result.err) return; //ошибка, не продолжаем обработку
 
         setResponse(prev => ({
-            offset: (start) ? 0 : prev.offset + count,
+            offset: (start) ? count : prev.offset + count,
             count: result.response.count,
             items: (start) ? result.response.items : [...prev.items, ...result.response.items],
             arUsers: [...prev.arUsers, ...result.response.users],

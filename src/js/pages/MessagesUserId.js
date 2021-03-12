@@ -41,13 +41,13 @@ function Messages (props) {
     const Get = async (start) => {
 
         //запрос
-        let result = await axios.get(`/api/message/getByUserId?to_id=${props.match.params.id}`);
+        let result = await axios.get(`/api/message/getByUserId?to_id=${props.match.params.id}&offset=${(start) ? 0 : response.offset}&count=${count}`);
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
 
         setResponse(prev => ({
-            offset: (start) ? 0 : prev.offset + count,
+            offset: (start) ? count : prev.offset + count,
             count: result.response.count,
             items: (start) ? result.response.items : [...prev.items, ...result.response.items],
             arUsers: [...prev.arUsers, ...result.response.users],

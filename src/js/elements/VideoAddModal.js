@@ -5,6 +5,7 @@ import {ReCaptcha} from "react-top-recaptcha-v3";
 import SelectAlbum from "../objects/SelectAlbum";
 
 function VideoAddModal (props) {
+    let [recaptcha, setRecaptcha] = useState('')
     let [gtoken, setGtoken] = useState('')
     let [form, setForm] = useState({
         inputFilePreview: null,
@@ -25,8 +26,6 @@ function VideoAddModal (props) {
 
         arSelectAlbums: []
     })
-
-    let recaptcha;
 
     //отслеживаем изменение props
     useEffect (async () => {
@@ -86,7 +85,9 @@ function VideoAddModal (props) {
             }}))
     }
 
-    const onFormSubmitFile = (e) => {
+    const onFormSubmitFile = async (e) => {
+        await recaptcha.execute() /* сброс reCaptcha */
+
         const url = '/api/video/add';
         const formData = new FormData();
 
@@ -141,7 +142,7 @@ function VideoAddModal (props) {
              aria-hidden="true">
 
             <ReCaptcha
-                ref={ref => recaptcha = ref}
+                ref={ref => setRecaptcha(ref)}
                 action='settings'
                 sitekey={global.gappkey}
                 verifyCallback={token => setGtoken(token)}

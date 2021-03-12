@@ -4,6 +4,7 @@ import axios from "axios";
 import {ReCaptcha} from "react-top-recaptcha-v3";
 
 function CommentsAdd (props) {
+    let [recaptcha, setRecaptcha] = useState('')
     let [gtoken, setGtoken] = useState('')
     let [form, setForm] = useState({
         files: null,
@@ -13,8 +14,6 @@ function CommentsAdd (props) {
         processBar: 0,
         add: false
     })
-
-    let recaptcha;
 
     const onChangeFiles = (e) => {
         setForm(prev => ({...prev, files: e.target.files}))
@@ -37,6 +36,8 @@ function CommentsAdd (props) {
 
     const onFormSubmitFile = async (e) => {
         recaptcha.execute() /* сброс reCaptcha */
+
+        await recaptcha.execute() /* сброс reCaptcha */
 
         let module = props.module;
         let object_id = props.object_id;
@@ -91,7 +92,7 @@ function CommentsAdd (props) {
                 <div className="row">
 
                     <ReCaptcha
-                        ref={ref => recaptcha = ref}
+                        ref={ref => setRecaptcha(ref)}
                         action='settings'
                         sitekey={global.gappkey}
                         verifyCallback={token => setGtoken(token)}

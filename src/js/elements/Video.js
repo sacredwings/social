@@ -26,7 +26,7 @@ function Video (props) {
 
     const Get = async (start) => {
 
-        let url = `/api/video/get?owner_id=${ownerId.current}&offset=${response.offset}&count=${response.count}`;
+        let url = `/api/video/get?owner_id=${ownerId.current}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
 
         //альбом существует
         if (props.album_id)
@@ -40,7 +40,7 @@ function Video (props) {
         if (!result.response) return
 
         setResponse(prev => ({...prev, ...{
-            offset: (start) ? 0 : prev.offset + prev.count,
+            offset: (start) ? response.count : prev.offset + response.count,
             itemsCount: result.response.count,
             items: (start) ? result.response.items : [...prev.items, ...result.response.items],
             arUsers: [...prev.arUsers, ...result.response.users],
