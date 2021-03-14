@@ -1,58 +1,49 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
+import React, {useState, useEffect, useReducer} from 'react';
 import axios from "axios";
+import ElementMessageAddModal from "../elements/MessageAddModal";
 import ElementVideo from "../elements/Video";
 import ElementTopic from "../elements/Topic";
+import ElementGroup from "../elements/Group";
 import ElementWall from "../elements/Wall";
+import {connect} from "react-redux";
+import {Link} from "react-router-dom";
 
+function User (props) {
+    let [user, setUser] = useState(null)
 
-class User extends Component {
-    constructor () {
-        super();
+    //отслеживаем изменение props
+    useEffect (async ()=>{
+        await Get(props.match.params.id);
+    }, [props.match.params.id])
 
-        this.state = {
-            pageLoad: false,
-            group:null
-        }
-    }
-
-    async componentDidMount () {
-        await this.Get();
-    }
-
-    async Get (event) {
-        let group_id = this.props.match.params.id;
-        console.log(group_id)
+    async function Get (userId) {
 
         //запрос
-        let result = await axios.get(`/api/group/getById?ids=${group_id}`, {});
+        let result = await axios.get(`/api/group/getById?ids=${userId}`, {});
+        console.log(result)
         result = result.data;
 
         //ответ со всеми значениями
         if ((result) && (result.err === 0)) {
 
-            this.setState({pageLoad: true});
             if ((result.response) && (result.response[0]))
-                this.setState({group: result.response[0]});
+                setUser(result.response[0]);
             else
-                this.setState({group: false});
+                setUser(false);
 
         }
 
     }
 
-    Group(group) {
+    function User(group) {
 
         let access = false
-        if (group.create_id === this.props.myUser.id) access = true //создатель это я
+        if (group.create_id === props.myUser.id) access = true //создатель это я
 
-        let linkUrl = `/group/id${group.id}/video`
         return (
 
             <div className="row">
                 <div className="col-lg-9">
-
                     <div className="row">
                         <div className="col-lg-12 block-white">
                             <h1 className="display-6">{group.title}</h1>
@@ -77,21 +68,20 @@ class User extends Component {
                     <div className="d-grid gap-2">
                         {(access ? <Link to={`/group/settings_id${group.id}`} type="button" className="btn btn-primary btn-sm btn-block">Настройки</Link> : null)}
                     </div>
+
+
                 </div>
+
             </div>
 
         )
     }
-//<ElementBlog />
 
-    render() {
-
-        console.log(this.state.group)
-        return (
-            (this.state.group ? this.Group(this.state.group) : null)
-        )
-    }
-
+    return (
+        <>
+            {(user ? User(user) : null)}
+        </>
+    );
 }
 
 export default connect (
@@ -104,4 +94,3 @@ export default connect (
         }
     })
 )(User);
-
