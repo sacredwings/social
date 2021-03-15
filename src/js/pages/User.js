@@ -74,7 +74,7 @@ function User (props) {
                         </div>
                     </div>
 
-                    <ElementVideo link={true} owner={'user'} owner_id={userId} access={access}/>
+                    <ElementVideo mini={true} owner={'user'} owner_id={userId} access={access}/>
                     <ElementTopic owner_id={userId} access={access}/>
                     <ElementGroup owner_id={userId} access={access}/>
                     <ElementWall owner_id={userId} access={access}/>
