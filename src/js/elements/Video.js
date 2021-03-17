@@ -47,6 +47,19 @@ function Video (props) {
         }}))
     }
 
+    const Delete = async (id) => {
+
+        let url = `/api/video/delete`;
+
+        let result = await axios.post(url, {id: id});
+
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
+
+        if (!result.response) return
+
+    }
+
     const ListVideo = (arVideo) => {
         return (
             <div className="row">

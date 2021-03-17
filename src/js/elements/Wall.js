@@ -5,8 +5,11 @@ import axios from "axios";
 import TopicAddModal from "../elements/TopicAddModal";
 import ElementVideo from '../objects/Video';
 import WallAddModal from "./WallAddModal";
+import {ReCaptcha} from "react-top-recaptcha-v3";
 
 function Wall (props) {
+    let [recaptcha, setRecaptcha] = useState('')
+    let [gtoken, setGtoken] = useState('')
     //запрос
     let [response, setResponse] = useState({
         offset: 0, //смещение для запроса
@@ -44,6 +47,20 @@ function Wall (props) {
             }}))
     }
 
+    const Delete = async (id) => {
+        await recaptcha.execute() /* сброс reCaptcha */
+
+        let url = `/api/wall/delete`;
+
+        let result = await axios.post(url, {id: id, gtoken: gtoken});
+
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
+
+        if (!result.response) return
+
+    }
+
     const ElementFiles = (files) => {
         return <>
             { files.map((file, i) => {
@@ -72,7 +89,7 @@ function Wall (props) {
                 { arVideo.map(function (item, i) {
                     return (<div className="card" key={i}>
                         <div className="card-body">
-                            <button type="button" className="btn-close" aria-label="Close" style={{float: "right"}}></button>
+                            <button type="button" className="btn-close" aria-label="Close" style={{float: "right"}} onClick={() => {Delete(item.id)}}></button>
                             <p> {item.text}</p>
                             <div className="row">
                                 {item.files ? ElementFiles(item.files) : null}
@@ -87,6 +104,13 @@ function Wall (props) {
     return (
         <>
             <WallAddModal owner_id={props.owner_id}/>
+
+            <ReCaptcha
+                ref={ref => setRecaptcha(ref)}
+                action='settings'
+                sitekey={global.gappkey}
+                verifyCallback={token => setGtoken(token)}
+            />
 
             <div className="row">
                 <div className="col-lg-12 block-white">
