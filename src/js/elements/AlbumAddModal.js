@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import {ReCaptcha} from 'react-top-recaptcha-v3';
+import {reCaptchaExecute} from 'recaptcha-v3-react-function-async';
 
 class AlbumAddModal extends Component {
     constructor () {
@@ -50,10 +50,11 @@ class AlbumAddModal extends Component {
         })
     }
 
-    onFormSubmitFile (e) {
+    async onFormSubmitFile (e) {
         let _this = this
         console.log(this.state.file);
 
+        let gtoken = await reCaptchaExecute(global.gappkey, 'album')
 
         const url = '/api/video/addAlbum';
         const formData = new FormData();
@@ -63,7 +64,7 @@ class AlbumAddModal extends Component {
         formData.append('file', this.state.file)
         formData.append('title', this.state.inputTitle)
         formData.append('text', this.state.inputText)
-        formData.append('gtoken', this.state.gtoken)
+        formData.append('gtoken', gtoken)
 
         //если это группа, то отправляем ее id
         if ((this.props.owner_id) && (this.props.owner_id<0))
@@ -95,13 +96,7 @@ class AlbumAddModal extends Component {
         return (
             <div className="modal fade" id="modalAlbumAdd" tabIndex="-1" aria-labelledby="modalAlbumAdd"
                  aria-hidden="true">
-
-                <ReCaptcha
-                    ref={ref => this.recaptcha = ref}
-                    action='settings'
-                    sitekey={global.gappkey}
-                    verifyCallback={token => this.setState({gtoken: token})}
-                />
+                
                 <form onSubmit={this.onFormSubmitFile}>
 
                     <div className="modal-dialog">

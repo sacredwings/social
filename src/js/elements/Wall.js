@@ -5,7 +5,7 @@ import axios from "axios";
 import TopicAddModal from "../elements/TopicAddModal";
 import ElementVideo from '../objects/Video';
 import WallAddModal from "./WallAddModal";
-import {ReCaptcha} from "react-top-recaptcha-v3";
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 function Wall (props) {
     let [recaptcha, setRecaptcha] = useState('')
@@ -48,7 +48,7 @@ function Wall (props) {
     }
 
     const Delete = async (id) => {
-        await recaptcha.execute() /* сброс reCaptcha */
+        let gtoken = await reCaptchaExecute(global.gappkey, 'topic')
 
         let url = `/api/wall/delete`;
 
@@ -104,13 +104,6 @@ function Wall (props) {
     return (
         <>
             <WallAddModal owner_id={props.owner_id}/>
-
-            <ReCaptcha
-                ref={ref => setRecaptcha(ref)}
-                action='settings'
-                sitekey={global.gappkey}
-                verifyCallback={token => setGtoken(token)}
-            />
 
             <div className="row">
                 <div className="col-lg-12 block-white">

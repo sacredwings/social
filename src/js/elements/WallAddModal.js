@@ -1,12 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import {ReCaptcha} from "react-top-recaptcha-v3";
-import SelectAlbum from "../objects/SelectAlbum";
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 function TopicAddModal (props) {
-    let [recaptcha, setRecaptcha] = useState('')
-    let [gtoken, setGtoken] = useState('')
     let [form, setForm] = useState({
         files: null,
         inputText: '',
@@ -46,7 +43,7 @@ function TopicAddModal (props) {
     const onFormSubmit = async (e) => {
         e.preventDefault() // Stop form submit
 
-        await recaptcha.execute() /* сброс reCaptcha */
+        let gtoken = await reCaptchaExecute(global.gappkey, 'wall')
 
         const url = '/api/wall/add';
         const formData = new FormData();
@@ -91,12 +88,6 @@ function TopicAddModal (props) {
         <div className="modal fade" id="modalWallAdd" tabIndex="-1" aria-labelledby="modalWallAdd"
              aria-hidden="true">
 
-            <ReCaptcha
-                ref={ref => setRecaptcha(ref)}
-                action='settings'
-                sitekey={global.gappkey}
-                verifyCallback={token => setGtoken(token)}
-            />
             <form onSubmit={onFormSubmit}>
 
                 <div className="modal-dialog">

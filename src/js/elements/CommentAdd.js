@@ -1,11 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import {ReCaptcha} from "react-top-recaptcha-v3";
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 function CommentsAdd (props) {
-    let [recaptcha, setRecaptcha] = useState('')
-    let [gtoken, setGtoken] = useState('')
     let [form, setForm] = useState({
         files: null,
         inputText: '',
@@ -35,9 +33,8 @@ function CommentsAdd (props) {
     }
 
     const onFormSubmitFile = async (e) => {
-        recaptcha.execute() /* сброс reCaptcha */
 
-        await recaptcha.execute() /* сброс reCaptcha */
+        let gtoken = await reCaptchaExecute(global.gappkey, 'album')
 
         let module = props.module;
         let object_id = props.object_id;
@@ -90,13 +87,6 @@ function CommentsAdd (props) {
         return (
             <>
                 <div className="row">
-
-                    <ReCaptcha
-                        ref={ref => setRecaptcha(ref)}
-                        action='settings'
-                        sitekey={global.gappkey}
-                        verifyCallback={token => setGtoken(token)}
-                    />
 
                     <div className="col-lg-12 m-3">
                         <form onSubmit={onFormSubmitFile}>

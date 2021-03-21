@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import {ReCaptcha} from 'react-top-recaptcha-v3';
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 class GroupAddModal extends Component {
     constructor () {
@@ -50,8 +50,10 @@ class GroupAddModal extends Component {
         })
     }
 
-    onFormSubmitFile (e) {
-        this.recaptcha.execute() /* сброс reCaptcha */
+    async onFormSubmitFile (e) {
+        e.preventDefault() // Stop form submit
+
+        let gtoken = await reCaptchaExecute(global.gappkey, 'album')
 
         let _this = this
 
@@ -61,7 +63,7 @@ class GroupAddModal extends Component {
         formData.append('file', this.state.file)
         formData.append('title', this.state.inputTitle)
         formData.append('info', this.state.inputText)
-        formData.append('gtoken', this.state.gtoken)
+        formData.append('gtoken', gtoken)
 
         axios.post(url, formData, {
 
@@ -80,9 +82,6 @@ class GroupAddModal extends Component {
             },
 
         })
-
-
-        e.preventDefault() // Stop form submit
     }
 
     render() {
@@ -91,12 +90,6 @@ class GroupAddModal extends Component {
             <div className="modal fade" id="modalGroupAdd" tabIndex="-1" aria-labelledby="modalGroupAdd"
                  aria-hidden="true">
 
-                <ReCaptcha
-                    ref={ref => this.recaptcha = ref}
-                    action='settings'
-                    sitekey={global.gappkey}
-                    verifyCallback={token => this.setState({gtoken: token})}
-                />
                 <form onSubmit={this.onFormSubmitFile}>
 
                     <div className="modal-dialog">

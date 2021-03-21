@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {BrowserRouter as Router, Route, Redirect, Switch, Link} from 'react-router-dom';
-import {loadReCaptcha} from 'react-top-recaptcha-v3';
+import { loadReCaptcha }  from 'recaptcha-v3-react-function-async';
 
 import 'bootstrap'; // подключаем бутстрап
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -48,13 +48,13 @@ class App extends Component {
     }
 
     componentDidMount() {
-        loadReCaptcha({
-            key: global.gappkey,
-        })
-            .then(id => {
+        loadReCaptcha(
+            global.gappkey,
+        )
+            .then(() => {
                 console.log('ReCaptcha loaded')
             })
-            .catch((e, id) => {
+            .catch((e) => {
                 console.error('Error when load ReCaptcha', e)
             })
     }

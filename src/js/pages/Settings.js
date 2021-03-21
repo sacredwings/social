@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import axios from 'axios';
-import {ReCaptcha} from 'react-top-recaptcha-v3';
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 class Settings extends Component {
     constructor () {
@@ -39,7 +39,7 @@ class Settings extends Component {
 
     async onSavePassword (e) {
         e.preventDefault();
-        this.recaptcha.execute() /* сброс reCaptcha */
+        let gtoken = await reCaptchaExecute(global.gappkey, 'setting')
 
         //проверка полей
         if ((this.state.password.length >= 8) && (this.state.password_replay.length >= 8) && (this.state.password === this.state.password_replay)) {
@@ -50,7 +50,7 @@ class Settings extends Component {
             //запрос
             let result = await axios.post('/api/account/setPassword', {
                 password: this.state.password,
-                gtoken: this.state.gtoken
+                gtoken: gtoken
             });
             result = result.data;
 
@@ -70,15 +70,17 @@ class Settings extends Component {
         this.setState({file:e.target.files[0]})
     }
 
-    onSavePhoto(e){
-        this.recaptcha.execute() /* сброс reCaptcha */
+    async onSavePhoto(e){
+        e.preventDefault() // Stop form submit
+
+        let gtoken = await reCaptchaExecute(global.gappkey, 'setting')
 
         let _this = this
         const url = '/api/account/setPhoto';
         const formData = new FormData();
 
         formData.append('file', this.state.file)
-        formData.append('gtoken', this.state.gtoken)
+        formData.append('gtoken', gtoken)
 
         axios.post(url, formData, {
             headers: {
@@ -95,8 +97,6 @@ class Settings extends Component {
                 // Do whatever you want with the native progress event
             },
         })
-
-        e.preventDefault() // Stop form submit
     }
 
     render() {
@@ -104,13 +104,6 @@ class Settings extends Component {
         return (
             <div className="container my-3">
                 <div className="row">
-
-                    <ReCaptcha
-                        ref={ref => this.recaptcha = ref}
-                        action='settings'
-                        sitekey={global.gappkey}
-                        verifyCallback={token => this.setState({gtoken: token})}
-                    />
 
                     <div className="col">
                         <h2 className="mb-3">Настройки</h2>

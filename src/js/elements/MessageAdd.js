@@ -1,11 +1,9 @@
-import {ReCaptcha} from 'react-top-recaptcha-v3';
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 function MessageAdd (props) {
-    let [recaptcha, setRecaptcha] = useState('')
-    let [gtoken, setGtoken] = useState('')
     let [message, setMessage] = useState('')
 
     const onChangeText = (e) => {
@@ -15,7 +13,7 @@ function MessageAdd (props) {
     const onFormSubmit = async (e) => {
         e.preventDefault() // Stop form submit
 
-        await recaptcha.execute() /* сброс reCaptcha */
+        let gtoken = await reCaptchaExecute(global.gappkey, 'message')
 
         let user_id = props.user_id
 
@@ -46,13 +44,6 @@ function MessageAdd (props) {
 
     return (
         <form onSubmit={onFormSubmit}>
-
-            <ReCaptcha
-                ref={ref => setRecaptcha(ref)}
-                action='settings'
-                sitekey={global.gappkey}
-                verifyCallback={token => setGtoken(token)}
-            />
 
             <div className="row">
                 <div className="col-12">

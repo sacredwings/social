@@ -1,12 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import {ReCaptcha} from "react-top-recaptcha-v3";
 import SelectAlbum from "../objects/SelectAlbum";
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 function VideoAddModal (props) {
-    let [recaptcha, setRecaptcha] = useState('')
-    let [gtoken, setGtoken] = useState('')
     let [form, setForm] = useState({
         inputFilePreview: null,
         inputFile: null,
@@ -86,7 +84,9 @@ function VideoAddModal (props) {
     }
 
     const onFormSubmitFile = async (e) => {
-        await recaptcha.execute() /* сброс reCaptcha */
+        e.preventDefault() // Stop form submit
+
+        let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
         const url = '/api/video/add';
         const formData = new FormData();
@@ -132,21 +132,12 @@ function VideoAddModal (props) {
             },
 
         })
-
-
-        e.preventDefault() // Stop form submit
     }
 
     return (
         <div className="modal fade" id="modalVideoAdd" tabIndex="-1" aria-labelledby="modalVideoAdd"
              aria-hidden="true">
 
-            <ReCaptcha
-                ref={ref => setRecaptcha(ref)}
-                action='settings'
-                sitekey={global.gappkey}
-                verifyCallback={token => setGtoken(token)}
-            />
             <form onSubmit={onFormSubmitFile}>
 
                 <div className="modal-dialog">
