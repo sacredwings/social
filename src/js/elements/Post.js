@@ -4,12 +4,10 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import TopicAddModal from "../elements/TopicAddModal";
 import ElementVideo from '../objects/Video';
-import WallAddModal from "./WallAddModal";
+import PostAdd from "./PostAdd";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 function Wall (props) {
-    let [recaptcha, setRecaptcha] = useState('')
-    let [gtoken, setGtoken] = useState('')
     //запрос
     let [response, setResponse] = useState({
         offset: 0, //смещение для запроса
@@ -18,8 +16,9 @@ function Wall (props) {
         items: [],
         arUsers: []
     })
+    //показ формы ввода
+    let [formViewer, setFormViewer] = useState(false)
 
-    //let [access, setAccess] = useState(false)
     let ownerId = useRef(Number (props.owner_id))
     let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
 
@@ -30,7 +29,7 @@ function Wall (props) {
 
     const Get = async (start) => {
 
-        let url = `/api/wall/get?owner_id=${ownerId.current}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
+        let url = `/api/post/get?owner_id=${ownerId.current}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
 
         let result = await axios.get(url);
 
@@ -50,7 +49,7 @@ function Wall (props) {
     const Delete = async (id) => {
         let gtoken = await reCaptchaExecute(global.gappkey, 'topic')
 
-        let url = `/api/wall/delete`;
+        let url = `/api/post/delete`;
 
         let result = await axios.post(url, {id: id, gtoken: gtoken});
 
@@ -83,7 +82,7 @@ function Wall (props) {
         </>
     }
 
-    const ListVideo = (arVideo) => {
+    const ListPost = (arVideo) => {
         return (
             <div className="row">
                 { arVideo.map(function (item, i) {
@@ -92,7 +91,7 @@ function Wall (props) {
                             <button type="button" className="btn-close" aria-label="Close" style={{float: "right"}} onClick={() => {Delete(item.id)}}></button>
                             <p> {item.text}</p>
                             <div className="row">
-                                {item.files ? ElementFiles(item.files) : null}
+                                {item.file_ids ? ElementFiles(item.file_ids) : null}
                             </div>
                         </div>
                     </div>)
@@ -103,16 +102,19 @@ function Wall (props) {
 
     return (
         <>
-            <WallAddModal owner_id={props.owner_id}/>
-
             <div className="row">
                 <div className="col-lg-12 block-white">
                     <p className="h3">
-                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalWallAdd">+</button> : null}&#160;
+                        {props.access ?
+                            <button type="button" className="btn btn-success btn-sm" onClick={()=>{setFormViewer(!formViewer)}}>{(formViewer) ? `-` : `+`}</button>
+                            : null
+                        }&#160;
                         {(props.link) ? <Link to={linkUrl.current}>Все видео</Link> : 'Стена'}
                     </p>
 
-                    {(response.items.length) ? ListVideo(response.items) : <p>Стена пустая</p>}
+                    {(props.access && formViewer)  ? <PostAdd owner_id={props.owner_id}/> : null}&#160;
+
+                    {(response.items.length) ? ListPost(response.items) : <p>Стена пустая</p>}
 
                     {(response.items.length < response.itemsCount) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={() => Get()}>еще ...</button> : null}
 

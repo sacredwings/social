@@ -3,16 +3,18 @@ import {connect} from 'react-redux';
 import axios from "axios";
 import SelectAlbum from "../objects/SelectAlbum";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import AddFile from "../objects/AddFile";
 
 function TopicAddModal (props) {
     let [form, setForm] = useState({
-        files: null,
         inputTitle: '',
         inputText: '',
-        processBarLoaded: 0,
-        processBarTotal: 0,
-        processBar: 0
     })
+    let [fileIds, setFileIds] = useState('')
+
+    const ArFileIds = (arIds) => {
+        setFileIds(arIds)
+    }
 
     //отслеживаем изменение props
     useEffect(async () => {
@@ -112,28 +114,20 @@ function TopicAddModal (props) {
                                 <textarea className="form-control" id="inputText" rows="5" onChange={onChangeText} value={form.inputText}></textarea>
                             </div>
 
-                            <div className="mb-3 form-file">
-                                <input type="file" className="form-file-input" id="inputFile" onChange={onChangeFiles} multiple={true}/>
-                                <label className="form-file-label" htmlFor="inputFile">
-                                    <span className="form-file-text">Выберите файлы...</span>
-                                    <span className="form-file-button">Обзор</span>
-                                </label>
+                            <br/>
+                            <div className="row">
+                                <div className="col-12">
+                                    <AddFile ArFileIds={ArFileIds}/>
+                                </div>
                             </div>
-
-                            {((form.processBar >0) && (form.processBar <100)) ? <div className="mb-3"><p className="text-primary">Загружаю</p></div>:null}
-                            {(form.processBar === 100) ? <div className="mb-3"><p className="text-success">Загружено</p></div>:null}
-                            <div className="progress">
-                                <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style={{width: `${form.processBar}%`}} aria-valuenow={form.processBar} aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                            <br/>
 
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal"
                                     onClick={onFormClose}>Закрыть
                             </button>
-                            <button type="submit" className="btn btn-primary"
-                                    disabled={(form.processBar !== 0) ? true : false}>Добавить
-                            </button>
+                            <button type="submit" className="btn btn-primary">Добавить</button>
                         </div>
                     </div>
 

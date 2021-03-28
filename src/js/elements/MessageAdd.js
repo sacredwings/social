@@ -2,9 +2,15 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import AddFile from "../objects/AddFile";
 
 function MessageAdd (props) {
     let [message, setMessage] = useState('')
+    let [fileIds, setFileIds] = useState('')
+
+    const ArFileIds = (arIds) => {
+        setFileIds(arIds)
+    }
 
     const onChangeText = (e) => {
         setMessage(e.target.value)
@@ -15,11 +21,10 @@ function MessageAdd (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'message')
 
-        let user_id = props.user_id
-
         let arFields = {
             to_id: props.user_id,
             message: message,
+            file_ids: fileIds,
 
             gtoken: gtoken
         }
@@ -54,9 +59,17 @@ function MessageAdd (props) {
             <br/>
             <div className="row">
                 <div className="col-12">
+                    <AddFile ArFileIds={ArFileIds}/>
+                </div>
+            </div>
+            <br/>
+            <div className="row">
+                <div className="col-12">
                     <button type="submit" className="btn btn-primary">Отправить</button>
                 </div>
             </div>
+
+
         </form>
 
     )

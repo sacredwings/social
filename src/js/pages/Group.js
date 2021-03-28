@@ -4,7 +4,7 @@ import ElementMessageAddModal from "../elements/MessageAddModal";
 import ElementVideo from "../elements/Video";
 import ElementTopic from "../elements/Topic";
 import ElementGroup from "../elements/Group";
-import ElementWall from "../elements/Wall";
+import ElementPost from "../elements/Post";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 
@@ -53,7 +53,7 @@ function User (props) {
 
                     <ElementVideo mini={true} owner={'group'} owner_id={-group.id} access={access}/>
                     <ElementTopic owner_id={-group.id} access={access}/>
-                    <ElementWall owner_id={-group.id} access={access}/>
+                    <ElementPost owner_id={-group.id} access={access}/>
 
                 </div>
                 <div className="col-lg-3">
