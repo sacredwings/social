@@ -51,6 +51,8 @@ class AlbumAddModal extends Component {
     }
 
     async onFormSubmitFile (e) {
+        e.preventDefault() // Stop form submit
+
         let _this = this
         console.log(this.state.file);
 
@@ -88,8 +90,6 @@ class AlbumAddModal extends Component {
 
         })
 
-
-        e.preventDefault() // Stop form submit
     }
 
     render() {
