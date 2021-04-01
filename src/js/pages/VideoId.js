@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import axios from "axios";
 //import {Player} from "video-top-react";
 import Comment from "../elements/Comment";
-import ElementVideo from "../objects/Video";
+import ElementFile from "../objects/ElementFile";
 
 class VideoId extends Component {
     constructor () {
@@ -38,7 +38,7 @@ class VideoId extends Component {
                 <div className="col-12">
                     <h1>Видео</h1>
                     <h2>{video.title}</h2>
-                    <ElementVideo object={video}/>
+                    <ElementFile file={video}/>
                 </div>
             </div>
             <div className="row">

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import CommentAdd from "./CommentAdd";
 import axios from "axios";
-//import {Player} from "video-top-react";
+import ElementFile from "../objects/ElementFile";
 
 function Comments (props) {
     //настройки запроса
@@ -49,23 +49,14 @@ function Comments (props) {
     }
 
     const ElementFiles = (files) => {
+
+        if (!files) return null
+
         return <>
             { files.map((file, i) => {
-
-                //видео
-                if (file.type === 'video/mp4')
-                    return ( <div className="col-md-4" key={i}>
-                        <video controls style={{width: '100%'}}>
-                            <source src={`${global.urlServer}/${file.url}`} type={file.type} />
-                        </video>
-                    </div>)
-
-                //картинка
-                if ((file.type === 'image/gif') || (file.type === 'image/png') || (file.type === 'image/jpeg'))
-                    return ( <div className="col-md-4" key={i}>
-                        <img src={`${global.urlServer}/${file.url}`} style={{width: '100%'}}/>
-                    </div>)
-
+                return <div key={i} className="col-md-4">
+                    <ElementFile  file={file}/>
+                </div>
             })}
         </>
     }
@@ -84,7 +75,7 @@ function Comments (props) {
                                         <h5 className="mt-0 mb-1">{comment.user.first_name}</h5>
                                         <p> {comment.text}</p>
                                         <div className="row">
-                                            {comment.files ? ElementFiles(comment.files) : null}
+                                            {comment.file_ids ? ElementFiles(comment.file_ids) : null}
                                         </div>
                                     </div>
                                 </li>

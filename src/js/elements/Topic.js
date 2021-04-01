@@ -1,33 +1,34 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
-import TopicAddModal from "../elements/TopicAddModal";
+import TopicAdd from "../elements/TopicAdd";
+import ElementFile from "../objects/ElementFile";
+import PostAdd from "./PostAdd";
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
-class Topic extends Component {
-    constructor () {
-        super();
+function Topic (props) {
+    //запрос
+    let [response, setResponse] = useState({
+        offset: 0, //смещение для запроса
+        count: 20, //количество элементов в запросе
+        itemsCount: 0, //количество записей в результате запроса
+        items: [],
+        arUsers: []
+    })
 
-        this.state = {
-            response: {
-                count: 0,
-                items: [],
-                users: []
-            },
-            count: 20,
-            offset: 0,
-            arTopic: []
-        }
-    }
+    //показ формы ввода
+    let [formViewer, setFormViewer] = useState(false)
+    let ownerId = useRef(Number (props.owner_id))
 
-    async componentDidMount () {
-        await this.Get();
-    }
+    //отслеживаем изменение props
+    useEffect (async ()=>{
+        await Get(true) //с обнулением
+    }, [props])
 
-    async Get (event) {
-        let owner_id = this.props.owner_id;
+    const Get = async (start) => {
 
-        const url = `/api/topic/get?owner_id=${owner_id}&offset=${this.state.offset}&count=${this.state.count}`;
+        let url = `/api/topic/get?owner_id=${ownerId.current}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
 
         let result = await axios.get(url);
 
@@ -36,17 +37,16 @@ class Topic extends Component {
 
         if (!result.response) return
 
-        this.setState(prevState => ({
-            response: result.response,
-            arTopic: [...prevState.arTopic, ...result.response.items],
-            offset: prevState.offset + prevState.count
-        }))
+        setResponse(prev => ({...prev, ...{
+                offset: (start) ? response.count : prev.offset + response.count,
+                itemsCount: result.response.count,
+                items: (start) ? result.response.items : [...prev.items, ...result.response.items],
+                arUsers: [...prev.arUsers, ...result.response.users],
+            }}))
     }
 
-    arTopic (arTopic) {
-        //<source src={video.path}/>
+    const ListTopic = (arTopic) => {
         return (
-
             <div className="row">
                 { arTopic.map(function (topic, i, arTopic) {
                     return ( <div className="list-group" key={i}>
@@ -54,37 +54,32 @@ class Topic extends Component {
                     </div>)
                 })}
             </div>
-
         )
     }
 
-    render() {
-        let access = this.props.access;
+    return (
+        <>
+            <div className="row">
+                <div className="col-lg-12 block-white">
+                    <p className="h3">
+                        {props.access ?
+                            <button type="button" className="btn btn-success btn-sm" onClick={()=>{setFormViewer(!formViewer)}}>{(formViewer) ? `-` : `+`}</button>
+                            : null
+                        }&#160;
+                        {/*(props.link) ? <Link to={linkUrl.current}>Все видео</Link> : 'Стена'*/}
+                        Обсуждения
+                    </p>
 
-        return (
-            <>
-                <TopicAddModal owner_id={this.props.owner_id}/>
+                    {(props.access && formViewer)  ? <TopicAdd owner_id={props.owner_id}/> : null}&#160;
 
-                <div className="row">
-                    <div className="col-lg-12 block-white">
+                    {(response.items.length) ? ListTopic(response.items) : <p>Обсуждений нет</p>}
 
-                        <p className="h3">
-                            {access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalTopicAdd">+</button> : null} Обсуждения
-                        </p>
+                    {(response.items.length < response.itemsCount) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={() => Get()}>еще ...</button> : null}
 
-                        <ul className="list-group">
-
-                            {(this.state.arTopic.length) ? this.arTopic(this.state.arTopic) : <p>Тем для обсуждений еще нет</p>}
-                        </ul>
-
-                        {(this.state.arTopic.length < this.state.response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={this.Get}>еще видео ...</button> : null}
-
-                    </div>
                 </div>
-            </>
-        )
-    }
-
+            </div>
+        </>
+    )
 }
 
 export default connect (

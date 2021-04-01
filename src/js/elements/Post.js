@@ -2,12 +2,11 @@ import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
-import TopicAddModal from "../elements/TopicAddModal";
-import ElementVideo from '../objects/Video';
+import ElementFile from "../objects/ElementFile";
 import PostAdd from "./PostAdd";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
-function Wall (props) {
+function Post (props) {
     //запрос
     let [response, setResponse] = useState({
         offset: 0, //смещение для запроса
@@ -61,23 +60,14 @@ function Wall (props) {
     }
 
     const ElementFiles = (files) => {
+
+        if (!files) return null
+
         return <>
             { files.map((file, i) => {
-
-                //видео
-                if (file.type === 'video/mp4')
-                    return ( <div className="col-md-4" key={i}>
-                        <video controls style={{width: '100%'}}>
-                            <source src={`${global.urlServer}/${file.url}`} type={file.type} />
-                        </video>
-                    </div>)
-
-                //картинка
-                if ((file.type === 'image/gif') || (file.type === 'image/png') || (file.type === 'image/jpeg'))
-                    return ( <div className="col-md-4" key={i}>
-                        <img src={`${global.urlServer}/${file.url}`} style={{width: '100%'}}/>
-                    </div>)
-
+                return <div key={i} className="col-md-4">
+                    <ElementFile  file={file}/>
+                </div>
             })}
         </>
     }
@@ -131,5 +121,5 @@ export default connect (
     dispatch => ({
 
     })
-)(Wall);
+)(Post);
 

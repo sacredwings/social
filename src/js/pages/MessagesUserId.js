@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
 import ElementMessageAdd from "../elements/MessageAdd";
+import ElementFile from "../objects/ElementFile";
 
 function Messages (props) {
     //настройки запроса
@@ -129,6 +130,19 @@ function Messages (props) {
         if (a.id < b.id) return -1;
     }
 
+    const ElementFiles = (files) => {
+
+        if (!files) return null
+
+        return <>
+            { files.map((file, i) => {
+                return <div key={i} className="col-md-4">
+                    <ElementFile  file={file}/>
+                </div>
+            })}
+        </>
+    }
+
     const result = (arMessages) => {
 
         arMessages = arMessages.sort(compareNumericMessages);
@@ -163,6 +177,9 @@ function Messages (props) {
                                             </div>
                                             <div>
                                                 {MessageInRead(message)}
+                                            </div>
+                                            <div className="row">
+                                                {ElementFiles(message.file_ids)}
                                             </div>
                                         </div>
                                     </div>

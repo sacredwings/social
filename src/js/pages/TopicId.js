@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import axios from "axios";
 //import {Player} from "video-top-react";
 import Comment from "../elements/Comment";
+import ElementFile from "../objects/ElementFile";
 
 class TopicId extends Component {
     constructor () {
@@ -33,25 +34,17 @@ class TopicId extends Component {
         this.setState({topic: result.response[0]})
 
     }
-    ElementFiles (files) {
+
+    ElementFiles = (files) => {
+        if (!files) return null
+
+
         return <>
             { files.map((file, i) => {
-
-                //видео
-                if (file.type === 'video/mp4')
-                    return ( <div className="col-md-4" key={i}>
-                        <video controls style={{width: '100%'}}>
-                            <source src={`${global.urlServer}/${file.url}`} type={file.type} />
-                        </video>
-                    </div>)
-
-                //картинка
-                if ((file.type === 'image/gif') || (file.type === 'image/png') || (file.type === 'image/jpeg'))
-                    return ( <div className="col-md-4" key={i}>
-                        <img src={`${global.urlServer}/${file.url}`} style={{width: '100%'}}/>
-                    </div>)
-
-        })}
+                return <div key={i} className="col-md-4">
+                    <ElementFile  file={file}/>
+                </div>
+            })}
         </>
     }
 
@@ -62,9 +55,8 @@ class TopicId extends Component {
                     <h1>Тема для обсуждения</h1>
                     <h2>{topic.title}</h2>
                     <p>{topic.text}</p>
-
                     <div className="row">
-                        {topic.files ? this.ElementFiles(topic.files) : null}
+                        {topic.file_ids ? this.ElementFiles(topic.file_ids) : null}
                     </div>
                 </div>
             </div>

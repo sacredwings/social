@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
 import VideoAddModal from "./VideoAddModal";
-import ElementVideo from '../objects/Video';
+import ElementFile from "../objects/ElementFile";
 
 function Video (props) {
     //запрос
@@ -68,7 +68,7 @@ function Video (props) {
                     return ( <div className="col-lg-6" key={i}>
                         <div className="card">
                             <div className="card-body">
-                                <ElementVideo object={video}/>
+                                <ElementFile file={video}/>
                                 <p className="card-text">
                                     <Link to={`/video/id${video.id}`} >{video.title}</Link>
                                 </p>
@@ -94,7 +94,7 @@ function Video (props) {
 
                     {(response.items.length) ? ListVideo(response.items) : <p>Видео еще не загружено</p>}
 
-                    {(response.items.length < response.itemsCount) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={Get}>еще видео ...</button> : null}
+                    {(response.items.length < response.itemsCount) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>{Get()}}>еще видео ...</button> : null}
 
                 </div>
             </div>
