@@ -5,15 +5,14 @@ import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 //import AddFile from "../objects/AddFile";
 import AddFile from "../objects/AddFile";
 
-function PostAddModal (props) {
+function PostAdd (props) {
     let [form, setForm] = useState({
-        files: null,
         inputText: '',
-        processBarLoaded: 0,
-        processBarTotal: 0,
-        processBar: 0
+        add: false,
+        err: false
     })
     let [fileIds, setFileIds] = useState('')
+
     const ArFileIds = (arIds) => {
         setFileIds(arIds)
     }
@@ -22,10 +21,6 @@ function PostAddModal (props) {
     useEffect(async () => {
         //await GetAlbums()
     }, [])
-
-    const onChangeFiles = (e) => {
-        setForm(prev => ({...prev, files: e.target.files}))
-    }
 
     const onChangeText = (e) => {
         let name = e.target.id;
@@ -36,13 +31,11 @@ function PostAddModal (props) {
         }))
     }
 
-    const onFormClose = (e) => {
+    const FormResult = (err) => {
         setForm(prev => ({
-            files: null,
             inputText: '',
-            processBarLoaded: 0,
-            processBarTotal: 0,
-            processBar: 0
+            add: true,
+            err: err
         }))
     }
 
@@ -60,15 +53,24 @@ function PostAddModal (props) {
             gtoken: gtoken
         }
 
+        //комуто на стену
+        if ((props.owner_id) && (props.owner_id < 0))
+            arFields.group_id = -props.owner_id
+
         let result = await axios.post(url, arFields);
 
         result = result.data;
 
-        if (result.err) return; //ошибка, не продолжаем обработку
+        //ошибка, не продолжаем обработку
+        if (result.err) {
+            FormResult (result.msg)
+        } else {
+            FormResult (false)
+        }
     }
 
-    return (
-        <form onSubmit={onFormSubmit}>
+    const Form = () => {
+        return <form onSubmit={onFormSubmit}>
 
             <div className="mb-3">
                 <label htmlFor="inputText" className="form-label">Текст</label>
@@ -86,7 +88,21 @@ function PostAddModal (props) {
             <button type="submit" className="btn btn-primary">Добавить</button>
 
         </form>
+    }
 
+    const FormAdd = () => {
+        if (form.err)
+            return <div className="alert alert-danger" role="alert">
+                <b>Ошибка:</b> {form.err}
+            </div>
+
+        return <div className="alert alert-success" role="alert">
+            Пост добавлен !
+        </div>
+    }
+
+    return (
+        (form.add) ? FormAdd() : Form()
     )
 }
 
@@ -97,5 +113,5 @@ export default connect (
     dispatch => ({
 
     })
-)(PostAddModal);
+)(PostAdd);
 
