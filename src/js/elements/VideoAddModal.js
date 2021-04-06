@@ -18,7 +18,7 @@ function VideoAddModal (props) {
             count: 0,
             items: []
         },
-        count: 20,
+        count: 100,
         offset: 0,
         arAlbums: [],
 

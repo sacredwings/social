@@ -15,7 +15,7 @@ class Album extends Component {
                 items: [],
                 users: []
             },
-            count: 4,
+            count: 100,
             offset: 0,
             arVideo: []
         }
