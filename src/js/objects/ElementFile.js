@@ -42,6 +42,11 @@ export default (props) => {
                 return Image(file.file_id, true)
             else
                 return Video(file)
+        if (file.type === 'video/avi')
+            if (preview)
+                return Image(file.file_id, true)
+            else
+                return Video(file)
 
         //картинка
         if ((file.type === 'image/gif') || (file.type === 'image/png') || (file.type === 'image/jpeg'))
