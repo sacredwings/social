@@ -42,6 +42,8 @@ import ResetActive from "./pages/ResetActive";
 import OAuthVK from "./pages/OAuthVK.js";
 */
 
+window.$ = window.jQuery = require('jquery');
+
 class App extends Component {
     constructor () {
         super();

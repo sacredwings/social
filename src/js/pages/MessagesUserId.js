@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import axios from "axios";
 import ElementMessageAdd from "../elements/MessageAdd";
 import ElementFile from "../objects/ElementFile";
+import io from "../utils/websocket";
 
 function Messages (props) {
     //настройки запроса
@@ -20,6 +21,19 @@ function Messages (props) {
     useEffect (async ()=>{
         await Get(true) //с обнулением
     }, [props.match.params.id])
+
+    //отслеживаем изменение props
+    useEffect (async ()=>{
+        //для одноразового выполнения
+        io.socket.on('MessageAdd', (data)=> {
+            console.log(data)
+
+            //загрузка сообщения
+            if (Number (props.match.params.id) === Number(data.to_id))
+                GetById(data.id)
+        })
+    }, [])
+
 
     const Delete = async (id) => {
 
@@ -51,6 +65,23 @@ function Messages (props) {
             offset: (start) ? count : prev.offset + count,
             count: result.response.count,
             items: (start) ? result.response.items : [...prev.items, ...result.response.items],
+            arUsers: [...prev.arUsers, ...result.response.users],
+        }))
+    }
+
+    const GetById = async (id) => {
+
+        //запрос
+        let result = await axios.get(`/api/message/getById?id=${id}`);
+
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
+
+
+        setResponse(prev => ({
+            offset: prev.offset + 1,
+            count: prev.count,
+            items: [...prev.items, ...result.response.items],
             arUsers: [...prev.arUsers, ...result.response.users],
         }))
     }

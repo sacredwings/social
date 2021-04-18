@@ -8,13 +8,8 @@ import store from './js/store'
 import App from './js/App';
 import * as serviceWorker from './serviceWorker';
 
-import { io } from "socket.io-client";
-const socket = io();
-
-socket.on('messageEnd', (data)=> {
-    console.log(data)
-})
-
+import io from "./js/utils/websocket";
+io.socket = io()
 
 const rootElement = document.getElementById('root');
 ReactDOM.render(
