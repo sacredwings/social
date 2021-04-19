@@ -26,10 +26,9 @@ function Messages (props) {
     useEffect (async ()=>{
         //для одноразового выполнения
         io.socket.on('MessageAdd', (data)=> {
-            console.log(data)
 
             //загрузка сообщения
-            if (Number (props.match.params.id) === Number(data.to_id))
+            if (Number (props.match.params.id) === Number(data.from_id))
                 GetById(data.id)
         })
     }, [])
