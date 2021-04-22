@@ -27,7 +27,7 @@ class Reg extends Component {
     async onClickReg (event) {
         event.preventDefault();
 
-        let gtoken = await reCaptchaExecute(global.gappkey, 'reg')
+
 
         //проверка полей
         if (
@@ -36,7 +36,8 @@ class Reg extends Component {
             (this.state.password.length >= 8)
         ) {
 
-            this.recaptcha.execute() /* сброс reCaptcha */
+            let gtoken = await reCaptchaExecute(global.gappkey, 'reg')
+
             //запрос
             let result = await axios.post('/api/user/reg', {
                 login: this.state.login,

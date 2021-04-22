@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import axios from "axios";
 import {reCaptchaExecute} from 'recaptcha-v3-react-function-async';
 
@@ -92,6 +93,8 @@ function Auth (props) {
                                 <label className="form-check-label" htmlFor="remember">Запомнить меня</label>
                             </div>
                             <button type="submit" className="btn btn-primary">Войти</button>
+                            <br/>
+                            <Link to="/reg" className="">Регистрация</Link>
                         </form>
                     </div>
                 </div>
