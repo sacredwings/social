@@ -104,6 +104,8 @@ function Messages (props) {
 
     //добавляет в массив
     const ElementAdd = async (arr) => {
+        await GetById(arr.id)
+        /*
         let arFields = {
             create_date: "",
             delete_from: null,
@@ -128,7 +130,7 @@ function Messages (props) {
                 ...prev.items,
                 arFields
             ]
-        }))
+        }))*/
     }
 
     //подготовка текста сообщения

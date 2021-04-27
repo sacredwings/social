@@ -45,6 +45,7 @@ function MessageAdd (props) {
 
         //очистка формы
         setMessage('')
+        setFileIds('')
     }
 
     return (
