@@ -63,7 +63,7 @@ class Album extends Component {
                     return ( <div className="col-md-3" key={i}>
                         <div className="card">
                             <div className="card-body">
-                                <img src={`${global.urlServer}/${video.image_id.url}`} style={{width: '100%'}}/>
+                                <img src={(video.image_id) ? `${global.urlServer}/${video.image_id.url}` : `https://elk21.ru/assets/images/34534535.jpg`} style={{width: '100%'}}/>
                                 <p className="card-text">
                                     <Link to={`/${owner}/id${id}/video/album_id${video.id}`} >{video.title}</Link>
                                 </p>

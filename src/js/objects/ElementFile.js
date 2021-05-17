@@ -31,6 +31,23 @@ export default (props) => {
         return <img src={url} style={style} onClick={() => {setPreview(false)}}/>
     }
 
+    const ImageVideo = (file, video) => {
+        console.log(file)
+        file = file.file_id
+        let url = `https://elk21.ru/assets/images/34534535.jpg`
+        let style = {width: '100%'}
+
+        if (file)
+            url = `${global.urlServer}/${file.url}`
+
+        if (video)
+            style = {cursor: 'pointer', width: '100%'}
+
+        return <img src={url} style={style} onClick={() => {setPreview(false)}}/>
+    }
+
+
+
     const Logic = (file) => {
 
         //файла нет - выход
@@ -39,7 +56,7 @@ export default (props) => {
         //видео
         if (file.type === 'video/mp4')
             if (preview)
-                return Image(file.file_id, true)
+                return ImageVideo(file, true)
             else
                 return Video(file)
         if (file.type === 'video/avi')

@@ -51,7 +51,7 @@ class Group extends Component {
                 { arGroup.map(function (group, i, arGroup) {
                     return ( <div className="col-md-3" key={i}>
                         <div className="card">
-                            <img src={`${global.urlServer}/${group.photo.url}`} className="card-img-top" alt="..."/>
+                            <img src={group.photo ? `${global.urlServer}/${group.photo.url}` : "https://svgsilh.com/svg/479631.svg" } className="card-img-top" alt="..."/>
                             <div className="card-body">
                                 <p className="card-text">
                                     <Link to={`/group/id${group.id}`}>{group.title}</Link>
