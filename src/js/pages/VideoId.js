@@ -50,6 +50,7 @@ function VideoId (props) {
         if (result.err) return; //ошибка, не продолжаем обработку
         if ((!result.response) || (!result.response[0])) return
 
+
         setVideo(prev => ({...prev, ...result.response[0]}))
     }
 
@@ -78,6 +79,7 @@ function VideoId (props) {
                     <h1>Видео <button type="button" className="btn btn-success btn-sm" onClick={onChangeForm}>Редактировать</button></h1>
                     <h2>{video.title}</h2>
                     <ElementFile file={video}/>
+                    <p>{video.text}</p>
                 </div>
             </div>
             <div className="row">
@@ -112,6 +114,8 @@ function VideoId (props) {
     const onFormSubmitFile = async (e) => {
         e.preventDefault() // Stop form submit
 
+        onChangeForm()
+
         let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
         const url = '/api/video/edit';
@@ -119,7 +123,7 @@ function VideoId (props) {
 
         console.log(video)
 
-        formData.append('filePreview', video.inputFilePreview)
+        formData.append('id', video.id)
         formData.append('title', video.title)
         formData.append('text', video.text)
         formData.append('gtoken', gtoken)
@@ -143,6 +147,8 @@ function VideoId (props) {
             },
 
         })
+
+        await Get()
     }
 
     const ElementEdit = (video) => {
@@ -162,19 +168,19 @@ function VideoId (props) {
 
                 <div className="mb-3">
                     <label htmlFor="inputTitle" className="form-label">Название</label>
-                    <input type="text" className="form-control" id="inputTitle"
+                    <input type="text" className="form-control" id="title"
                            onChange={onChangeText} value={video.title}/>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="inputText" className="form-label">Описание</label>
-                    <textarea className="form-control" id="inputText" rows="5"
+                    <textarea className="form-control" id="text" rows="5"
                               onChange={onChangeText} value={video.text}></textarea>
                 </div>
 
 
                 <div className="">
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={onChangeForm}>Отмена</button>
-                    <button type="submit" className="btn btn-primary" onClick={onChangeForm}>
+                    <button type="submit" className="btn btn-primary" >
                         Сохранить
                     </button>
                 </div>
@@ -188,7 +194,7 @@ function VideoId (props) {
             <div className="row">
                 <div className="col-lg-12">
                     {(video) ?
-                        (formEdit) ? Element(video) : ElementEdit(video)
+                        (formEdit) ? ElementEdit(video) : Element(video)
                      : null}
                 </div>
             </div>
