@@ -56,7 +56,7 @@ export default (props) => {
 
         var element = document.createElement("video");
         element.currentTime = 150;
-        element.src = `http://localhost:3031/`+file.url
+        element.src = `${global.urlServer}/${file.url}`
         element.setAttribute('crossOrigin', 'anonymous');
 
         element.addEventListener("loadeddata", loadedData);
