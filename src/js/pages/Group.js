@@ -53,8 +53,8 @@ function User (props) {
                     </div>
 
                     <ElementVideo mini={true} owner={'group'} owner_id={-group.id} access={access}/>
-                    <ElementTopic owner_id={-group.id} access={access}/>
-                    <ElementArticle owner_id={-group.id} access={access}/>
+                    <ElementTopic mini={true} owner={'group'} owner_id={-group.id} access={access}/>
+                    <ElementArticle mini={true} owner={'group'} owner_id={-group.id} access={access}/>
                     <ElementPost owner_id={-group.id} access={access}/>
 
                 </div>

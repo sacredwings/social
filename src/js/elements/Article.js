@@ -20,6 +20,7 @@ function Article (props) {
     //показ формы ввода
     let [formViewer, setFormViewer] = useState(false)
     let ownerId = useRef(Number (props.owner_id))
+    let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/article`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -70,8 +71,8 @@ function Article (props) {
                             <button type="button" className="btn btn-success btn-sm" onClick={()=>{setFormViewer(!formViewer)}}>{(formViewer) ? `-` : `+`}</button>
                             : null
                         }&#160;
-                        {/*(props.link) ? <Link to={linkUrl.current}>Все видео</Link> : 'Стена'*/}
-                        Статьи
+                        {(props.mini) ? <Link to={linkUrl.current}>Все статьи</Link> : 'Статьи'}
+
                     </p>
 
                     {(props.access && formViewer)  ? <ArticleAdd owner_id={props.owner_id}/> : null}&#160;
