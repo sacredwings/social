@@ -5,6 +5,7 @@ import ElementVideo from "../elements/Video";
 import ElementTopic from "../elements/Topic";
 import ElementGroup from "../elements/Group";
 import ElementPost from "../elements/Post";
+import ElementArticle from "../elements/Article";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 
@@ -53,6 +54,7 @@ function User (props) {
 
                     <ElementVideo mini={true} owner={'group'} owner_id={-group.id} access={access}/>
                     <ElementTopic owner_id={-group.id} access={access}/>
+                    <ElementArticle owner_id={-group.id} access={access}/>
                     <ElementPost owner_id={-group.id} access={access}/>
 
                 </div>

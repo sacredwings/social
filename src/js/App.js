@@ -18,6 +18,7 @@ import LeftMenu from "./elements/LeftMenu";
 import Auth from "./elements/Auth";
 import Reg from "./elements/Reg";
 import Video from "./pages/Video";
+import Article from "./pages/Article";
 
 //страницы
 import Landing from "./pages/Landing";
@@ -130,6 +131,9 @@ class App extends Component {
 
                                 <Route exact path="/:owner/id:id/video" component={Video} />
                                 <Route exact path="/:owner/id:id/video/album_id:album_id" component={Video} />
+
+                                <Route exact path="/:owner/id:id/article" component={Article} />
+                                <Route exact path="/:owner/id:id/article/album_id:album_id" component={Article} />
 
                                 <Route exact path="/search/" component={Search} />
 
