@@ -55,7 +55,7 @@ function Article (props) {
             <div className="row">
                 { arTopic.map(function (topic, i, arTopic) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/topic/id${topic.id}`} className="list-group-item list-group-item-action">{topic.title}</Link>
+                        <Link to={`/article/id${topic.id}`} className="list-group-item list-group-item-action">{topic.title}</Link>
                     </div>)
                 })}
             </div>

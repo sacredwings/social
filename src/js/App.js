@@ -33,6 +33,7 @@ import RegActivate from "./pages/RegActivate";
 import TopicId from "./pages/TopicId";
 import Post from "./pages/Post";
 import VideoId from "./pages/VideoId";
+import ArticleId from "./pages/ArticleId";
 import Search from "./pages/Search";
 
 /*
@@ -128,6 +129,7 @@ class App extends Component {
 
                                 <Route exact path="/topic/id:id" component={TopicId} />
                                 <Route exact path="/video/id:id" component={VideoId} />
+                                <Route exact path="/article/id:id" component={ArticleId} />
 
                                 <Route exact path="/:owner/id:id/video" component={Video} />
                                 <Route exact path="/:owner/id:id/video/album_id:album_id" component={Video} />
