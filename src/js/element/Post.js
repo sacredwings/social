@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
-import ElementFile from "../objects/ElementFile";
+import ElementFile from "../object/ElementFile";
 import PostAdd from "./PostAdd";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import SearchUser from "../elements/SearchUser";
-import SearchGroup from "../elements/SearchGroup";
-import SearchTopic from "../elements/SearchTopic";
+import SearchUser from "../element/SearchUser";
+import SearchGroup from "../element/SearchGroup";
+import SearchTopic from "../element/SearchTopic";
 
 export default function ({}) {
     let [search, setSearch] = useState('')

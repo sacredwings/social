@@ -8,7 +8,7 @@ import store from './js/store'
 import App from './js/App';
 import * as serviceWorker from './serviceWorker';
 
-import io from "./js/utils/websocket";
+import io from "./js/util/websocket";
 io.socket = io()
 
 const rootElement = document.getElementById('root');

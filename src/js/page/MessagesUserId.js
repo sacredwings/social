@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import ElementMessageAdd from "../elements/MessageAdd";
-import ElementFile from "../objects/ElementFile";
-import io from "../utils/websocket";
+import ElementMessageAdd from "../element/MessageAdd";
+import ElementFile from "../object/ElementFile";
+import io from "../util/websocket";
 
 function Messages (props) {
     //настройки запроса

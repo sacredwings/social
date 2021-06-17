@@ -1,13 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import SelectAlbum from "../objects/SelectAlbum";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-import AddFile from "../objects/AddFile";
+//import AddFile from "../objects/AddFile";
+import AddFile from "../object/AddFile";
 
-function TopicAdd (props) {
+function PostAdd (props) {
     let [form, setForm] = useState({
-        inputTitle: '',
         inputText: '',
         add: false,
         err: false
@@ -34,7 +33,6 @@ function TopicAdd (props) {
 
     const FormResult = (err) => {
         setForm(prev => ({
-            inputTitle: '',
             inputText: '',
             add: true,
             err: err
@@ -44,12 +42,11 @@ function TopicAdd (props) {
     const onFormSubmit = async (e) => {
         e.preventDefault() // Stop form submit
 
-        let gtoken = await reCaptchaExecute(global.gappkey, 'topic')
+        let gtoken = await reCaptchaExecute(global.gappkey, 'post')
 
-        const url = '/api/topic/add';
+        const url = '/api/post/add';
 
         let arFields = {
-            title: form.inputTitle,
             text: form.inputText,
             file_ids: fileIds,
 
@@ -70,18 +67,13 @@ function TopicAdd (props) {
         } else {
             FormResult (false)
         }
-
     }
 
     const Form = () => {
         return <form onSubmit={onFormSubmit}>
 
             <div className="mb-3">
-                <label htmlFor="inputTitle" className="form-label">Название</label>
-                <input type="text" className="form-control" id="inputTitle" onChange={onChangeText} value={form.inputTitle}/>
-            </div>
-            <div className="mb-3">
-                <label htmlFor="inputText" className="form-label">Описание</label>
+                <label htmlFor="inputText" className="form-label">Текст</label>
                 <textarea className="form-control" id="inputText" rows="5" onChange={onChangeText} value={form.inputText}></textarea>
             </div>
 
@@ -105,7 +97,7 @@ function TopicAdd (props) {
             </div>
 
         return <div className="alert alert-success" role="alert">
-            Обсуждение добавлено !
+            Пост добавлен !
         </div>
     }
 
@@ -121,5 +113,5 @@ export default connect (
     dispatch => ({
 
     })
-)(TopicAdd);
+)(PostAdd);
 

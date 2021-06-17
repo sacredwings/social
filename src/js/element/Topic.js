@@ -2,12 +2,12 @@ import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
-import ArticleAdd from "../elements/AddArticle";
-import ElementFile from "../objects/ElementFile";
+import TopicAdd from "../element/TopicAdd";
+import ElementFile from "../object/ElementFile";
 import PostAdd from "./PostAdd";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
-function Article (props) {
+function Topic (props) {
     //запрос
     let [response, setResponse] = useState({
         offset: 0, //смещение для запроса
@@ -20,7 +20,6 @@ function Article (props) {
     //показ формы ввода
     let [formViewer, setFormViewer] = useState(false)
     let ownerId = useRef(Number (props.owner_id))
-    let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/article`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -29,11 +28,7 @@ function Article (props) {
 
     const Get = async (start) => {
 
-        let url = `/api/article/get?owner_id=${ownerId.current}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
-
-        //альбом существует
-        if (props.album_id)
-            url += `&album_id=${props.album_id}`
+        let url = `/api/topic/get?owner_id=${ownerId.current}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
 
         let result = await axios.get(url);
 
@@ -55,7 +50,7 @@ function Article (props) {
             <div className="row">
                 { arTopic.map(function (topic, i, arTopic) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/article/id${topic.id}`} className="list-group-item list-group-item-action">{topic.title}</Link>
+                        <Link to={`/topic/id${topic.id}`} className="list-group-item list-group-item-action">{topic.title}</Link>
                     </div>)
                 })}
             </div>
@@ -71,13 +66,13 @@ function Article (props) {
                             <button type="button" className="btn btn-success btn-sm" onClick={()=>{setFormViewer(!formViewer)}}>{(formViewer) ? `-` : `+`}</button>
                             : null
                         }&#160;
-                        {(props.mini) ? <Link to={linkUrl.current}>Все статьи</Link> : 'Статьи'}
-
+                        {/*(props.link) ? <Link to={linkUrl.current}>Все видео</Link> : 'Стена'*/}
+                        Обсуждения
                     </p>
 
-                    {(props.access && formViewer)  ? <ArticleAdd owner_id={props.owner_id}/> : null}&#160;
+                    {(props.access && formViewer)  ? <TopicAdd owner_id={props.owner_id}/> : null}&#160;
 
-                    {(response.items.length) ? ListTopic(response.items) : <p>Статей нет</p>}
+                    {(response.items.length) ? ListTopic(response.items) : <p>Обсуждений нет</p>}
 
                     {(response.items.length < response.itemsCount) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={() => Get()}>еще ...</button> : null}
 
@@ -94,5 +89,5 @@ export default connect (
     dispatch => ({
 
     })
-)(Article);
+)(Topic);
 

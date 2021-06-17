@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-import AddPhoto from '../objects/AddPhoto';
+import AddPhoto from '../object/AddPhoto';
 
 function AddFile (props) {
     let [form, setForm] = useState({

@@ -3,21 +3,16 @@ import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
 import VideoAddModal from "./VideoAddModal";
-import ElementFile from "../objects/ElementFile";
+import ElementFile from "../object/ElementFile";
 
 function Video (props) {
     //запрос
     let [response, setResponse] = useState({
         offset: 0, //смещение для запроса
-        count: (props.mini) ? 4 : 20, //количество элементов в запросе
+        count: 20, //количество элементов в запросе
         itemsCount: 0, //количество записей в результате запроса
-        items: [],
-        arUsers: []
+        items: []
     })
-
-    //let [access, setAccess] = useState(false)
-    let ownerId = useRef(Number (props.owner_id))
-    let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -26,7 +21,7 @@ function Video (props) {
 
     const Get = async (start) => {
 
-        let url = `/api/video/get?owner_id=${ownerId.current}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
+        let url = `/api/video/get?q=${props.q}owner_id=${props.ownerId}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
 
         //альбом существует
         if (props.album_id)
@@ -40,11 +35,11 @@ function Video (props) {
         if (!result.response) return
 
         setResponse(prev => ({...prev, ...{
-            offset: (start) ? response.count : prev.offset + response.count,
-            itemsCount: result.response.count,
-            items: (start) ? result.response.items : [...prev.items, ...result.response.items],
-            arUsers: [...prev.arUsers, ...result.response.users],
-        }}))
+                offset: (start) ? response.count : prev.offset + response.count,
+                itemsCount: result.response.count,
+                items: (start) ? result.response.items : [...prev.items, ...result.response.items],
+                arUsers: [...prev.arUsers, ...result.response.users],
+            }}))
     }
 
     const Delete = async (id) => {

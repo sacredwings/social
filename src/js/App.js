@@ -10,31 +10,31 @@ import '../sass/style.sass';
 //import 'video-react/dist/video-react.css';
 
 //import Processes from "./system/Processes";
-import TopMenu from "./elements/TopMenu";
-import Footer from "./elements/Footer";
-import LeftMenu from "./elements/LeftMenu";
+import MenuTop from "./element/menu/Top";
+import MenuLeft from "./element/menu/Left";
+import Footer from "./element/Footer";
 
 //элементы
-import Auth from "./elements/Auth";
-import Reg from "./elements/Reg";
-import Video from "./pages/Video";
-import Article from "./pages/Article";
+import Auth from "./element/Auth";
+import Reg from "./element/Reg";
+import Video from "./page/Video";
+import Article from "./page/Article";
 
 //страницы
-import Landing from "./pages/Landing";
-import User from "./pages/User";
-import Group from "./pages/Group";
-import Settings from "./pages/Settings";
-import NoPage from "./pages/NoPage";
-import MessagesUserId from "./pages/MessagesUserId";
-import Messages from "./pages/Messages";
-import GroupSettings from "./pages/GroupSettings";
-import RegActivate from "./pages/RegActivate";
-import TopicId from "./pages/TopicId";
-import Post from "./pages/Post";
-import VideoId from "./pages/VideoId";
-import ArticleId from "./pages/ArticleId";
-import Search from "./pages/Search";
+import Landing from "./page/Landing";
+import User from "./page/User";
+import Group from "./page/Group";
+import Settings from "./page/Settings";
+import NoPage from "./page/NoPage";
+import MessagesUserId from "./page/MessagesUserId";
+import Messages from "./page/Messages";
+import GroupSettings from "./page/GroupSettings";
+import RegActivate from "./page/RegActivate";
+import TopicId from "./page/TopicId";
+import Post from "./page/Post";
+import VideoId from "./page/VideoId";
+import ArticleId from "./page/ArticleId";
+import Search from "./page/Search";
 
 /*
 import Reg from "./pages/Reg";
@@ -113,12 +113,12 @@ class App extends Component {
         let auth = this.props.myUser.auth;
         return (
             <Router>
-                <TopMenu/>
+                <MenuTop/>
 
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-2">
-                            <LeftMenu />
+                            <MenuLeft />
                         </div>
                         <div className="col-lg-10">
                             <Switch>

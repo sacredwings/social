@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useReducer} from 'react';
 import axios from "axios";
-import ElementMessageAddModal from "../elements/MessageAddModal";
-import ElementVideo from "../elements/Video";
-import ElementTopic from "../elements/Topic";
-import ElementGroup from "../elements/Group";
-import ElementPost from "../elements/Post";
-import ElementArticle from "../elements/Article";
+import ElementMessageAddModal from "../element/MessageAddModal";
+import ElementVideo from "../element/Video";
+import ElementTopic from "../element/Topic";
+import ElementGroup from "../element/Group";
+import ElementPost from "../element/Post";
+import ElementArticle from "../element/Article";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 

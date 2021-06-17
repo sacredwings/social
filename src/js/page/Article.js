@@ -2,9 +2,8 @@ import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
-import VideoAddModal from "../elements/VideoAddModal";
-import ElementVideo from '../elements/Video';
-import Album from "../elements/Album";
+import AlbumArticle from "../element/AlbumArticle";
+import ElementArticle from "../element/Article";
 
 const Access = async (props) => {
 
@@ -37,7 +36,7 @@ const AccessGroup = async (id) => {
     return result.response[0].create_id
 }
 
-function Video  (props) {
+function Article  (props) {
 
     //запрос
     let [response, setResponse] = useState({
@@ -61,13 +60,13 @@ function Video  (props) {
         <>
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    {!props.match.params.album_id ? <Album access={access} owner_id={ownerId.current}/> : null}
+                    {!props.match.params.album_id ? <AlbumArticle access={access} owner_id={ownerId.current}/> : null}
                 </div>
             </div>
 
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    <ElementVideo owner={props.match.params.owner} owner_id={ownerId.current} album_id={props.match.params.album_id} access={access}/>
+                    <ElementArticle owner={props.match.params.owner} owner_id={ownerId.current} album_id={props.match.params.album_id} access={access}/>
                 </div>
             </div>
         </>
@@ -81,5 +80,5 @@ export default connect (
     dispatch => ({
 
     })
-)(Video);
+)(Article);
 

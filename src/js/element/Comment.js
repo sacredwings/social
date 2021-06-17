@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import CommentAdd from "./CommentAdd";
 import axios from "axios";
-import ElementFile from "../objects/ElementFile";
+import ElementFile from "../object/ElementFile";
 
 function Comments (props) {
     //настройки запроса

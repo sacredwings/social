@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-import AddFile from "../objects/AddFile";
+import AddFile from "../object/AddFile";
 
 function MessageAdd (props) {
     let [message, setMessage] = useState('')

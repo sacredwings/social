@@ -1,12 +1,11 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import SelectAlbum from "../objects/SelectAlbum";
+import SelectAlbum from "../object/SelectAlbum";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-import AddFile from "../objects/AddFile";
-import { Editor } from '@tinymce/tinymce-react';
+import AddFile from "../object/AddFile";
 
-function ArticleAdd (props) {
+function TopicAdd (props) {
     let [form, setForm] = useState({
         inputTitle: '',
         inputText: '',
@@ -75,13 +74,6 @@ function ArticleAdd (props) {
     }
 
     const Form = () => {
-        const editorRef = useRef(null);
-        const log = () => {
-            if (editorRef.current) {
-                console.log(editorRef.current.getContent());
-            }
-        };
-
         return <form onSubmit={onFormSubmit}>
 
             <div className="mb-3">
@@ -91,25 +83,6 @@ function ArticleAdd (props) {
             <div className="mb-3">
                 <label htmlFor="inputText" className="form-label">Описание</label>
                 <textarea className="form-control" id="inputText" rows="5" onChange={onChangeText} value={form.inputText}></textarea>
-                <Editor
-                    apiKey="a96yu4ep2rfw9tmmtypf8b00nme4937b42a30ojk4skqnv8v"
-                    onInit={(evt, editor) => editorRef.current = editor}
-                    initialValue="<p>This is the initial content of the editor.</p>"
-                    init={{
-                        height: 500,
-                        menubar: false,
-                        plugins: [
-                            'advlist autolink lists link image charmap print preview anchor',
-                            'searchreplace visualblocks code fullscreen',
-                            'insertdatetime media table paste code help wordcount'
-                        ],
-                        toolbar: 'undo redo | formatselect | ' +
-                            'bold italic backcolor | alignleft aligncenter ' +
-                            'alignright alignjustify | bullist numlist outdent indent | ' +
-                            'removeformat | help',
-                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-                    }}
-                />
             </div>
 
             <br/>
@@ -148,5 +121,5 @@ export default connect (
     dispatch => ({
 
     })
-)(ArticleAdd);
+)(TopicAdd);
 

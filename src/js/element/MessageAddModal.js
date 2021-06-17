@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
-import MessageAdd from "../elements/MessageAdd";
+import MessageAdd from "../element/MessageAdd";
 
 
 function MessageAddModal (props) {

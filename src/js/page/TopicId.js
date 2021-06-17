@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
 //import {Player} from "video-top-react";
-import Comment from "../elements/Comment";
-import ElementFile from "../objects/ElementFile";
+import Comment from "../element/Comment";
+import ElementFile from "../object/ElementFile";
 
 class TopicId extends Component {
     constructor () {

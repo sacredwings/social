@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import SelectAlbum from "../objects/SelectAlbum";
-import Comment from "../elements/Comment";
-import ElementFile from "../objects/ElementFile";
+import SelectAlbum from "../object/SelectAlbum";
+import Comment from "../element/Comment";
+import ElementFile from "../object/ElementFile";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 function ArticleId (props) {

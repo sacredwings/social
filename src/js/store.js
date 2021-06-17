@@ -1,6 +1,6 @@
 //СОСТОЯНИЕ ПРИЛОЖЕНИЯ
 import { createStore, combineReducers } from 'redux';
-import cookie from './utils/cookie';
+import cookie from './util/cookie';
 
 //Глобальные переменные
 global.gappkey = '6LceBPYZAAAAAJQ-wFlu66sLEQy2aFLupYqa4k7o' /* reCaptcha */

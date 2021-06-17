@@ -1,12 +1,14 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
+import SelectAlbum from "../object/SelectAlbum";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-//import AddFile from "../objects/AddFile";
-import AddFile from "../objects/AddFile";
+import AddFile from "../object/AddFile";
+import { Editor } from '@tinymce/tinymce-react';
 
-function PostAdd (props) {
+function ArticleAdd (props) {
     let [form, setForm] = useState({
+        inputTitle: '',
         inputText: '',
         add: false,
         err: false
@@ -33,6 +35,7 @@ function PostAdd (props) {
 
     const FormResult = (err) => {
         setForm(prev => ({
+            inputTitle: '',
             inputText: '',
             add: true,
             err: err
@@ -42,11 +45,12 @@ function PostAdd (props) {
     const onFormSubmit = async (e) => {
         e.preventDefault() // Stop form submit
 
-        let gtoken = await reCaptchaExecute(global.gappkey, 'post')
+        let gtoken = await reCaptchaExecute(global.gappkey, 'topic')
 
-        const url = '/api/post/add';
+        const url = '/api/topic/add';
 
         let arFields = {
+            title: form.inputTitle,
             text: form.inputText,
             file_ids: fileIds,
 
@@ -67,14 +71,45 @@ function PostAdd (props) {
         } else {
             FormResult (false)
         }
+
     }
 
     const Form = () => {
+        const editorRef = useRef(null);
+        const log = () => {
+            if (editorRef.current) {
+                console.log(editorRef.current.getContent());
+            }
+        };
+
         return <form onSubmit={onFormSubmit}>
 
             <div className="mb-3">
-                <label htmlFor="inputText" className="form-label">Текст</label>
+                <label htmlFor="inputTitle" className="form-label">Название</label>
+                <input type="text" className="form-control" id="inputTitle" onChange={onChangeText} value={form.inputTitle}/>
+            </div>
+            <div className="mb-3">
+                <label htmlFor="inputText" className="form-label">Описание</label>
                 <textarea className="form-control" id="inputText" rows="5" onChange={onChangeText} value={form.inputText}></textarea>
+                <Editor
+                    apiKey="a96yu4ep2rfw9tmmtypf8b00nme4937b42a30ojk4skqnv8v"
+                    onInit={(evt, editor) => editorRef.current = editor}
+                    initialValue="<p>This is the initial content of the editor.</p>"
+                    init={{
+                        height: 500,
+                        menubar: false,
+                        plugins: [
+                            'advlist autolink lists link image charmap print preview anchor',
+                            'searchreplace visualblocks code fullscreen',
+                            'insertdatetime media table paste code help wordcount'
+                        ],
+                        toolbar: 'undo redo | formatselect | ' +
+                            'bold italic backcolor | alignleft aligncenter ' +
+                            'alignright alignjustify | bullist numlist outdent indent | ' +
+                            'removeformat | help',
+                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                    }}
+                />
             </div>
 
             <br/>
@@ -97,7 +132,7 @@ function PostAdd (props) {
             </div>
 
         return <div className="alert alert-success" role="alert">
-            Пост добавлен !
+            Обсуждение добавлено !
         </div>
     }
 
@@ -113,5 +148,5 @@ export default connect (
     dispatch => ({
 
     })
-)(PostAdd);
+)(ArticleAdd);
 

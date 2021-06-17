@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import SelectAlbum from "../objects/SelectAlbum";
+import SelectAlbum from "../object/SelectAlbum";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 function VideoAddModal (props) {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import cookie from '../utils/cookie';
+import cookie from '../util/cookie';
 
 class Landing extends Component {
     constructor () {
