@@ -54,14 +54,15 @@ function MenuTop (props) {
     const AuthRegButton = () => {
         return <form className="d-flex">
             <ul className="navbar-nav">
-                <li className="nav-item dropdown">
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/reg">Регистрация</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link active" to="/auth">Вход</Link>
-                    </li>
+
+                <li className="nav-item">
+                    <Link className="nav-link active" to="/auth">Вход</Link>
                 </li>
+
+                <li className="nav-item">
+                    <Link className="nav-link" to="/reg">Регистрация</Link>
+                </li>
+
             </ul>
         </form>
     }
