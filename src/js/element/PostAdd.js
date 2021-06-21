@@ -14,7 +14,9 @@ function PostAdd (props) {
     let [fileIds, setFileIds] = useState('')
 
     const ArFileIds = (arIds) => {
-        setFileIds(arIds)
+        setFileIds(prev => ([
+            ...prev, ...arIds
+        ]))
     }
 
     //отслеживаем изменение props
@@ -70,14 +72,12 @@ function PostAdd (props) {
     }
 
     const Form = () => {
-        return <form onSubmit={onFormSubmit}>
+        return <form onSubmit={onFormSubmit} className="m-3">
 
             <div className="mb-3">
                 <label htmlFor="inputText" className="form-label">Текст</label>
                 <textarea className="form-control" id="inputText" rows="5" onChange={onChangeText} value={form.inputText}></textarea>
             </div>
-
-            <br/>
             <div className="row">
                 <div className="col-12">
                     <AddFile ArFileIds={ArFileIds}/>

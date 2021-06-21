@@ -7,6 +7,7 @@ import ElementGroup from "../element/Group";
 import ElementPost from "../element/Post";
 import ElementArticle from "../element/Article";
 import {connect} from "react-redux";
+import '../../sass/social.sass';
 
 function User (props) {
     let [user, setUser] = useState(null)
@@ -45,41 +46,55 @@ function User (props) {
         if (userId === Number (props.myUser.id)) access = true
 
         return (
-
-            <div className="row">
+            <div className="row social"> {/* главнай класс */}
                 <div className="col-lg-3">
 
-                    <div className="row">
-                        <div className="col-lg-12">
-                            <div className="block-white">
-                                <img  className="" style={{maxWidth: "100%", borderRadius: '10px'}} src={user.photo ? `${global.urlServer}/${user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
+                    {/* левый блок */}
+                    <div className="social_block_white">
+                        <div className="row">
+                            <div className="col-lg-12">
+                                <div className="block-white">
+                                    <img  className="social_personal_photo" src={user.photo ? `${global.urlServer}/${user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
+                                </div>
                             </div>
                         </div>
+
+                        {access ? null :
+                            <div className="d-grid gap-2">
+                                <button type="button" className="btn btn-primary btn-sm btn-block social_button" data-bs-toggle="modal" data-bs-target="#modalMessageAdd">Написать сообщение</button>
+                            </div>
+                        }
+                        <ElementMessageAddModal user_id={userId}/>
                     </div>
-
-                    {access ? null :
-                        <div className="d-grid gap-2">
-                            <button type="button" className="btn btn-primary btn-sm btn-block" data-bs-toggle="modal" data-bs-target="#modalMessageAdd">Написать сообщение</button>
-                        </div>
-                    }
-                    <ElementMessageAddModal user_id={userId}/>
-
 
                 </div>
                 <div className="col-lg-9">
 
-                    <div className="row">
-                        <div className="col-lg-12 block-white">
-                            <h1 className="display-6">{user.first_name} {user.last_name}</h1>
+                    {/* правый блок */}
+                    <div className="social_block_white">
+                        <div className="row">
+                            <div className="col-lg-12 block-white">
+                                <h1 className="social_name">{user.first_name} {user.last_name}</h1>
 
+                            </div>
                         </div>
                     </div>
 
-                    <ElementVideo mini={true} owner={'user'} owner_id={userId} access={access}/>
-                    <ElementTopic owner_id={userId} access={access}/>
-                    <ElementGroup owner_id={userId} access={access}/>
-                    <ElementArticle owner_id={userId} access={access}/>
-                    <ElementPost owner_id={userId} access={access}/>
+                    <div className="social_block_white">
+                        <ElementGroup owner_id={userId} access={access}/>
+                    </div>
+                    <div className="social_block_white">
+                        <ElementVideo mini={true} owner={'user'} owner_id={userId} access={access}/>
+                    </div>
+                    <div className="social_block_white">
+                        <ElementTopic owner_id={userId} access={access}/>
+                    </div>
+                    <div className="social_block_white">
+                        <ElementArticle owner_id={userId} access={access}/>
+                    </div>
+                    <div className="social_block_white">
+                        <ElementPost owner_id={userId} access={access}/>
+                    </div>
 
 
 

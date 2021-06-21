@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import axios from "axios";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import AddPhoto from '../object/AddPhoto';
+import AddVideo from '../object/AddVideo';
 
 function AddFile (props) {
     let [form, setForm] = useState({
@@ -77,8 +78,8 @@ function AddFile (props) {
         <div>
 
             <AddPhoto SendFile={SendFile} SendId={SendId} />
+            <AddVideo SendFile={SendFile} SendId={SendId} />
 
-            <br />
             {((form.processBar >0) && (form.processBar <100)) ? <div className="mb-3"><p className="text-primary">Загружаю</p></div>:null}
             {(form.processBar === 100) ? <div className="mb-3"><p className="text-success">Загружено</p></div>:null}
             <div className="progress">

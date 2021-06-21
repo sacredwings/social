@@ -9,7 +9,7 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
 }
 
-function AddPhoto (props) {
+function AddVideo (props) {
     let [form, setForm] = useState({
         files: null,
         inputText: '',
@@ -38,25 +38,25 @@ function AddPhoto (props) {
     const onFormClose = (e) => {
 
     }
-    
+
     return (
         <>
-            <button type="button" className="btn btn-success btn-sm social_file_add" data-bs-toggle="modal" data-bs-target={`#modalAddPhoto${formCode}`}>+ фото</button>
+            <button type="button" className="btn btn-success btn-sm social_file_add" data-bs-toggle="modal" data-bs-target={`#modalAddVideo${formCode}`}>+ видео</button>
 
-            <div className="modal fade" id={`modalAddPhoto${formCode}`} tabIndex="-1" aria-labelledby={`modalAddPhoto${formCode}`} aria-hidden="true">
+            <div className="modal fade" id={`modalAddVideo${formCode}`} tabIndex="-1" aria-labelledby={`modalAddVideo${formCode}`} aria-hidden="true">
 
                 <div>
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">Изображения</h5>
+                                <h5 className="modal-title" id="exampleModalLabel">Видео</h5>
                                 <button type="button" className="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
 
                                 <div className="mb-3 form-file">
-                                    <input type="file" className="form-file-input" id="inputFile" onChange={onChangeFiles} multiple={true} accept="image/gif, image/png, image/jpeg"/>
+                                    <input type="file" className="form-file-input" id="inputFile" onChange={onChangeFiles} multiple={true} accept="video/mp4"/>
                                     <label className="form-file-label" htmlFor="inputFile">
                                         <span className="form-file-text">Выберите файлы...</span>
                                         <span className="form-file-button">Обзор</span>
@@ -87,5 +87,5 @@ export default connect (
     dispatch => ({
 
     })
-)(AddPhoto);
+)(AddVideo);
 
