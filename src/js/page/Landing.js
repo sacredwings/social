@@ -83,6 +83,19 @@ function Landing  (props) {
 
                     <div className="row text-center">
                         <div className="col-lg-12">
+                            <h2 className="">Страница разработчика</h2>
+                            <p>Возник вопрос ?</p>
+                            <a className="btn btn-primary" href="https://voenset.ru/user/id7" role="button">Перейти на страницу</a>
+                        </div>
+
+                    </div>
+
+                    <br/>
+                    <hr/>
+                    <br/>
+
+                    <div className="row text-center">
+                        <div className="col-lg-12">
                             <img src={'https://avatars.mds.yandex.net/get-zen_doc/1583807/pub_5e58cf33baedf81f7d511363_5e58e391f8544a5bec015ab8/scale_1200'} style={{height: 150}}/>
                             <h2 className="">Новости сайта в телеграмм канале</h2>
                             <br/>
