@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import SelectAlbum from "../object/SelectAlbum";
-import Comment from "../element/Comment";
-import ElementFile from "../object/ElementFile";
+
 import AlbumAddModal from "../element/AlbumAddModal";
 import {Link} from "react-router-dom";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";

@@ -1,42 +1,70 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
 import axios from "axios";
-import AlbumAddModal from "./AlbumAddModal";
 
+import AlbumAddModal from "../element/AlbumAddModal";
+import {Link} from "react-router-dom";
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
-class Album extends Component {
-    constructor () {
-        super();
+function AlbumArticle (props) {
+    let [form, setForm] = useState({
+        inputTitle: '',
+        text: '',
+        inputFile: null,
+        id: null,
 
-        this.state = {
-            response: {
-                count: 0,
-                items: [],
-                users: []
-            },
-            count: 100,
-            offset: 0,
-            arVideo: []
-        }
+        response: {
+            count: 0,
+            items: []
+        },
+        count: 100,
+        offset: 0,
+        arAlbums: [],
+    })
 
-        this.Get = this.Get.bind(this)
+    let [formEdit, setFormEdit] = useState(null)
+    let [formId, setFormId] = useState(null)
+
+    //отслеживаем изменение props
+    useEffect(async () => {
+        await Get()
+    }, [])
+
+    const onChangeFile = (e) => {
+        let name = e.target.id;
+
+        setForm(prev => ({
+            ...prev, [name]: e.target.files[0]
+        }))
     }
 
-    async componentDidMount () {
-        await this.Get();
+    const onChangeText = (e) => {
+        let name = e.target.id;
+        let value = e.target.value;
+
+        setForm(prev => ({
+            ...prev, [name]: value
+        }))
     }
 
-    async Get () {
-        let owner_id = this.props.owner_id; /* из прямой передачи */
+    const onChangeForm = (id) => {
+        setFormEdit(id)
+        setForm(prevState => ({
+            ...prevState, ...{id: id}
+        }))
 
-        if (!this.props.owner_id) { /* из url */
-            owner_id = this.props.match.params.id
-            if (this.props.match.params.owner === 'group')
+    }
+
+    const Get = async () => {
+        let owner_id = props.owner_id; /* из прямой передачи */
+
+        if (!props.owner_id) { /* из url */
+            owner_id = props.match.params.id
+            if (props.match.params.owner === 'group')
                 owner_id = -owner_id
         }
 
-        const url = `/api/article/getAlbums?owner_id=${owner_id}&offset=${this.state.offset}&count=${this.state.count}`;
+        const url = `/api/article/getAlbums?owner_id=${owner_id}&offset=${form.offset}&count=${form.count}`;
 
         let result = await axios.get(url);
 
@@ -45,28 +73,23 @@ class Album extends Component {
 
         if (!result.response) return
 
-        this.setState(prevState => ({
+        setForm(prevState => ({...prevState, ...{
             response: result.response,
-            arVideo: [...prevState.arVideo, ...result.response.items],
+            arAlbums: [...form.arAlbums, ...result.response.items],
             offset: prevState.offset + prevState.count
-        }))
+        }}))
     }
 
-    ListVideo (arVideo) {
-        let owner = (this.props.owner_id>0) ? 'user' : 'group'
-        let id = (this.props.owner_id>0) ? this.props.owner_id : -this.props.owner_id
-
+    const ListVideo = (arAlbums) => {
         return (
             <div className="row">
-                { arVideo.map(function (video, i, arVideo) {
+
+                { arAlbums.map(function (video, i) {
 
                     return ( <div className="col-md-3" key={i}>
                         <div className="card">
                             <div className="card-body">
-                                <img src={(video.image_id) ? `${global.urlServer}/${video.image_id.url}` : `https://elk21.ru/assets/images/34534535.jpg`} style={{width: '100%'}}/>
-                                <p className="card-text">
-                                    <Link to={`/${owner}/id${id}/article/album_id${video.id}`} >{video.title}</Link>
-                                </p>
+                                {(formEdit === video.id) ? FormEdit(formId) : ElementAlbum(video.image_id, video.id, video.title)}
                             </div>
 
                         </div>
@@ -76,35 +99,108 @@ class Album extends Component {
         )
     }
 
-    render() {
+    const onFormSubmitFile = async (e) => {
+        e.preventDefault() // Stop form submit
 
-        let access = this.props.access;
+        onChangeForm(null)
 
-        return (
-            <>
-                <AlbumAddModal owner_id={this.props.owner_id}/>
+        let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
-                <div className="row">
-                    <div className="col-lg-12 block-white">
+        const url = '/api/video/editAlbum';
+        const formData = new FormData();
 
-                        <p className="h3">
-                            {access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAlbumAdd">+</button> : null} Альбомы
-                        </p>
+        console.log(form)
 
-                        {(this.state.arVideo.length) ? this.ListVideo(this.state.arVideo) : <p>Альбомов нет</p>}
+        formData.append('id', form.id)
+        formData.append('title', form.inputTitle)
+        //formData.append('text', form.text)
+        formData.append('gtoken', gtoken)
 
-                        {(this.state.arVideo.length < this.state.response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={this.Get}>еще альбомы ...</button> : null}
+        //файл есть
+        if (form.inputFile)
+            formData.append('file', form.inputFile)
 
-                    </div>
-                </div>
+        axios.post(url, formData, {
 
-                <hr />
-            </>
-        )
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+
+        })
+
+        await Get()
     }
 
-}
+    const ElementAlbum = (image_id, video_id, video_title) => {
+        let owner = (props.owner_id>0) ? 'user' : 'group'
+        let id = (props.owner_id>0) ? props.owner_id : -props.owner_id
 
+        return <>
+            <img src={(image_id) ? `${global.urlServer}/${image_id.url}` : `https://elk21.ru/assets/images/34534535.jpg`} style={{width: '100%'}}/>
+            <p className="card-text">
+                <Link to={`/${owner}/id${id}/article/album_id${video_id}`} >{video_title}</Link>
+            </p>
+            <button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id)}>Редактировать</button>
+        </>
+
+    }
+
+    const FormEdit = (album) => {
+        return <>
+            <form onSubmit={onFormSubmitFile}>
+
+                Редактирование
+
+                <div className="mb-3">
+                    <label htmlFor="inputFile" className="form-label">Картинка (значек)</label>
+                    <input className="form-control form-control-sm" id="inputFile" type="file" onChange={onChangeFile}/>
+                </div>
+
+                <div className="mb-3">
+                    <label htmlFor="inputTitle" className="form-label">Название</label>
+                    <input type="text" className="form-control" id="inputTitle"
+                           onChange={onChangeText} value={form.inputTitle}/>
+                </div>
+
+                <div className="">
+                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => onChangeForm(null)}>Отмена</button>
+                    <button type="submit" className="btn btn-primary" >
+                        Сохранить
+                    </button>
+                </div>
+
+            </form>
+        </>
+    }
+
+    return (
+        <>
+            <AlbumAddModal owner_id={props.owner_id}/>
+
+            <div className="row">
+                <div className="col-lg-12 block-white">
+
+                    <p className="h3">
+                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAlbumAdd">+</button> : null} Альбомы
+                    </p>
+
+                    {(form.arAlbums.length) ? ListVideo(form.arAlbums) : <p>Альбомов нет</p>}
+
+                    {(form.arAlbums.length < form.response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={Get}>еще альбомы ...</button> : null}
+
+                </div>
+            </div>
+            <hr />
+        </>
+    )
+}
+/*
+
+
+
+
+
+* */
 export default connect (
     state => ({
         myUser: state.myUser,
@@ -112,5 +208,5 @@ export default connect (
     dispatch => ({
 
     })
-)(Album);
+)(AlbumArticle);
 
