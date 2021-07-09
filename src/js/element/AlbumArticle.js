@@ -106,7 +106,7 @@ function AlbumArticle (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
-        const url = '/api/video/editAlbum';
+        const url = '/api/article/editAlbum';
         const formData = new FormData();
 
         console.log(form)
