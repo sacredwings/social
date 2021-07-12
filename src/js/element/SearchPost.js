@@ -38,10 +38,10 @@ export default function ({q}) {
         return <div className="row">
 
             <div className="col-lg-12">
-                Групп найдено: <strong>{response.count}</strong>
+                Постов найдено: <strong>{response.count}</strong>
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/group/id${item.id}`} className="list-group-item list-group-item-action">
+                        <Link to={`/post/id${item.id}`} className="list-group-item list-group-item-action">
                             <img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item.photo) ? `${global.urlServer}/${item.photo.url}` : "https://www.freelancejob.ru/upload/663/32785854535177.jpg"} />
                             {item.title}
                         </Link>
