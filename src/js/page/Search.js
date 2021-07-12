@@ -2,6 +2,9 @@ import React, {useState, useEffect} from 'react';
 import SearchUser from "../element/SearchUser";
 import SearchGroup from "../element/SearchGroup";
 import SearchTopic from "../element/SearchTopic";
+import SearchArticle from "../element/SearchArticle";
+import SearchPost from "../element/SearchPost";
+import SearchVideo from "../element/SearchVideo";
 
 export default function ({}) {
     let [search, setSearch] = useState('')
@@ -37,7 +40,14 @@ export default function ({}) {
                 <hr/>
                 <SearchGroup q={q}/>
                 <hr/>
+                <SearchVideo q={q}/>
+                <hr/>
+                <SearchArticle q={q}/>
+                <hr/>
                 <SearchTopic q={q}/>
+                <hr/>
+                <SearchPost q={q}/>
+
             </div>
         </div>
     );
