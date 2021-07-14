@@ -64,7 +64,7 @@ function AlbumArticle (props) {
                 owner_id = -owner_id
         }
 
-        const url = `/api/article/getAlbums?owner_id=${owner_id}&offset=${form.offset}&count=${form.count}`;
+        const url = `/api/album/get?module=article&owner_id=${owner_id}&offset=${form.offset}&count=${form.count}`;
 
         let result = await axios.get(url);
 
@@ -106,7 +106,7 @@ function AlbumArticle (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
-        const url = '/api/article/editAlbum';
+        const url = '/api/album/edit';
         const formData = new FormData();
 
         console.log(form)
