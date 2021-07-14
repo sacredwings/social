@@ -38,7 +38,7 @@ export default function ({q}) {
         return <div className="row">
 
             <div className="col-lg-12">
-                Групп найдено: <strong>{response.count}</strong>
+                Постов найдено: <strong>{response.count}</strong>
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
                         <Link to={`/post/id${item.id}`} className="list-group-item list-group-item-action">
