@@ -54,13 +54,16 @@ function Article  (props) {
     //отслеживаем изменение props
     useEffect (async ()=>{
         setAccess(await Access(props))
+
+        console.log('props.match.params.album_id')
+        console.log(props.match.params.album_id)
     }, [props.myUser.id])
 
     return (
         <>
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    {!props.match.params.album_id ? <AlbumArticle access={access} owner_id={ownerId.current}/> : null}
+                    <AlbumArticle access={access} owner_id={ownerId.current} album_id={props.match.params.album_id}/>
                 </div>
             </div>
 

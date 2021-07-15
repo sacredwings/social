@@ -7,7 +7,7 @@ import {Link} from "react-router-dom";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 function AlbumArticle (props) {
-    let [form, setForm] = useState({
+    let formDedault = {
         inputTitle: '',
         text: '',
         inputFile: null,
@@ -20,15 +20,16 @@ function AlbumArticle (props) {
         count: 100,
         offset: 0,
         arAlbums: [],
-    })
+    }
+    let [form, setForm] = useState(formDedault)
 
     let [formEdit, setFormEdit] = useState(null)
     let [formId, setFormId] = useState(null)
 
     //отслеживаем изменение props
     useEffect(async () => {
-        await Get()
-    }, [])
+        await Get(true)
+    }, [props.album_id])
 
     const onChangeFile = (e) => {
         let name = e.target.id;
@@ -55,7 +56,7 @@ function AlbumArticle (props) {
 
     }
 
-    const Get = async () => {
+    const Get = async (start) => {
         let owner_id = props.owner_id; /* из прямой передачи */
 
         if (!props.owner_id) { /* из url */
@@ -64,9 +65,19 @@ function AlbumArticle (props) {
                 owner_id = -owner_id
         }
 
-        const url = `/api/album/get?module=article&owner_id=${owner_id}&offset=${form.offset}&count=${form.count}`;
+        let fields = {
+            params: {
+                module: 'article',
+                owner_id: owner_id,
+                offset: (start) ? 0 : form.offset,
+                count: form.count,
+                album_id: props.album_id
+            }
+        }
 
-        let result = await axios.get(url);
+        const url = `/api/album/get`;
+
+        let result = await axios.get(url, fields);
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
@@ -74,10 +85,10 @@ function AlbumArticle (props) {
         if (!result.response) return
 
         setForm(prevState => ({...prevState, ...{
-            response: result.response,
-            arAlbums: [...form.arAlbums, ...result.response.items],
-            offset: prevState.offset + prevState.count
-        }}))
+                response: result.response,
+                arAlbums: (start) ? result.response.items : [...form.arAlbums, ...result.response.items],
+                offset: (start) ? prevState.offset : prevState.offset + prevState.count
+            }}))
     }
 
     const ListVideo = (arAlbums) => {
