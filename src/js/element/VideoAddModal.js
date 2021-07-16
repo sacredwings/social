@@ -36,7 +36,16 @@ function VideoAddModal (props) {
     }
 
     const GetAlbums = async (start) => {
-        const url = `/api/video/getAlbums?owner_id=${props.owner_id}&offset=${form.offset}&count=${form.count}`;
+        let fields = {
+            params: {
+                module: 'video',
+                owner_id: props.owner_id,
+                offset: (start) ? 0 : form.offset,
+                count: form.count
+            }
+        }
+
+        const url = `/api/album/get`;
 
         let result = await axios.get(url);
 
