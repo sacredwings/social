@@ -7,7 +7,7 @@ import {Link} from "react-router-dom";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 function AlbumVideo (props) {
-    let [form, setForm] = useState({
+    let formDedault = {
         inputTitle: '',
         text: '',
         inputFile: null,
@@ -20,15 +20,16 @@ function AlbumVideo (props) {
         count: 100,
         offset: 0,
         arAlbums: [],
-    })
+    }
+    let [form, setForm] = useState(formDedault)
 
     let [formEdit, setFormEdit] = useState(null)
     let [formId, setFormId] = useState(null)
 
     //отслеживаем изменение props
     useEffect(async () => {
-        await Get()
-    }, [])
+        await Get(true)
+    }, [props.album_id])
 
     const onChangeFile = (e) => {
         let name = e.target.id;
@@ -55,7 +56,7 @@ function AlbumVideo (props) {
 
     }
 
-    const Get = async () => {
+    const Get = async (start) => {
         let owner_id = props.owner_id; /* из прямой передачи */
 
         if (!props.owner_id) { /* из url */
@@ -64,35 +65,33 @@ function AlbumVideo (props) {
                 owner_id = -owner_id
         }
 
-        const url = `/api/album/get?module=video&owner_id=${owner_id}&offset=${form.offset}&count=${form.count}`;
+        let fields = {
+            params: {
+                module: 'video',
+                owner_id: owner_id,
+                offset: (start) ? 0 : form.offset,
+                count: form.count,
+                album_id: props.album_id
+            }
+        }
 
-        let result = await axios.get(url);
+        const url = `/api/album/get`;
+
+        let result = await axios.get(url, fields);
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
 
         if (!result.response) return
 
-        setForm(prevState => ({
-            response: result.response,
-            arAlbums: [...prevState.arAlbums, ...result.response.items],
-            offset: prevState.offset + prevState.count
-        }))
+        setForm(prevState => ({...prevState, ...{
+                response: result.response,
+                arAlbums: (start) ? result.response.items : [...form.arAlbums, ...result.response.items],
+                offset: (start) ? prevState.offset : prevState.offset + prevState.count
+            }}))
     }
 
-    const ElementVideo = (image_id, video_id, video_title) => {
-        let owner = (props.owner_id>0) ? 'user' : 'group'
-        let id = (props.owner_id>0) ? props.owner_id : -props.owner_id
 
-        return <>
-            <img src={(image_id) ? `${global.urlServer}/${image_id.url}` : `https://elk21.ru/assets/images/34534535.jpg`} style={{width: '100%'}}/>
-            <p className="card-text">
-                <Link to={`/${owner}/id${id}/video/album_id${video_id}`} >{video_title}</Link>
-            </p>
-            <button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id)}>Редактировать</button>
-        </>
-
-    }
 
     const ListVideo = (arAlbums) => {
         return (
@@ -119,7 +118,7 @@ function AlbumVideo (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
-        const url = '/api/module/edit';
+        const url = '/api/album/edit';
         const formData = new FormData();
 
         console.log(form)
@@ -142,6 +141,20 @@ function AlbumVideo (props) {
         })
 
         await Get()
+    }
+
+    const ElementVideo = (image_id, video_id, video_title) => {
+        let owner = (props.owner_id>0) ? 'user' : 'group'
+        let id = (props.owner_id>0) ? props.owner_id : -props.owner_id
+
+        return <>
+            <img src={(image_id) ? `${global.urlServer}/${image_id.url}` : `https://elk21.ru/assets/images/34534535.jpg`} style={{width: '100%'}}/>
+            <p className="card-text">
+                <Link to={`/${owner}/id${id}/video/album_id${video_id}`} >{video_title}</Link>
+            </p>
+            <button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id)}>Редактировать</button>
+        </>
+
     }
 
     const FormEdit = (album) => {

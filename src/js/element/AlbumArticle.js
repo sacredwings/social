@@ -115,7 +115,7 @@ function AlbumArticle (props) {
 
         onChangeForm(null)
 
-        let gtoken = await reCaptchaExecute(global.gappkey, 'video')
+        let gtoken = await reCaptchaExecute(global.gappkey, 'article')
 
         const url = '/api/album/edit';
         const formData = new FormData();

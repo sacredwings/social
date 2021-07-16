@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import VideoAddModal from "../element/VideoAddModal";
 import ElementVideo from '../element/Video';
-import Album from "../element/Album";
+import AlbumVideo from "../element/AlbumVideo";
 
 const Access = async (props) => {
 
@@ -61,7 +61,7 @@ function Video  (props) {
         <>
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    {!props.match.params.album_id ? <Album access={access} owner_id={ownerId.current}/> : null}
+                    <AlbumVideo access={access} owner_id={ownerId.current} album_id={props.match.params.album_id}/>
                 </div>
             </div>
 
