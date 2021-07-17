@@ -47,7 +47,7 @@ function VideoAddModal (props) {
 
         const url = `/api/album/get`;
 
-        let result = await axios.get(url);
+        let result = await axios.get(url, fields);
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
