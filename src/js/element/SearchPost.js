@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
 import {Link} from "react-router-dom";
+import ElementFile from "../object/ElementFile";
 
 export default function ({q}) {
     //настройки запроса
@@ -34,6 +35,19 @@ export default function ({q}) {
         }))
     }
 
+    const ElementFiles = (files) => {
+
+        if (!files) return null
+
+        return <>
+            { files.map((file, i) => {
+                return <div key={i} className="col-md-4">
+                    <ElementFile  file={file}/>
+                </div>
+            })}
+        </>
+    }
+
     function Result (result) {
         return <div className="row">
 
@@ -42,8 +56,10 @@ export default function ({q}) {
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
                         <Link to={`/post/id${item.id}`} className="list-group-item list-group-item-action">
-                            <img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item.photo) ? `${global.urlServer}/${item.photo.url}` : "https://www.freelancejob.ru/upload/663/32785854535177.jpg"} />
-                            {item.title}
+                            <p> {item.text}</p>
+                            <div className="row">
+                                {item.file_ids ? ElementFiles(item.file_ids) : null}
+                            </div>
                         </Link>
                     </div>)
                 })}
