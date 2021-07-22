@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
 import {Link} from "react-router-dom";
+import ElementFile from "../object/ElementFile";
 
 export default function ({q}) {
     //настройки запроса
@@ -33,7 +34,7 @@ export default function ({q}) {
             items: (start) ? result.response.items : [...prev.items, ...result.response.items]
         }))
     }
-
+//<img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item.photo) ? `${global.urlServer}/${item.photo.url}` : "https://www.freelancejob.ru/upload/663/32785854535177.jpg"} />
     function Result (result) {
         return <div className="row">
 
@@ -42,8 +43,16 @@ export default function ({q}) {
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
                         <Link to={`/video/id${item.id}`} className="list-group-item list-group-item-action">
-                            <img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item.photo) ? `${global.urlServer}/${item.photo.url}` : "https://www.freelancejob.ru/upload/663/32785854535177.jpg"} />
-                            {item.title}
+                            <div className="row">
+                                <div className="col-lg-4">
+                                    <ElementFile file={item}/>
+                                </div>
+                                <div className="col-lg-4">
+                                    {item.title}
+                                </div>
+                            </div>
+
+
                         </Link>
                     </div>)
                 })}
