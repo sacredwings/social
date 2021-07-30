@@ -31,7 +31,7 @@ export default (props) => {
 
         return <img src={url} style={style} onClick={() => {setPreview(false)}}/>
     }
-
+/*
     const ImageVideo = (file, video) => {
 
         console.log('картинка из видео')
@@ -75,7 +75,7 @@ export default (props) => {
 
         return <img src={url} style={style} onClick={() => {setPreview(false)}}/>
     }
-
+*/
 
 
     const Logic = (file) => {
@@ -86,7 +86,7 @@ export default (props) => {
         //видео
         if (file.type === 'video/mp4')
             if (preview)
-                return ImageVideo(file, true)
+                return Image(file.file_id, true)
             else
                 return Video(file)
         if (file.type === 'video/avi')
