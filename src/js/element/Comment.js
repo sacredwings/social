@@ -19,7 +19,7 @@ function Comments (props) {
     //отслеживаем изменение props
     useEffect (async ()=>{
         await Get(true) //с обнулением
-    }, [])
+    }, [props.object_id])
 
     async function Get (start) {
         let module = props.module;
@@ -43,7 +43,7 @@ function Comments (props) {
 
     const SearchUser = (id) => {
         for (let user of response.arUsers) {
-            if (id === user.id) return user
+            if (Number(id) === Number(user.id)) return user
         }
 
     }
@@ -60,6 +60,7 @@ function Comments (props) {
             })}
         </>
     }
+
 
     const List = (comments) => {
         return (
@@ -96,7 +97,7 @@ function Comments (props) {
             <div className="row">
                 <div className="col-lg-12">
                     <hr/>
-                    {List(response.items)}
+                    {(response.items.length) ? List(response.items) : null}
                 </div>
             </div>
             <div className="row">

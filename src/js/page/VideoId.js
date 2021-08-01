@@ -84,7 +84,7 @@ function VideoId (props) {
             </div>
             <div className="row">
                 <div className="col-12">
-                    <Comment module='video' object_id={video.id}/>
+                    <Comment module='video' object_id={props.match.params.id}/>
                 </div>
             </div>
         </>
