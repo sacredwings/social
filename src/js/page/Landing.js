@@ -3,6 +3,9 @@ import {connect} from 'react-redux';
 import cookie from '../util/cookie';
 import axios from "axios";
 
+let style = {
+    width: '100%'
+}
 function Landing  (props) {
     let [count, setCount] = useState({
         video: 0,
@@ -56,6 +59,24 @@ function Landing  (props) {
                             <p>Создавайте и учавствуйте в обсуждениях</p>
                             <p>Бесплатно</p>
                             <p>Анонимно</p>
+                        </div>
+
+                    </div>
+
+                    <br/>
+                    <hr/>
+                    <br/>
+
+                    <div className="row text-center">
+                        <div className="col-lg-12">
+                            <h2 className="">Как зарегистрироватсья</h2>
+
+                                    <video controls style={{width: '100%'}}>
+                                        <source
+                                            src="https://voenset.ru/files/33/74/3374db8747b7ee985d0a04b98475e8b0.mp4"
+                                            type="video/mp4"/>
+                                    </video>
+
                         </div>
 
                     </div>
