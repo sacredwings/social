@@ -69,7 +69,7 @@ function Landing  (props) {
 
                     <div className="row text-center">
                         <div className="col-lg-12">
-                            <h2 className="">Как зарегистрироватсья</h2>
+                            <h2 className="">Как зарегистрироваться</h2>
 
                                     <video controls style={{width: '100%'}}>
                                         <source
