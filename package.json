@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@tinymce/tinymce-react": "^3.12.6",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.1",
+    "draft-js": "^0.11.7",
     "jquery": "^3.6.0",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",

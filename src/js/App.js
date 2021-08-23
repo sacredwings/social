@@ -35,6 +35,7 @@ import Post from "./page/Post";
 import VideoId from "./page/VideoId";
 import ArticleId from "./page/ArticleId";
 import Search from "./page/Search";
+import Friend from "./page/friend/friend";
 
 /*
 import Reg from "./pages/Reg";
@@ -71,6 +72,8 @@ class App extends Component {
             {path: '/messages/id:id', component: MessagesUserId},
             {path: '/messages', component: Messages},
             {path: '/group/settings_id:id', component: GroupSettings},
+            {path: '/friends', component: Friend},
+
         ];
         //формирование
         pages = pages.map(function (page, i) {

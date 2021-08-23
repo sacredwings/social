@@ -12,6 +12,7 @@ class WidgetLetMenu extends Component {
                        <Link className="nav-link active" to="/search">Поиск</Link>
                        <Link className="nav-link active" to={`/user/id${this.props.myUser.id}`}>Моя страница</Link>
                        <Link className="nav-link active" to="/messages">Сообщения</Link>
+                       <Link className="nav-link active" to="/friends">Друзья</Link>
                        <Link className="nav-link active" to="/settings">Настройки</Link>
                    </nav>
                    :
