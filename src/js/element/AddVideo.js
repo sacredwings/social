@@ -64,6 +64,10 @@ function Video (props) {
                         <div className="card">
                             <div className="card-body">
                                 <ElementFile file={video}/>
+
+                                {/* <video controls style={{width: '100%'}} preload="none" poster={`${global.urlServer}/${video.file_id.url}`}>
+                                    <source src={`${global.urlServer}/${video.url}`} type={video.type}/>
+                                </video> */}
                                 <p className="card-text">
                                     <Link to={`/video/id${video.id}`} >{video.title}</Link>
                                 </p>

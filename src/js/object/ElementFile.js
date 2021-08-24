@@ -2,35 +2,55 @@ import React, {useEffect, useState} from 'react';
 
 export default (props) => {
 
-    let [preview, setPreview] = useState(true)
-    let [autoPhoto, setAutoPhoto] = useState('https://elk21.ru/assets/images/34534535.jpg')
+    let [imgNot] = useState('https://elk21.ru/assets/images/34534535.jpg')
 
     useEffect (()=>{
-        console.log(props.file)
     }, [])
 
     const Video = (file) => {
-        return (
-            <video controls style={{width: '100%'}}>
-                <source src={`${global.urlServer}/${file.url}`} type={file.type} />
-            </video>
-        )
-    }
-
-    const Image = (file, video) => {
-        console.log(file)
-
         let url = `https://elk21.ru/assets/images/34534535.jpg`
         let style = {width: '100%'}
 
         if (file)
             url = `${global.urlServer}/${file.url}`
 
-        if (video)
-            style = {cursor: 'pointer', width: '100%'}
-
-        return <img src={url} style={style} onClick={() => {setPreview(false)}}/>
+        return (
+            <video controls style={style} preload="none" poster={`${global.urlServer}/${file.file_id.url}`}>
+                <source src={`${global.urlServer}/${file.url}`} type={file.type}/>
+            </video>
+        )
     }
+
+    const Image = (file) => {
+        let url = `https://elk21.ru/assets/images/34534535.jpg`
+        let style = {width: '100%'}
+
+        if (file)
+            url = `${global.urlServer}/${file.url}`
+
+        return <img src={url} style={style}/>
+    }
+
+    const Logic = (file) => {
+
+        //файла нет - выход
+        if (!file) return null
+
+        if ((file.type === 'video/mp4') || (file.type === 'video/avi'))
+            return Video(file)
+
+        //картинка
+        if ((file.type === 'image/gif') || (file.type === 'image/png') || (file.type === 'image/jpeg'))
+            return Image(file)
+    }
+
+    return (
+        <>
+            {Logic(props.file)}
+        </>
+    )
+}
+
 /*
     const ImageVideo = (file, video) => {
 
@@ -76,34 +96,3 @@ export default (props) => {
         return <img src={url} style={style} onClick={() => {setPreview(false)}}/>
     }
 */
-
-
-    const Logic = (file) => {
-
-        //файла нет - выход
-        if (!file) return null
-
-        //видео
-        if (file.type === 'video/mp4')
-            if (preview)
-                return Image(file.file_id, true)
-            else
-                return Video(file)
-        if (file.type === 'video/avi')
-            if (preview)
-                return Image(file.file_id, true)
-            else
-                return Video(file)
-
-        //картинка
-        if ((file.type === 'image/gif') || (file.type === 'image/png') || (file.type === 'image/jpeg'))
-            return Image(file)
-    }
-
-    return (
-        <>
-            {Logic(props.file)}
-        </>
-    )
-}
-
