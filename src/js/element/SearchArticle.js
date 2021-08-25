@@ -41,7 +41,7 @@ export default function ({q}) {
                 Статей найдено: <strong>{response.count}</strong>
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/group/id${item.id}`} className="list-group-item list-group-item-action">
+                        <Link to={`/article/id${item.id}`} className="list-group-item list-group-item-action">
                             {item.title}
                         </Link>
                     </div>)
