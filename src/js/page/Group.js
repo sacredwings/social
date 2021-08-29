@@ -53,9 +53,9 @@ function User (props) {
                     </div>
 
                     <ElementVideo mini={true} owner={'group'} owner_id={-group.id} access={access}/>
-                    <ElementTopic mini={true} owner={'group'} owner_id={-group.id} access={access}/>
                     <ElementArticle mini={true} owner={'group'} owner_id={-group.id} access={access}/>
-                    <ElementPost owner_id={-group.id} access={access}/>
+                    <ElementTopic mini={true} owner={'group'} owner_id={-group.id} access={access}/>
+                    <ElementPost mini={true} owner={'group'} owner_id={-group.id} access={access}/>
 
                 </div>
                 <div className="col-lg-3">

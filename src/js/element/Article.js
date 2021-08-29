@@ -11,7 +11,7 @@ function Article (props) {
     //запрос
     let [response, setResponse] = useState({
         offset: 0, //смещение для запроса
-        count: 20, //количество элементов в запросе
+        count: (props.mini) ? 4 : 20, //количество элементов в запросе
         itemsCount: 0, //количество записей в результате запроса
         items: [],
         arUsers: []
@@ -71,7 +71,9 @@ function Article (props) {
                             <button type="button" className="btn btn-success btn-sm" onClick={()=>{setFormViewer(!formViewer)}}>{(formViewer) ? `-` : `+`}</button>
                             : null
                         }&#160;
-                        {(props.mini) ? <Link to={linkUrl.current}>Все статьи</Link> : 'Статьи'}
+                        <>Последние добавленные статьи</>
+                        <br/>
+                        {(props.mini) ? <Link to={linkUrl.current}>Открыть все статьи</Link> : 'Статьи'}
 
                     </p>
 

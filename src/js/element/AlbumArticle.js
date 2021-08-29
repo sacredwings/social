@@ -192,12 +192,12 @@ function AlbumArticle (props) {
                 <div className="col-lg-12 block-white">
 
                     <p className="h3">
-                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAlbumAdd">+</button> : null} Альбомы
+                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAlbumAdd">+</button> : null} Категории со статьями
                     </p>
 
-                    {(form.arAlbums.length) ? ListVideo(form.arAlbums) : <p>Альбомов нет</p>}
+                    {(form.arAlbums.length) ? ListVideo(form.arAlbums) : <p>Категорий нет</p>}
 
-                    {(form.arAlbums.length < form.response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={Get}>еще альбомы ...</button> : null}
+                    {(form.arAlbums.length < form.response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={Get}>еще категории ...</button> : null}
 
                 </div>
             </div>

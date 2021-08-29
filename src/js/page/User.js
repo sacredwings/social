@@ -94,13 +94,13 @@ function User (props) {
                         <ElementVideo mini={true} owner={'user'} owner_id={userId} access={access}/>
                     </div>
                     <div className="social_block_white">
-                        <ElementTopic owner_id={userId} access={access}/>
+                        <ElementArticle mini={true} owner={'user'}  owner_id={userId} access={access}/>
                     </div>
                     <div className="social_block_white">
-                        <ElementArticle owner_id={userId} access={access}/>
+                        <ElementTopic mini={true} owner={'user'} owner_id={userId} access={access}/>
                     </div>
                     <div className="social_block_white">
-                        <ElementPost owner_id={userId} access={access}/>
+                        <ElementPost mini={true} owner={'user'} owner_id={userId} access={access}/>
                     </div>
 
 
