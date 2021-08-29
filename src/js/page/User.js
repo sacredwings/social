@@ -6,6 +6,7 @@ import ElementTopic from "../element/Topic";
 import ElementGroup from "../element/Group";
 import ElementPost from "../element/Post";
 import ElementArticle from "../element/Article";
+import FriendButton from "../element/friend/FriendButton";
 import {connect} from "react-redux";
 import '../../sass/social.sass';
 
@@ -60,11 +61,17 @@ function User (props) {
                         </div>
 
                         {access ? null :
-                            <div className="d-grid gap-2">
-                                <button type="button" className="btn btn-primary btn-sm btn-block social_button" data-bs-toggle="modal" data-bs-target="#modalMessageAdd">Написать сообщение</button>
-                            </div>
+                            <>
+                                <br/>
+                                <div className="d-grid gap-2">
+                                    <button type="button" className="btn btn-primary btn-sm btn-block" data-bs-toggle="modal" data-bs-target="#modalMessageAdd">Написать сообщение</button>
+                                    <FriendButton user_id={userId}/>
+                                </div>
+
+                            </>
                         }
                         <ElementMessageAddModal user_id={userId}/>
+
                     </div>
 
                 </div>

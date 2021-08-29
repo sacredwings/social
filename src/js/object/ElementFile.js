@@ -11,11 +11,11 @@ export default (props) => {
         let url = `https://elk21.ru/assets/images/34534535.jpg`
         let style = {width: '100%'}
 
-        if (file)
+        if (file.file_id)
             url = `${global.urlServer}/${file.url}`
 
         return (
-            <video controls style={style} preload="none" poster={`${global.urlServer}/${file.file_id.url}`}>
+            <video controls style={style} preload="none" poster={url}>
                 <source src={`${global.urlServer}/${file.url}`} type={file.type}/>
             </video>
         )
