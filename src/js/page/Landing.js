@@ -2,6 +2,7 @@ import React, {Component, useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import cookie from '../util/cookie';
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 let style = {
     width: '100%'
@@ -104,9 +105,20 @@ function Landing  (props) {
 
                     <div className="row text-center">
                         <div className="col-lg-12">
+                            <h2 className="">Страница Военного юриста</h2>
+                            <Link className="btn btn-primary" to="/user/id1" role="button">Перейти на страницу</Link>
+                        </div>
+
+                    </div>
+
+                    <br/>
+                    <hr/>
+                    <br/>
+
+                    <div className="row text-center">
+                        <div className="col-lg-12">
                             <h2 className="">Страница разработчика</h2>
-                            <p>Возник вопрос ?</p>
-                            <a className="btn btn-primary" href="https://voenset.ru/user/id7" role="button">Перейти на страницу</a>
+                            <Link className="btn btn-primary" to="/user/id7" role="button">Перейти на страницу</Link>
                         </div>
 
                     </div>
