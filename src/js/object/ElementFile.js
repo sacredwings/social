@@ -12,7 +12,7 @@ export default (props) => {
         let style = {width: '100%'}
 
         if (file.file_id)
-            url = `${global.urlServer}/${file.url}`
+            url = `${global.urlServer}/${file.file_id.url}`
 
         return (
             <video controls style={style} preload="none" poster={url}>
