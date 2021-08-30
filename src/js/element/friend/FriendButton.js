@@ -15,33 +15,43 @@ function FriendButton (props) {
         switch (status) {
             case 'friend':
                 return <div className="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" className="btn btn-primary dropdown-toggle"
+                    <button id="btnGroupDrop1" type="button" className="btn btn-primary btn-sm dropdown-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
                         Друг
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                        <li><a className="dropdown-item" href="#">Удалить из друзей</a></li>
+                        <li><a className="dropdown-item" href="#" onClick={()=>{FriendDelete(props.user_id)}}>Удалить из друзей</a></li>
                     </ul>
                 </div>
             case 'in':
                 return <div className="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" className="btn btn-primary dropdown-toggle"
+                    <button id="btnGroupDrop1" type="button" className="btn btn-primary btn-sm dropdown-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
                         Входящая заявка в друзья
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                        <li><a className="dropdown-item" href="#">Принять</a></li>
-                        <li><a className="dropdown-item" href="#">Отклонить</a></li>
+                        <li><a className="dropdown-item" href="#" onClick={()=>{FriendAdd(props.user_id)}}>Принять</a></li>
+                        <li><a className="dropdown-item" href="#" onClick={()=>{FriendDelete(props.user_id)}}>Отклонить</a></li>
+                    </ul>
+                </div>
+            case 'viewed':
+                return <div className="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" className="btn btn-primary btn-sm dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        Вы отклонили заявку в друзья
+                    </button>
+                    <ul className="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <li><a className="dropdown-item" href="#" onClick={()=>{FriendAdd(props.user_id)}}>Принять</a></li>
                     </ul>
                 </div>
             case 'out':
                 return <div className="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" className="btn btn-primary dropdown-toggle"
+                    <button id="btnGroupDrop1" type="button" className="btn btn-primary btn-sm dropdown-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
                         Исходящая заявка в друзья
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                        <li><a className="dropdown-item" href="#">Отменить</a></li>
+                        <li><a className="dropdown-item" href="#" onClick={()=>{FriendDelete(props.user_id)}}>Отменить</a></li>
                     </ul>
                 </div>
             default:
@@ -52,7 +62,7 @@ function FriendButton (props) {
     /* добавить в друзья */
     const FriendAdd = async (user_id) => {
 
-        let gtoken = await reCaptchaExecute(global.gappkey, 'message')
+        let gtoken = await reCaptchaExecute(global.gappkey, 'friend')
 
         let arFields = {
             user_id: props.user_id,
@@ -68,12 +78,13 @@ function FriendButton (props) {
 
         if (result.err) return; //ошибка, не продолжаем обработку
 
+        setStatus(result.response)
     }
 
     /* удалить из друзей */
     const FriendDelete = async (user_id) => {
 
-        let gtoken = await reCaptchaExecute(global.gappkey, 'message')
+        let gtoken = await reCaptchaExecute(global.gappkey, 'friend')
 
         let arFields = {
             user_id: props.user_id,
@@ -89,13 +100,14 @@ function FriendButton (props) {
 
         if (result.err) return; //ошибка, не продолжаем обработку
 
+        setStatus(result.response)
     }
 
     const FriendStatus = async (user_id) => {
 
         let arFields = {
             params: {
-                org_id: user_id
+                user_id: user_id
             }
         }
 
@@ -106,6 +118,8 @@ function FriendButton (props) {
         result = result.data;
 
         if (result.err) return; //ошибка, не продолжаем обработку
+
+        setStatus(result.response)
 
     }
 
