@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+//
+import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
+
 //react-redux.js.org
 import { Provider } from 'react-redux'
 import store from './js/store'
