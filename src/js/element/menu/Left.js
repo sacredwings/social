@@ -8,13 +8,15 @@ class WidgetLetMenu extends Component {
         return (
            <div className="row">
                {(this.props.myUser.auth) ?
-                   <nav className="nav flex-column">
-                       <Link className="nav-link active" to="/search">Поиск</Link>
-                       <Link className="nav-link active" to={`/user/id${this.props.myUser.id}`}>Моя страница</Link>
-                       <Link className="nav-link active" to="/messages">Сообщения</Link>
-                       <Link className="nav-link active" to="/friends">Друзья</Link>
-                       <Link className="nav-link active" to="/settings">Настройки</Link>
-                   </nav>
+                   <>
+                       <nav className="nav flex-column menu-left">
+                           <Link className="nav-link active" to="/search"><i className="fas fa-search"></i> Поиск</Link>
+                           <Link className="nav-link active" to={`/user/id${this.props.myUser.id}`}><i className="far fa-address-card"></i> Моя страница</Link>
+                           <Link className="nav-link active" to="/messages"><i className="fas fa-sms"></i> Сообщения</Link>
+                           <Link className="nav-link active" to="/friends"><i className="fas fa-user-friends"></i> Друзья</Link>
+                           <Link className="nav-link active" to="/settings"><i className="fas fa-user-cog"></i> Настройки</Link>
+                       </nav>
+                   </>
                    :
                    <ElementAuth />}
            </div>

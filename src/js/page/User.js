@@ -47,22 +47,23 @@ function User (props) {
         if (userId === Number (props.myUser.id)) access = true
 
         return (
-            <div className="row social"> {/* главнай класс */}
-                <div className="col-lg-3">
+            <div className="row"> {/* главнай класс */}
+                <div className="col-lg-4">
 
-                    {/* левый блок */}
-                    <div className="social_block_white">
-                        <div className="row">
-                            <div className="col-lg-12">
-                                <div className="block-white">
-                                    <img  className="social_personal_photo" src={user.photo ? `${global.urlServer}/${user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
-                                </div>
-                            </div>
+                    {/* аватарка блок */}
+                    <div className="social_block_white shadow" style={{padding: 0}}>
+
+                        <div className="shadow">
+                            <img  className="social_personal_photo" src={user.photo ? `${global.urlServer}/${user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
                         </div>
 
+                    </div>
+
+                    {/* кнопки блок */}
+                    <div className="social_block" style={{padding: 0}}>
                         {access ? null :
                             <>
-                                <br/>
+
                                 <div className="d-grid gap-2">
                                     <button type="button" className="btn btn-primary btn-sm btn-block" data-bs-toggle="modal" data-bs-target="#modalMessageAdd">Написать сообщение</button>
                                     <FriendButton user_id={userId}/>
@@ -73,12 +74,11 @@ function User (props) {
                         <ElementMessageAddModal user_id={userId}/>
 
                     </div>
-
                 </div>
-                <div className="col-lg-9">
+                <div className="col-lg-8">
 
                     {/* правый блок */}
-                    <div className="social_block_white">
+                    <div className="social_block_white social_block_info shadow">
                         <div className="row">
                             <div className="col-lg-12 block-white">
                                 <h1 className="social_name">{user.first_name} {user.last_name}</h1>

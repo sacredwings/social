@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 //
-import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
+//import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
+//import "font-awesome-sass/assets/stylesheets/_font-awesome.scss";
+import 'fontawesome-free/css/all.min.css'
 
 //react-redux.js.org
 import { Provider } from 'react-redux'

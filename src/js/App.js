@@ -118,7 +118,7 @@ class App extends Component {
             <Router>
                 <MenuTop/>
 
-                <div className="container">
+                <div className="container social" style={{maxWidth: '992px'}}>
                     <div className="row">
                         <div className="col-lg-2">
                             <MenuLeft />
