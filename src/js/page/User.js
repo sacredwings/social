@@ -2,10 +2,10 @@ import React, {useState, useEffect, useReducer} from 'react';
 import axios from "axios";
 import ElementMessageAddModal from "../element/MessageAddModal";
 import ElementVideo from "../element/video/VideoBlock";
-import ElementTopic from "../element/Topic";
+import ElementTopic from "../element/topic/TopicBlock";
 import ElementGroup from "../element/group/GroupBlock";
 import ElementPost from "../element/Post";
-import ElementArticle from "../element/Article";
+import ElementArticle from "../element/article/ArticleBlock";
 import FriendButton from "../element/friend/FriendButton";
 import {connect} from "react-redux";
 import '../../sass/social.sass';
@@ -77,6 +77,8 @@ function User (props) {
 
                     <ElementGroup owner_id={userId} access={access}/>
                     <ElementVideo owner_id={userId} access={access} owner={'user'}/>
+                    <ElementArticle owner_id={userId} access={access} owner={'user'}/>
+                    <ElementTopic owner_id={userId} access={access} owner={'user'}/>
 
                 </div>
 
@@ -92,12 +94,6 @@ function User (props) {
                         </div>
                     </div>
 
-                    <div className="social block white">
-                        <ElementArticle mini={true} owner={'user'}  owner_id={userId} access={access}/>
-                    </div>
-                    <div className="social block white">
-                        <ElementTopic mini={true} owner={'user'} owner_id={userId} access={access}/>
-                    </div>
                     <div className="social block white">
                         <ElementPost mini={true} owner={'user'} owner_id={userId} access={access}/>
                     </div>

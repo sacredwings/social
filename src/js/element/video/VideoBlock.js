@@ -66,7 +66,7 @@ function Group (props) {
     }
 
     const NoList = () => {
-        return <p className="no">Групп еще нет</p>
+        return <p className="no">Видео нет</p>
     }
 
     return (
