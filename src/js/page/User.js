@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useReducer} from 'react';
 import axios from "axios";
 import ElementMessageAddModal from "../element/MessageAddModal";
-import ElementVideo from "../element/Video";
+import ElementVideo from "../element/video/VideoBlock";
 import ElementTopic from "../element/Topic";
 import ElementGroup from "../element/group/GroupBlock";
 import ElementPost from "../element/Post";
@@ -76,6 +76,7 @@ function User (props) {
                     </div>
 
                     <ElementGroup owner_id={userId} access={access}/>
+                    <ElementVideo owner_id={userId} access={access} owner={'user'}/>
 
                 </div>
 
@@ -91,10 +92,6 @@ function User (props) {
                         </div>
                     </div>
 
-
-                    <div className="social block white">
-                        <ElementVideo mini={true} owner={'user'} owner_id={userId} access={access}/>
-                    </div>
                     <div className="social block white">
                         <ElementArticle mini={true} owner={'user'}  owner_id={userId} access={access}/>
                     </div>

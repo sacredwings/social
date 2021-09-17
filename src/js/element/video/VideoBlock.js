@@ -2,15 +2,19 @@ import React, {useState, useEffect, useRef} from 'react'
 import {connect} from 'react-redux'
 import {Link} from "react-router-dom"
 import axios from "axios"
-import GroupAddModal from "../../element/GroupAddModal";
+import VideoAddModal from "../../element/VideoAddModal";
+import ElementFile from "../../object/ElementFile";
 
 function Group (props) {
     //запрос
     let [response, setResponse] = useState({
-        step: 6,
+        step: 2,
         count: 0,
         items: [],
     })
+
+    let ownerId = useRef(Number (props.owner_id))
+    let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
 
     //let [access, setAccess] = useState(false)
     //let ownerId = useRef(Number (props.owner_id))
@@ -28,7 +32,7 @@ function Group (props) {
 
         let owner_id = props.owner_id;
 
-        const url = `/api/group/get?owner_id=${owner_id}&offset=${offset}&count=${response.step}`;
+        const url = `/api/video/get?owner_id=${owner_id}&offset=${offset}&count=${response.step}`;
 
         let result = await axios.get(url);
 
@@ -45,15 +49,17 @@ function Group (props) {
     }
 
     const List = (arr) => {
-        return arr.map(function (group, i, arGroup) {
+        return arr.map(function (video, i, arGroup) {
             return ( <div className="group" key={i}>
-                <Link to={`/group/id${group.id}`}>
-                    <div className="img">
-                        <img src={group.photo ? `${global.urlServer}/${group.photo.url}` : "https://svgsilh.com/svg/479631.svg" } className="card-img-top" alt="..."/>
-                    </div>
-                </Link>
+                <ElementFile file={video}/>
 
-                <Link to={`/group/id${group.id}`}>{group.title}</Link>
+                {/* <video controls style={{width: '100%'}} preload="none" poster={`${global.urlServer}/${video.file_id.url}`}>
+                                    <source src={`${global.urlServer}/${video.url}`} type={video.type}/>
+                                </video> */}
+
+                <p className="card-text">
+                    <Link to={`/video/id${video.id}`} >{video.title}</Link>
+                </p>
 
             </div>)
         })
@@ -67,10 +73,10 @@ function Group (props) {
         <div className="social block block-mini white">
 
             <div className="header">
-                <h3>Группы</h3>
+                <h3><Link to={linkUrl.current}>Видео</Link></h3>
                 <p className="count">{response.count}</p>
-                {props.access ? <a type="button" href="#" className="add" data-bs-toggle="modal" data-bs-target="#modalGroupAdd">Создать</a> : null}
-                <GroupAddModal />
+                {props.access ? <a type="button" href="#" className="add" data-bs-toggle="modal" data-bs-target="#modalVideoAdd">Добавить</a> : null}
+                <VideoAddModal />
             </div>
 
 
