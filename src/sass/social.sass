@@ -2,18 +2,74 @@
   /*margin-top: 15px*/
 
   /*с отступом с верху*/
-  .social_block_white
-    background-color: white
+  .block
     margin: -5px
     margin-top: 20px
-    padding: 15px
+    padding: 10px
     border-radius: 5px
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important
 
-  .social_block
-    margin: -5px
-    margin-top: 20px
-    padding: 15px
-    border-radius: 5px
+  .white
+    background-color: white
+
+  /*виджет на странице пользователя*/
+  .block-mini
+    min-height: 140px
+
+    /*заголовок*/
+    .header
+      h3
+        font-size: 14px
+        float: left
+        margin: 0
+        margin-top: 4px
+        margin-right: 4px
+
+      p.count
+        color: darkgrey
+        margin: 0
+        float: left
+
+      a.add
+        color: darkgrey
+        font-size: 12px
+        margin-top: 4px
+        float: right
+
+    /*контент*/
+    .content
+      clear: both
+      padding-top: 5px
+
+      .group
+        padding-top: 5px
+        padding-left: 15px
+        clear: both
+
+        .img
+          width: 70px
+          height: 70px
+          overflow: hidden
+          border-radius: 10%
+          float: left
+
+          img
+            width: auto
+            height: 100%
+            margin: 0 auto
+
+        a
+          padding: 5px
+          font-size: 14px
+          color: black
+          text-decoration: none
+
+      /*нет контента*/
+      p.no
+        padding-top: 30px
+        text-align: center
+        color: gainsboro
+
 
   .social_personal_photo
     max-width: 100%
@@ -32,3 +88,6 @@
 .menu-left
   margin-top: 20px
   font-size: 14px
+
+  .nav-link
+    color: #00087d

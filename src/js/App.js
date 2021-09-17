@@ -107,22 +107,23 @@ class App extends Component {
         //вывод
         return pages
     }
-/*
-                        <Route path="/topic/id:id" component={Topic} />
-                        <Route path="/post/id:id" component={Post} />
-                        <Route path="/video/id:id" component={Video} />
- */
+
     render() {
         let auth = this.props.myUser.auth;
         return (
             <Router>
                 <MenuTop/>
 
+                {/* сайт */}
                 <div className="container social" style={{maxWidth: '992px'}}>
                     <div className="row">
+
+                        {/* левое меню */}
                         <div className="col-lg-2">
                             <MenuLeft />
                         </div>
+
+                        {/* контент социальной сети */}
                         <div className="col-lg-10">
                             <Switch>
                                 <Route exact path="/" component={Landing} />

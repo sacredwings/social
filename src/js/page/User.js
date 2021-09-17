@@ -3,7 +3,7 @@ import axios from "axios";
 import ElementMessageAddModal from "../element/MessageAddModal";
 import ElementVideo from "../element/Video";
 import ElementTopic from "../element/Topic";
-import ElementGroup from "../element/Group";
+import ElementGroup from "../element/group/GroupBlock";
 import ElementPost from "../element/Post";
 import ElementArticle from "../element/Article";
 import FriendButton from "../element/friend/FriendButton";
@@ -51,7 +51,7 @@ function User (props) {
                 <div className="col-lg-4">
 
                     {/* аватарка блок */}
-                    <div className="social_block_white shadow" style={{padding: 0}}>
+                    <div className="social block" style={{padding: 0}}>
 
                         <div className="shadow">
                             <img  className="social_personal_photo" src={user.photo ? `${global.urlServer}/${user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
@@ -60,7 +60,7 @@ function User (props) {
                     </div>
 
                     {/* кнопки блок */}
-                    <div className="social_block" style={{padding: 0}}>
+                    <div className="social block" style={{padding: 0}}>
                         {access ? null :
                             <>
 
@@ -74,11 +74,15 @@ function User (props) {
                         <ElementMessageAddModal user_id={userId}/>
 
                     </div>
+
+                    <ElementGroup owner_id={userId} access={access}/>
+
                 </div>
+
+                {/* правый блок */}
                 <div className="col-lg-8">
 
-                    {/* правый блок */}
-                    <div className="social_block_white social_block_info shadow">
+                    <div className="social block white social_block_info">
                         <div className="row">
                             <div className="col-lg-12 block-white">
                                 <h1 className="social_name">{user.first_name} {user.last_name}</h1>
@@ -87,19 +91,17 @@ function User (props) {
                         </div>
                     </div>
 
-                    <div className="social_block_white">
-                        <ElementGroup owner_id={userId} access={access}/>
-                    </div>
-                    <div className="social_block_white">
+
+                    <div className="social block white">
                         <ElementVideo mini={true} owner={'user'} owner_id={userId} access={access}/>
                     </div>
-                    <div className="social_block_white">
+                    <div className="social block white">
                         <ElementArticle mini={true} owner={'user'}  owner_id={userId} access={access}/>
                     </div>
-                    <div className="social_block_white">
+                    <div className="social block white">
                         <ElementTopic mini={true} owner={'user'} owner_id={userId} access={access}/>
                     </div>
-                    <div className="social_block_white">
+                    <div className="social block white">
                         <ElementPost mini={true} owner={'user'} owner_id={userId} access={access}/>
                     </div>
 
