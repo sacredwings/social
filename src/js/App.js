@@ -6,7 +6,7 @@ import { loadReCaptcha }  from 'recaptcha-v3-react-function-async';
 import 'bootstrap'; // подключаем бутстрап
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import '../sass/style.sass';
+import '../sass/index.sass';
 //import 'video-react/dist/video-react.css';
 
 //import Processes from "./system/Processes";
@@ -115,7 +115,7 @@ class App extends Component {
                 <MenuTop/>
 
                 {/* сайт */}
-                <div className="container social" style={{maxWidth: '992px'}}>
+                <div className="container main" style={{maxWidth: '992px'}}>
                     <div className="row">
 
                         {/* левое меню */}

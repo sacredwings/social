@@ -8,7 +8,7 @@ import ElementPost from "../element/Post";
 import ElementArticle from "../element/article/ArticleBlock";
 import FriendButton from "../element/friend/FriendButton";
 import {connect} from "react-redux";
-import '../../sass/social.sass';
+//import '../../sass/social.sass';
 
 function User (props) {
     let [user, setUser] = useState(null)
@@ -47,14 +47,14 @@ function User (props) {
         if (userId === Number (props.myUser.id)) access = true
 
         return (
-            <div className="row"> {/* главнай класс */}
+            <div className="row user"> {/* главнай класс */}
                 <div className="col-lg-4">
 
                     {/* аватарка блок */}
                     <div className="social block" style={{padding: 0}}>
 
                         <div className="shadow">
-                            <img  className="social_personal_photo" src={user.photo ? `${global.urlServer}/${user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
+                            <img  className="user-photo" src={user.photo ? `${global.urlServer}/${user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
                         </div>
 
                     </div>
@@ -88,17 +88,13 @@ function User (props) {
                     <div className="social block white social_block_info">
                         <div className="row">
                             <div className="col-lg-12 block-white">
-                                <h1 className="social_name">{user.first_name} {user.last_name}</h1>
+                                <h1 className="user-name">{user.first_name} {user.last_name}</h1>
 
                             </div>
                         </div>
                     </div>
 
-                    <div className="social block white">
-                        <ElementPost mini={true} owner={'user'} owner_id={userId} access={access}/>
-                    </div>
-
-
+                    <ElementPost mini={true} owner={'user'} owner_id={userId} access={access}/>
 
                 </div>
             </div>

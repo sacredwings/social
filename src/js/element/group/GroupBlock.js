@@ -64,7 +64,7 @@ function Group (props) {
     }
 
     return (
-        <div className="social block block-mini white">
+        <div className="social block widget white">
 
             <div className="header">
                 <h3>Группы</h3>
