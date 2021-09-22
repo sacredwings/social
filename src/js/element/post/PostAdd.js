@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import axios from "axios";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 //import AddFile from "../objects/AddFile";
-import AddFile from "../object/AddFile";
+import AddFile from "../../object/AddFile";
 
 function PostAdd (props) {
     let [form, setForm] = useState({

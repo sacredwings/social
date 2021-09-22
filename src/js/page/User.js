@@ -4,7 +4,7 @@ import ElementMessageAddModal from "../element/MessageAddModal";
 import ElementVideo from "../element/video/VideoBlock";
 import ElementTopic from "../element/topic/TopicBlock";
 import ElementGroup from "../element/group/GroupBlock";
-import ElementPost from "../element/Post";
+import ElementPost from "../element/post/PostBlock";
 import ElementArticle from "../element/article/ArticleBlock";
 import FriendButton from "../element/friend/FriendButton";
 import {connect} from "react-redux";

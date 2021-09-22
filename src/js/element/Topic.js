@@ -4,7 +4,6 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import TopicAdd from "../element/TopicAdd";
 import ElementFile from "../object/ElementFile";
-import PostAdd from "./PostAdd";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 function Topic (props) {
