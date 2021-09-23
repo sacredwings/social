@@ -111,10 +111,14 @@ function Post (props) {
             </div>)
         })}
 
-    return <div className="wall">
-        <div className="social block white add">
+    const ListAdd = () => {
+        return <div className="social block white add">
             <PostAdd owner_id={props.owner_id}/>
         </div>
+    }
+
+    return <div className="wall">
+        {(props.access) ? ListAdd() : null}
 
         {(response.items.length) ? List(response.items) : null}
     </div>
