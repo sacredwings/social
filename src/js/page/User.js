@@ -94,7 +94,7 @@ function User (props) {
                         </div>
                     </div>
 
-                    <ElementPost mini={true} owner={'user'} owner_id={userId} access={access}/>
+                    <ElementPost owner={'user'} owner_id={userId} access={access}/>
 
                 </div>
             </div>

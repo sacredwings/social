@@ -1,13 +1,13 @@
 import React, {useState, useEffect, useReducer} from 'react';
 import axios from "axios";
 import ElementMessageAddModal from "../element/MessageAddModal";
-import ElementVideo from "../element/Video";
-import ElementTopic from "../element/Topic";
-import ElementGroup from "../element/Group";
-import ElementPost from "../element/Post";
-import ElementArticle from "../element/Article";
+import ElementVideo from "../element/video/VideoBlock";
+import ElementTopic from "../element/topic/TopicBlock";
+import ElementPost from "../element/post/PostBlock";
+import ElementArticle from "../element/article/ArticleBlock";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
+import FriendButton from "../element/friend/FriendButton";
 
 function User (props) {
     let [user, setUser] = useState(null)
@@ -39,38 +39,46 @@ function User (props) {
     function User(group) {
 
         let access = false
-        if (group.create_id === props.myUser.id) access = true //создатель это я
+        if (Number (group.create_id) === Number (props.myUser.id)) access = true //создатель это я
 
         return (
 
-            <div className="row">
-                <div className="col-lg-9">
-                    <div className="row">
-                        <div className="col-lg-12 block-white">
-                            <h1 className="display-6">{group.title}</h1>
+            <div className="row user">
+                <div className="col-lg-8">
 
-                        </div>
-                    </div>
+                    <div className="social block white social_block_info">
+                        <div className="row">
+                            <div className="col-lg-12 block-white">
+                                <h1 className="user-name">{group.title}</h1>
 
-                    <ElementVideo mini={true} owner={'group'} owner_id={-group.id} access={access}/>
-                    <ElementArticle mini={true} owner={'group'} owner_id={-group.id} access={access}/>
-                    <ElementTopic mini={true} owner={'group'} owner_id={-group.id} access={access}/>
-                    <ElementPost mini={true} owner={'group'} owner_id={-group.id} access={access}/>
-
-                </div>
-                <div className="col-lg-3">
-
-                    <div className="row">
-                        <div className="col-lg-12">
-                            <div className="block-white">
-                                <img style={{maxWidth: "100%", borderRadius: '10px'}} src={group.photo ? `${global.urlServer}/${group.photo.url}` : "https://svgsilh.com/svg/479631.svg" }/>
                             </div>
                         </div>
                     </div>
-                    <div className="d-grid gap-2">
-                        {(access ? <Link to={`/group/settings_id${group.id}`} type="button" className="btn btn-primary btn-sm btn-block">Настройки</Link> : null)}
+
+                    <ElementPost owner={'group'} owner_id={-group.id} access={access}/>
+
+                </div>
+                <div className="col-lg-4">
+
+                    {/* аватарка блок */}
+                    <div className="social block" style={{padding: 0}}>
+
+                        <div className="shadow">
+                            <img  className="user-photo" src={user.photo ? `${global.urlServer}/${group.photo.url}` : "https://svgsilh.com/svg/479631.svg" }/>
+                        </div>
+
                     </div>
 
+                    {/* кнопки блок */}
+                    <div className="social block" style={{padding: 0}}>
+                        <div className="d-grid gap-2">
+                            {(access ? <Link to={`/group/settings_id${group.id}`} type="button" className="btn btn-primary btn-sm btn-block">Настройки</Link> : null)}
+                        </div>
+                    </div>
+
+                    <ElementVideo owner_id={-group.id} access={access} owner={'group'}/>
+                    <ElementArticle owner_id={-group.id} access={access} owner={'group'}/>
+                    <ElementTopic owner_id={-group.id} access={access} owner={'group'}/>
 
                 </div>
 
