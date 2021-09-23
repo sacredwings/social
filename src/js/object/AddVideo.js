@@ -41,7 +41,7 @@ function AddVideo (props) {
 
     return (
         <>
-            <button type="button" className="btn btn-success btn-sm social_file_add" data-bs-toggle="modal" data-bs-target={`#modalAddVideo${formCode}`}>+ видео</button>
+            <i className="far fa-file-video" data-bs-toggle="modal" data-bs-target={`#modalAddVideo${formCode}`}></i>
 
             <div className="modal fade" id={`modalAddVideo${formCode}`} tabIndex="-1" aria-labelledby={`modalAddVideo${formCode}`} aria-hidden="true">
 

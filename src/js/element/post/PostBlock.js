@@ -112,8 +112,8 @@ function Post (props) {
         })}
 
     return <div className="wall">
-        <div className="social block white">
-            <PostAdd owner_id={props.owner_id}/> : null}
+        <div className="social block white add">
+            <PostAdd owner_id={props.owner_id}/>
         </div>
 
         {(response.items.length) ? List(response.items) : null}

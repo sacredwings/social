@@ -80,9 +80,9 @@ function AddFile (props) {
             <AddPhoto SendFile={SendFile} SendId={SendId} />
             <AddVideo SendFile={SendFile} SendId={SendId} />
 
-            {((form.processBar >0) && (form.processBar <100)) ? <div className="mb-3"><p className="text-primary">Загружаю</p></div>:null}
-            {(form.processBar === 100) ? <div className="mb-3"><p className="text-success">Загружено</p></div>:null}
             <div className="progress">
+                {((form.processBar >0) && (form.processBar <100)) ? <div className="mb-3"><p className="text-primary">Загружаю</p></div>:null}
+                {(form.processBar === 100) ? <div className="mb-3"><p className="text-success">Загружено</p></div>:null}
                 <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style={{width: `${form.processBar}%`}} aria-valuenow={form.processBar} aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </div>

@@ -72,20 +72,18 @@ function PostAdd (props) {
     }
 
     const Form = () => {
-        return <form onSubmit={onFormSubmit} className="m-3">
+        return <form onSubmit={onFormSubmit} className="">
 
             <div className="mb-3">
-                <label htmlFor="inputText" className="form-label">Текст</label>
-                <textarea className="form-control" id="inputText" rows="5" onChange={onChangeText} value={form.inputText}></textarea>
+                <textarea className="form-control" id="inputText" rows="5" placeholder="Что у вас нового ?" onChange={onChangeText} value={form.inputText}></textarea>
             </div>
             <div className="row">
                 <div className="col-12">
                     <AddFile ArFileIds={ArFileIds}/>
                 </div>
             </div>
-            <br/>
 
-            <button type="submit" className="btn btn-primary">Добавить</button>
+            <button type="submit" className="btn btn-primary btn-sm">Добавить</button>
 
         </form>
     }
