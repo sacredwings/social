@@ -64,13 +64,32 @@ function Post (props) {
 
     }
 
-    const ElementFiles = (files) => {
+    const ListFiles = (files) => {
 
         if (!files) return null
 
+        let classFile = "col-lg-12"
+
+        switch (files.length) {
+            case 1:
+                classFile = "col-lg-12"
+                break;
+            case 2:
+                classFile = "col-lg-6"
+                break;
+            case 3:
+                classFile = "col-lg-4"
+                break;
+            case 4:
+                classFile = "col-lg-3"
+                break;
+            default:
+                classFile = "col-lg-3"
+        }
+
         return <>
             { files.map((file, i) => {
-                return <div key={i} className="col-md-4">
+                return <div key={i} className={classFile}>
                     <ElementFile  file={file}/>
                 </div>
             })}
@@ -105,7 +124,7 @@ function Post (props) {
 
                 <p> {item.text}</p>
                 <div className="row">
-                    {item.file_ids ? ElementFiles(item.file_ids) : null}
+                    {item.file_ids ? ListFiles(item.file_ids) : null}
                 </div>
 
             </div>)
