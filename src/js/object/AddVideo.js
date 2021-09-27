@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
+import VideoPostModalAdd from "../element/video/VideoPostModalAdd";
 import axios from "axios";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
@@ -27,12 +28,13 @@ function AddVideo (props) {
     const onChangeFiles = (e) => {
         props.SendFile(e.target.files)
 
+        window.$(`#modalAddVideo${formCode}`).modal("hide")
         //setForm(prev => ({...prev, files: e.target.files}))
         console.log(e.target.files)
     }
 
-    const onChangeId = (e) => {
-
+    const SelectVideoId = (ids) => {
+        props.SendId([ids])
     }
 
     const onFormClose = (e) => {
@@ -55,14 +57,12 @@ function AddVideo (props) {
                             </div>
                             <div className="modal-body">
 
-                                <div className="mb-3 form-file">
-                                    <input type="file" className="form-file-input" id="inputFile" onChange={onChangeFiles} multiple={true} accept="video/mp4"/>
-                                    <label className="form-file-label" htmlFor="inputFile">
-                                        <span className="form-file-text">Выберите файлы...</span>
-                                        <span className="form-file-button">Обзор</span>
-                                    </label>
+                                <div className="mb-3">
+                                    <label htmlFor="formFileSm" className="form-label">Выберите видео...</label>
+                                    <input className="form-control form-control-sm" id="formFileSm" type="file" onChange={onChangeFiles} multiple={true} accept="video/mp4"/>
                                 </div>
-
+                                <hr/>
+                                <VideoPostModalAdd owner_id={props.owner_id} owner={'user'} SelectVideoId={SelectVideoId}/>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal"

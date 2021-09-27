@@ -11,7 +11,7 @@ function PostAdd (props) {
         add: false,
         err: false
     })
-    let [fileIds, setFileIds] = useState('')
+    let [fileIds, setFileIds] = useState([])
 
     const ArFileIds = (arIds) => {
         setFileIds(prev => ([
@@ -79,7 +79,12 @@ function PostAdd (props) {
             </div>
             <div className="row">
                 <div className="col-12">
-                    <AddFile ArFileIds={ArFileIds}/>
+                    <AddFile ArFileIds={ArFileIds} owner_id={props.owner_id}/>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-12">
+                    <p>Прикреплено файлов: {fileIds.length}</p>
                 </div>
             </div>
 

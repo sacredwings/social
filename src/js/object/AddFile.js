@@ -70,15 +70,17 @@ function AddFile (props) {
         props.ArFileIds(result.data.response)
     }
 
-    const SendId = (e) => {
+    const SendId = (ids) => {
+        console.log(ids)
         //передача id файлов родителю
+        props.ArFileIds(ids)
     }
 
     return (
         <div>
 
-            <AddPhoto SendFile={SendFile} SendId={SendId} />
-            <AddVideo SendFile={SendFile} SendId={SendId} />
+            <AddPhoto SendFile={SendFile} SendId={SendId} owner_id={props.owner_id}/>
+            <AddVideo SendFile={SendFile} SendId={SendId} owner_id={props.owner_id}/>
 
             <div className="progress">
                 {((form.processBar >0) && (form.processBar <100)) ? <div className="mb-3"><p className="text-primary">Загружаю</p></div>:null}
