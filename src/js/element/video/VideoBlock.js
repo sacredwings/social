@@ -76,7 +76,7 @@ function Group (props) {
                 <h3><Link to={linkUrl.current}>Видео</Link></h3>
                 <p className="count">{response.count}</p>
                 {props.access ? <a type="button" href="#" className="add" data-bs-toggle="modal" data-bs-target="#modalVideoAdd">Добавить</a> : null}
-                <VideoAddModal />
+                <VideoAddModal owner_id={props.owner_id}/>
             </div>
 
 
