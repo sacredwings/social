@@ -35,6 +35,8 @@ function AddVideo (props) {
 
     const SelectVideoId = (ids) => {
         props.SendId([ids])
+
+        window.$(`#modalAddVideo${formCode}`).modal("hide")
     }
 
     const onFormClose = (e) => {

@@ -8,7 +8,7 @@ import ElementFile from "../../object/ElementFile";
 function Group (props) {
     //запрос
     let [response, setResponse] = useState({
-        step: 2,
+        step: 10,
         count: 0,
         items: [],
     })
