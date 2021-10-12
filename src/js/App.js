@@ -36,6 +36,7 @@ import VideoId from "./page/VideoId";
 import ArticleId from "./page/ArticleId";
 import Search from "./page/Search";
 import Friend from "./page/friend/friend";
+import VideoAll from "./page/video/Video";
 
 /*
 import Reg from "./pages/Reg";
@@ -133,6 +134,8 @@ class App extends Component {
 
                                 <Route exact path="/topic/id:id" component={TopicId} />
                                 <Route exact path="/video/id:id" component={VideoId} />
+                                <Route exact path="/video" component={VideoAll} />
+
                                 <Route exact path="/article/id:id" component={ArticleId} />
 
                                 <Route exact path="/:owner/id:id/video" component={Video} />
@@ -140,6 +143,7 @@ class App extends Component {
 
                                 <Route exact path="/:owner/id:id/article" component={Article} />
                                 <Route exact path="/:owner/id:id/article/album_id:album_id" component={Article} />
+
 
                                 <Route exact path="/search/" component={Search} />
 
