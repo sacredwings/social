@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
-import AlbumArticle from "../element/AlbumArticle";
+import AlbumArticle from "../element/article/ArticleAlbum";
 import ElementArticle from "../element/Article";
 
 const Access = async (props) => {
