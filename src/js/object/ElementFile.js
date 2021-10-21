@@ -36,6 +36,9 @@ export default (props) => {
         //файла нет - выход
         if (!file) return null
 
+        console.log('111111111')
+        console.log(file)
+
         if ((file.type === 'video/mp4') || (file.type === 'video/avi'))
             return Video(file)
 

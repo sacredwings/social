@@ -6,7 +6,8 @@ import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 function AlbumAddModal (props) {
     let formDefault = {
-        file: null,
+        inputFileImg: null,
+        inputFileVideo: null,
         //album_id: null,
         inputTitle: '',
         inputText: '',
@@ -26,7 +27,11 @@ function AlbumAddModal (props) {
     }
 
     const onChangeFile = (e) => {
-        setForm(prev => ({...prev, file:e.target.files[0]}))
+        let name = e.target.id;
+
+        setForm(prev => ({
+            ...prev, [name]: e.target.files[0]
+        }))
     }
 
     const onChangeText = (e) => {
@@ -48,11 +53,18 @@ function AlbumAddModal (props) {
         const url = '/api/album/add';
         const formData = new FormData();
 
-        formData.append('file', form.file)
         formData.append('title', form.inputTitle)
         formData.append('text', form.inputText)
         formData.append('gtoken', gtoken)
-        formData.append('module', 'video')
+        formData.append('module', props.module)
+
+        //файл есть
+        if (form.inputFileImg)
+            formData.append('file_img', form.inputFileImg)
+
+        //файл есть
+        if (form.inputFileVideo)
+            formData.append('file_video', form.inputFileVideo)
 
         if (form.album_id)
             formData.append('album_id', form.album_id)
@@ -101,14 +113,17 @@ function AlbumAddModal (props) {
                         <div className="modal-body">
 
                             <p>Выберите видео файл на своем устройстве</p>
-                            <div className="mb-3 form-file">
-                                <input type="file" className="form-file-input" id="inputFile"
-                                       onChange={onChangeFile}/>
-                                <label className="form-file-label" htmlFor="inputFile">
-                                    <span className="form-file-text">Выберите файл...</span>
-                                    <span className="form-file-button">Обзор</span>
-                                </label>
+
+                            <div className="mb-3">
+                                <label htmlFor="inputFile" className="form-label">Картинка (значек)</label>
+                                <input className="form-control form-control-sm" id="inputFileImg" type="file" onChange={onChangeFile}/>
                             </div>
+
+                            <div className="mb-3">
+                                <label htmlFor="inputFile" className="form-label">Видео (значек)</label>
+                                <input className="form-control form-control-sm" id="inputFileVideo" type="file" onChange={onChangeFile}/>
+                            </div>
+
                             <div className="mb-3">
                                 <label htmlFor="inputTitle" className="form-label">Название</label>
                                 <input type="text" className="form-control" id="inputTitle"

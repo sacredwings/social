@@ -5,6 +5,7 @@ import axios from "axios";
 import AlbumAddModal from "../element/AlbumAddModal";
 import {Link} from "react-router-dom";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import ElementFile from "../object/ElementFile";
 
 function AlbumVideo (props) {
     let formDedault = {
@@ -148,7 +149,7 @@ function AlbumVideo (props) {
         let id = (props.owner_id>0) ? props.owner_id : -props.owner_id
 
         return <>
-            <img src={(image_id) ? `${global.urlServer}/${image_id.url}` : `https://elk21.ru/assets/images/34534535.jpg`} style={{width: '100%'}}/>
+            <ElementFile file={image_id}/>
             <p className="card-text">
                 <Link to={`/${owner}/id${id}/video/album_id${video_id}`} >{video_title}</Link>
             </p>
@@ -188,7 +189,7 @@ function AlbumVideo (props) {
     const Form = () => {
         return (
             <>
-                <AlbumAddModal owner_id={props.owner_id}/>
+                <AlbumAddModal owner_id={props.owner_id} module={'video'}/>
 
                 <div className="row">
                     <div className="col-lg-12 block-white">

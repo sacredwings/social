@@ -5,6 +5,7 @@ import axios from "axios";
 import AlbumAddModal from "../../element/AlbumAddModal";
 import {Link} from "react-router-dom";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import ElementFile from "../../object/ElementFile";
 
 function AlbumArticle (props) {
     let [form, setForm] = useState({
@@ -104,14 +105,13 @@ function AlbumArticle (props) {
         })
     }
 
-    const ElementAlbum = (image_id, video_id, video_title) => {
+    const ElementAlbum = (image_id, video_id, video_title, video) => {
         let owner = (props.owner_id>0) ? 'user' : 'group'
         let id = (props.owner_id>0) ? props.owner_id : -props.owner_id
 
-        return (<div className="list-group-item list-group-item-action">
-                <div className="row">
+        return (<div className="row">
                     <div className="col-lg-4">
-                        <img src={(image_id) ? `${global.urlServer}/${image_id.url}` : `https://elk21.ru/assets/images/34534535.jpg`} style={{width: '100%'}}/>
+                        <ElementFile file={image_id}/>
                     </div>
                     <div className="col-lg-8">
                         <Link to={`/${owner}/id${id}/article/album_id${video_id}`} className="">{video_title}</Link>
@@ -119,17 +119,14 @@ function AlbumArticle (props) {
                             {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id)}>Редактировать</button>}
                         </p>
                     </div>
-                </div>
-            </div>
-
-            )
+                </div>)
     }
 
     const ListVideo = (arAlbums) => {
         return (
             <div className="list-group">
                 { arAlbums.map(function (video, i) {
-                    return ( <div className="" key={i}>
+                    return ( <div className="list-group-item list-group-item-action" key={i}>
                         {(formEdit === video.id) ? FormEdit(formId) : ElementAlbum(video.image_id, video.id, video.title)}
                     </div>)
                 })}
@@ -155,8 +152,12 @@ function AlbumArticle (props) {
         formData.append('gtoken', gtoken)
 
         //файл есть
-        if (form.inputFile)
-            formData.append('file', form.inputFile)
+        if (form.inputFileImg)
+            formData.append('fileImg', form.inputFileImg)
+
+        //файл есть
+        if (form.inputFileVideo)
+            formData.append('fileVideo', form.inputFileVideo)
 
         axios.post(url, formData, {
 
@@ -175,11 +176,14 @@ function AlbumArticle (props) {
         return <>
             <form onSubmit={onFormSubmitFile}>
 
-                Редактирование
-
                 <div className="mb-3">
                     <label htmlFor="inputFile" className="form-label">Картинка (значек)</label>
-                    <input className="form-control form-control-sm" id="inputFile" type="file" onChange={onChangeFile}/>
+                    <input className="form-control form-control-sm" id="inputFileImg" type="file" onChange={onChangeFile}/>
+                </div>
+
+                <div className="mb-3">
+                    <label htmlFor="inputFile" className="form-label">Видео (значек)</label>
+                    <input className="form-control form-control-sm" id="inputFileVideo" type="file" onChange={onChangeFile}/>
                 </div>
 
                 <div className="mb-3">
@@ -201,7 +205,7 @@ function AlbumArticle (props) {
 
     return (
         <>
-            <AlbumAddModal owner_id={props.owner_id}/>
+            <AlbumAddModal owner_id={props.owner_id} module={'article'}/>
 
             <div className="row">
                 <div className="col-lg-12 block-white">
