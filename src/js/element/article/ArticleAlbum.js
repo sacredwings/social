@@ -153,11 +153,11 @@ function AlbumArticle (props) {
 
         //файл есть
         if (form.inputFileImg)
-            formData.append('fileImg', form.inputFileImg)
+            formData.append('file_img', form.inputFileImg)
 
         //файл есть
         if (form.inputFileVideo)
-            formData.append('fileVideo', form.inputFileVideo)
+            formData.append('file_video', form.inputFileVideo)
 
         axios.post(url, formData, {
 
