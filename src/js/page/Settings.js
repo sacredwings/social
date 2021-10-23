@@ -10,11 +10,17 @@ function Settings (props) {
         err: null,
         errText: '',
 
-        file: null,
+        inputFilePhoto: null,
+        inputFileBigPhoto: null,
+        inputFileBigVideo: null,
 
         processBarLoaded: 0,
         processBarTotal: 0,
-        processBar: 0
+        processBar: 0,
+
+        processBarLoadedBig: 0,
+        processBarTotalBig: 0,
+        processBarBig: 0
     }
     let [form, setForm] = useState(formDefault)
 
@@ -123,11 +129,10 @@ function Settings (props) {
 
     //АВА
     const onChangeFile = (e) => {
-        setForm(prevState => ({
-            ...prevState,
-            ...{
-                file:e.target.files[0]
-            }
+        let name = e.target.id;
+
+        setForm(prev => ({
+            ...prev, [name]:e.target.files[0]
         }))
     }
 
@@ -139,7 +144,7 @@ function Settings (props) {
         const url = '/api/account/setPhoto';
         const formData = new FormData();
 
-        formData.append('file', form.file)
+        formData.append('file', form.inputFilePhoto)
         formData.append('gtoken', gtoken)
 
         axios.post(url, formData, {
@@ -155,6 +160,38 @@ function Settings (props) {
                     setForm(prevState => ({
                         ...prevState,
                         ...{processBar: percentage, processBarLoaded: progressEvent.loaded, processBarTotal: progressEvent.total}
+                    }))
+                }
+                // Do whatever you want with the native progress event
+            },
+        })
+    }
+
+    const onSavePhotoBig = async (e) => {
+        e.preventDefault() // Stop form submit
+
+        let gtoken = await reCaptchaExecute(global.gappkey, 'setting')
+
+        const url = '/api/account/setPhotoBig';
+        const formData = new FormData();
+
+        formData.append('file_img', form.inputFileBigPhoto)
+        formData.append('file_video', form.inputFileBigVideo)
+        formData.append('gtoken', gtoken)
+
+        axios.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            onUploadProgress: function (progressEvent) {
+                console.log(progressEvent)
+                if (progressEvent.lengthComputable) {
+                    let percentage = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
+                    console.log(progressEvent.loaded + ' ' + progressEvent.total + ' ' + percentage);
+
+                    setForm(prevState => ({
+                        ...prevState,
+                        ...{processBarBig: percentage, processBarLoadedBig: progressEvent.loaded, processBarTotalBig: progressEvent.total}
                     }))
                 }
                 // Do whatever you want with the native progress event
@@ -218,21 +255,45 @@ function Settings (props) {
 
                     <div className="card mt-3">
                         <div className="card-header">
-                            Изменить аватар
+                            Фото
                         </div>
                         <div className="card-body">
                             <form onSubmit={onSavePhoto}>
-                                <div className="mb-3 form-file">
-                                    <input type="file" className="form-file-input" id="inputFile" onChange={onChangeFile}/>
-                                    <label className="form-file-label" htmlFor="inputFile">
-                                        <span className="form-file-text">Выберите файл...</span>
-                                        <span className="form-file-button">Обзор</span>
-                                    </label>
+
+                                <div className="mb-3">
+                                    <input className="form-control form-control-sm" id="inputFilePhoto" type="file" onChange={onChangeFile}/>
                                 </div>
+
                                 {((form.processBar >0) && (form.processBar <100)) ? <div className="mb-3"><p className="text-primary">Загружаю</p></div>:null}
                                 {(form.processBar === 100) ? <div className="mb-3"><p className="text-success">Загружено</p></div>:null}
                                 <div className="progress">
                                     <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style={{width: `${form.processBar}%`}} aria-valuenow={form.processBar} aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <br/>
+                                <button type="submit" className="btn btn-primary">Сохранить</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div className="card mt-3">
+                        <div className="card-header">
+                            Большое фото/видео
+                        </div>
+                        <div className="card-body">
+                            <form onSubmit={onSavePhotoBig}>
+
+                                <div className="mb-3">
+                                    <input className="form-control form-control-sm" id="inputFileBigPhoto" type="file" onChange={onChangeFile}/>
+                                </div>
+
+                                <div className="mb-3">
+                                    <input className="form-control form-control-sm" id="inputFileBigVideo" type="file" onChange={onChangeFile}/>
+                                </div>
+
+                                {((form.processBarBig >0) && (form.processBarBig <100)) ? <div className="mb-3"><p className="text-primary">Загружаю</p></div>:null}
+                                {(form.processBarBig === 100) ? <div className="mb-3"><p className="text-success">Загружено</p></div>:null}
+                                <div className="progress">
+                                    <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style={{width: `${form.processBarBig}%`}} aria-valuenow={form.processBarBig} aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                                 <br/>
                                 <button type="submit" className="btn btn-primary">Сохранить</button>
