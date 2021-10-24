@@ -8,6 +8,7 @@ import ElementPost from "../element/post/PostBlock";
 import ElementArticle from "../element/article/ArticleBlock";
 import FriendButton from "../element/friend/FriendButton";
 import {connect} from "react-redux";
+import ElementFile from "../object/ElementFile";
 //import '../../sass/social.sass';
 
 function User (props) {
@@ -48,6 +49,7 @@ function User (props) {
 
         return (
             <div className="row user"> {/* главнай класс */}
+
                 <div className="col-lg-4">
 
                     {/* аватарка блок */}
@@ -87,6 +89,11 @@ function User (props) {
 
                     <div className="social block white social_block_info">
                         <div className="row">
+
+                            <div className="col-lg-12">
+                                <ElementFile file={user.photo_big}/>
+                            </div>
+
                             <div className="col-lg-12 block-white">
                                 <h1 className="user-name">{user.first_name} {user.last_name}</h1>
 

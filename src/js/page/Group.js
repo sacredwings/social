@@ -8,6 +8,7 @@ import ElementArticle from "../element/article/ArticleBlock";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import FriendButton from "../element/friend/FriendButton";
+import ElementFile from "../object/ElementFile";
 
 function User (props) {
     let [user, setUser] = useState(null)
@@ -48,6 +49,10 @@ function User (props) {
 
                     <div className="social block white social_block_info">
                         <div className="row">
+                            <div className="col-lg-12">
+                                <ElementFile file={group.photo_big}/>
+                            </div>
+
                             <div className="col-lg-12 block-white">
                                 <h1 className="user-name">{group.title}</h1>
 
