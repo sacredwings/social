@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
-import axios from "axios";
-
-import AlbumAddModal from "../../element/AlbumAddModal";
 import {Link} from "react-router-dom";
-import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import axios from "axios";
+import ArticleAdd from "../../element/AddArticle";
 import ElementFile from "../../object/ElementFile";
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import AlbumAddModal from "../AlbumAddModal";
 
-function AlbumArticle (props) {
+function Article (props) {
     let [form, setForm] = useState({
         id: null
     })
@@ -15,15 +15,30 @@ function AlbumArticle (props) {
         step: 6,
         count: 0,
         items: [],
+        users: []
     })
+    /*
+    //запрос
+    let [response, setResponse] = useState({
+        offset: 0, //смещение для запроса
+        count: (props.mini) ? 4 : 20, //количество элементов в запросе
+        itemsCount: 0, //количество записей в результате запроса
+        items: [],
+        arUsers: []
+    })*/
+
+    //показ формы ввода
+    let [formViewer, setFormViewer] = useState(false)
+    let ownerId = useRef(Number (props.owner_id))
+    let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/article`)
 
     let [formEdit, setFormEdit] = useState(null)
     let [formId, setFormId] = useState(null)
 
     //отслеживаем изменение props
-    useEffect(async () => {
-        await Get(true)
-    }, [props.album_id])
+    useEffect (async ()=>{
+        await Get(true) //с обнулением
+    }, [props])
 
     const onChangeFile = (e) => {
         let name = e.target.id;
@@ -50,10 +65,11 @@ function AlbumArticle (props) {
     }
 
     const Get = async (start) => {
+
         let offset = 0
         if (!start)
             offset = response.items.length
-        
+
         let owner_id = props.owner_id; /* из прямой передачи */
 
         if (!props.owner_id) { /* из url */
@@ -64,18 +80,19 @@ function AlbumArticle (props) {
 
         let fields = {
             params: {
-                module: 'article',
                 owner_id: owner_id,
                 offset: offset,
                 count: response.step,
-                album_id: props.album_id
             }
         }
 
-        const url = `/api/album/get`;
+        //альбом существует
+        if (props.album_id)
+            fields.params = fields.album_id
+
+        let url = `/api/article/get`;
 
         let result = await axios.get(url, fields);
-
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
 
@@ -86,41 +103,31 @@ function AlbumArticle (props) {
                 items: (start) ? result.response.items : [...prev.items, ...result.response.items],
                 //users: [...prev.arUsers, ...result.response.users],
             }}))
+
         /*
-        setForm(prevState => ({...prevState, ...{
-                response: result.response,
-                arAlbums: (start) ? result.response.items : [...form.arAlbums, ...result.response.items],
-                offset: (start) ? prevState.offset : prevState.offset + prevState.count
-            }}))
-            */
-
+        setResponse(prev => ({...prev, ...{
+                offset: (start) ? response.count : prev.offset + response.count,
+                itemsCount: result.response.count,
+                items: (start) ? result.response.items : [...prev.items, ...result.response.items],
+                arUsers: [...prev.arUsers, ...result.response.users],
+            }}))*/
     }
-
-    /*
-    const List = (arr) => {
-        return arr.map(function (article, i, arGroup) {
-            return ( <div className="group" key={i}>
-                <Link to={`/article/id${article.id}`} className="">{article.title}</Link>
-
-            </div>)
-        })
-    }*/
 
     const ElementAlbum = (image_id, video_id, video_title, video) => {
         let owner = (props.owner_id>0) ? 'user' : 'group'
         let id = (props.owner_id>0) ? props.owner_id : -props.owner_id
 
         return (<div className="row">
-                    <div className="col-lg-4">
-                        <ElementFile file={image_id}/>
-                    </div>
-                    <div className="col-lg-8">
-                        <Link to={`/${owner}/id${id}/article/album_id${video_id}`} className="">{video_title}</Link>
-                        <p>
-                            {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id)}>Редактировать</button>}
-                        </p>
-                    </div>
-                </div>)
+            <div className="col-lg-4">
+                <ElementFile file={image_id}/>
+            </div>
+            <div className="col-lg-8">
+                <Link to={`/article/id${video_id}`} className="">{video_title}</Link>
+                <p>
+                    {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id)}>Редактировать</button>}
+                </p>
+            </div>
+        </div>)
     }
 
     const List = (arAlbums) => {
@@ -142,7 +149,7 @@ function AlbumArticle (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'article')
 
-        const url = '/api/album/edit';
+        const url = '/api/article/edit';
         const formData = new FormData();
 
         console.log(form)
@@ -170,8 +177,6 @@ function AlbumArticle (props) {
 
         await Get()
     }
-
-
 
     const FormEdit = (album) => {
         return <>
@@ -204,34 +209,32 @@ function AlbumArticle (props) {
         </>
     }
 
+
+
     return (
         <>
-            <AlbumAddModal owner_id={props.owner_id} module={'article'}/>
-
             <div className="row">
                 <div className="col-lg-12 block-white">
-
                     <p className="h3">
-                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAlbumAdd">+</button> : null} Категории со статьями
+                        {props.access ?
+                            <button type="button" className="btn btn-success btn-sm" onClick={()=>{setFormViewer(!formViewer)}}>{(formViewer) ? `-` : `+`}</button>
+                            : null
+                        }&#160;
+                        Статьи
                     </p>
 
-                    {(response.items.length) ? List(response.items) : <p>Категорий нет</p>}
+                    {(props.access && formViewer)  ? <ArticleAdd owner_id={props.owner_id}/> : null}&#160;
 
-                    {(response.items.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>Get()}>еще категории ...</button> : null}
+                    {(response.items.length) ? List(response.items) : <p>Статей нет</p>}
+
+                    {(response.items.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>Get()}>еще ...</button> : null}
 
                 </div>
             </div>
-            <hr />
         </>
     )
 }
-/*
 
-
-
-
-
-* */
 export default connect (
     state => ({
         myUser: state.myUser,
@@ -239,5 +242,5 @@ export default connect (
     dispatch => ({
 
     })
-)(AlbumArticle);
+)(Article);
 
