@@ -9,7 +9,11 @@ import AlbumAddModal from "../AlbumAddModal";
 
 function Article (props) {
     let [form, setForm] = useState({
-        id: null
+        id: null,
+        title: ',',
+        processBarLoaded: 0,
+        processBarTotal: 0,
+        processBar: 0
     })
     let [response, setResponse] = useState({
         step: 6,
@@ -17,23 +21,11 @@ function Article (props) {
         items: [],
         users: []
     })
-    /*
-    //запрос
-    let [response, setResponse] = useState({
-        offset: 0, //смещение для запроса
-        count: (props.mini) ? 4 : 20, //количество элементов в запросе
-        itemsCount: 0, //количество записей в результате запроса
-        items: [],
-        arUsers: []
-    })*/
 
     //показ формы ввода
     let [formViewer, setFormViewer] = useState(false)
     let ownerId = useRef(Number (props.owner_id))
     let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/article`)
-
-    let [formEdit, setFormEdit] = useState(null)
-    let [formId, setFormId] = useState(null)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -57,10 +49,12 @@ function Article (props) {
         }))
     }
 
-    const onChangeForm = (id) => {
-        setFormEdit(id)
+    const onChangeForm = (id, name) => {
         setForm(prevState => ({
-            ...prevState, ...{id: id}
+            ...prevState, ...{
+                id: id,
+                title: name
+            }
         }))
     }
 
@@ -103,14 +97,6 @@ function Article (props) {
                 items: (start) ? result.response.items : [...prev.items, ...result.response.items],
                 //users: [...prev.arUsers, ...result.response.users],
             }}))
-
-        /*
-        setResponse(prev => ({...prev, ...{
-                offset: (start) ? response.count : prev.offset + response.count,
-                itemsCount: result.response.count,
-                items: (start) ? result.response.items : [...prev.items, ...result.response.items],
-                arUsers: [...prev.arUsers, ...result.response.users],
-            }}))*/
     }
 
     const ElementAlbum = (image_id, video_id, video_title, video) => {
@@ -124,7 +110,7 @@ function Article (props) {
             <div className="col-lg-8">
                 <Link to={`/article/id${video_id}`} className="">{video_title}</Link>
                 <p>
-                    {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id)}>Редактировать</button>}
+                    {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
                 </p>
             </div>
         </div>)
@@ -135,7 +121,7 @@ function Article (props) {
             <div className="list-group">
                 { arAlbums.map(function (video, i) {
                     return ( <div className="list-group-item list-group-item-action" key={i}>
-                        {(formEdit === video.id) ? FormEdit(formId) : ElementAlbum(video.image_id, video.id, video.title)}
+                        {(form.id === video.id) ? ElementEdit() : ElementAlbum(video.image_id, video.id, video.title)}
                     </div>)
                 })}
             </div>
@@ -145,8 +131,6 @@ function Article (props) {
     const onFormSubmitFile = async (e) => {
         e.preventDefault() // Stop form submit
 
-        onChangeForm(null)
-
         let gtoken = await reCaptchaExecute(global.gappkey, 'article')
 
         const url = '/api/article/edit';
@@ -155,8 +139,7 @@ function Article (props) {
         console.log(form)
 
         formData.append('id', form.id)
-        formData.append('title', form.inputTitle)
-        //formData.append('text', form.text)
+        formData.append('title', form.title)
         formData.append('gtoken', gtoken)
 
         //файл есть
@@ -172,13 +155,29 @@ function Article (props) {
             headers: {
                 'Content-Type': 'multipart/form-data'
             },
+            onUploadProgress: function (progressEvent) {
+                console.log(progressEvent)
+                if (progressEvent.lengthComputable) {
+                    let percentage = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
+                    console.log(progressEvent.loaded + ' ' + progressEvent.total + ' ' + percentage);
 
+                    if (percentage === 100) onChangeForm(null, '')
+
+                    setForm(prev => ({...prev, ...{
+                            processBarLoaded: progressEvent.loaded,
+                            processBarTotal: progressEvent.total,
+                            processBar: percentage
+                        }}))
+
+                }
+                // Do whatever you want with the native progress event
+            },
         })
 
         await Get()
     }
 
-    const FormEdit = (album) => {
+    const ElementEdit = () => {
         return <>
             <form onSubmit={onFormSubmitFile}>
 
@@ -194,17 +193,22 @@ function Article (props) {
 
                 <div className="mb-3">
                     <label htmlFor="inputTitle" className="form-label">Название</label>
-                    <input type="text" className="form-control" id="inputTitle"
-                           onChange={onChangeText} value={form.inputTitle}/>
+                    <input type="text" className="form-control" id="title"
+                           onChange={onChangeText} value={form.title}/>
                 </div>
 
                 <div className="">
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => onChangeForm(null)}>Отмена</button>
+                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => onChangeForm(null, '')}>Отмена</button>
                     <button type="submit" className="btn btn-primary" >
                         Сохранить
                     </button>
                 </div>
 
+                <div className="progress">
+                    {((form.processBar >0) && (form.processBar <100)) ? <div className="mb-3"><p className="text-primary">Загружаю</p></div>:null}
+                    {(form.processBar === 100) ? <div className="mb-3"><p className="text-success">Загружено</p></div>:null}
+                    <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style={{width: `${form.processBar}%`}} aria-valuenow={form.processBar} aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
             </form>
         </>
     }
