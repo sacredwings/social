@@ -16,7 +16,7 @@ function Article (props) {
         processBar: 0
     })
     let [response, setResponse] = useState({
-        step: 6,
+        step: 20,
         count: 0,
         items: [],
         users: []
@@ -76,13 +76,15 @@ function Article (props) {
             params: {
                 owner_id: owner_id,
                 offset: offset,
-                count: response.step,
+                count: response.step
             }
         }
 
+        console.log(props.album_id)
+
         //альбом существует
         if (props.album_id)
-            fields.params = fields.album_id
+            fields.params.album_id = props.album_id
 
         let url = `/api/article/get`;
 

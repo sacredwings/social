@@ -16,7 +16,7 @@ function AlbumArticle (props) {
         processBar: 0
     })
     let [response, setResponse] = useState({
-        step: 6,
+        step: 20,
         count: 0,
         items: [],
     })
