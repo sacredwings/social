@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import VideoAddModal from "../element/VideoAddModal";
 import ElementVideo from '../element/Video';
-import AlbumVideo from "../element/AlbumVideo";
+import AlbumVideo from "../element/video/VideoAlbum";
 
 const Access = async (props) => {
 

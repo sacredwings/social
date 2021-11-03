@@ -7,7 +7,7 @@ import {Link} from "react-router-dom";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import ElementFile from "../../object/ElementFile";
 
-function AlbumArticle (props) {
+function AlbumVideo (props) {
     let [form, setForm] = useState({
         id: null,
         title: ',',
@@ -56,7 +56,7 @@ function AlbumArticle (props) {
         let offset = 0
         if (!start)
             offset = response.items.length
-        
+
         let owner_id = props.owner_id; /* из прямой передачи */
 
         if (!props.owner_id) { /* из url */
@@ -67,7 +67,7 @@ function AlbumArticle (props) {
 
         let fields = {
             params: {
-                module: 'article',
+                module: 'video',
                 owner_id: owner_id,
                 offset: offset,
                 count: response.step,
@@ -99,16 +99,16 @@ function AlbumArticle (props) {
         }
 
         return (<div className="row">
-                    <div className="col-lg-12">
-                        <ElementFile file={image_id} attributes={attributes}/>
-                    </div>
-                    <div className="col-lg-12">
-                        <Link to={`/${owner}/id${id}/article/album_id${video_id}`} className="">{video_title}</Link>
-                        <p>
-                            {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
-                        </p>
-                    </div>
-                </div>)
+            <div className="col-lg-12">
+                <ElementFile file={image_id} attributes={attributes}/>
+            </div>
+            <div className="col-lg-12">
+                <Link to={`/${owner}/id${id}/video/album_id${video_id}`} className="">{video_title}</Link>
+                <p>
+                    {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
+                </p>
+            </div>
+        </div>)
     }
 
     const List = (arAlbums) => {
@@ -142,7 +142,7 @@ function AlbumArticle (props) {
     const onFormSubmitFile = async (e) => {
         e.preventDefault() // Stop form submit
 
-        let gtoken = await reCaptchaExecute(global.gappkey, 'article')
+        let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
         const url = '/api/album/edit';
         const formData = new FormData();
@@ -260,5 +260,5 @@ export default connect (
     dispatch => ({
 
     })
-)(AlbumArticle);
+)(AlbumVideo);
 

@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {useParams} from "react-router-dom";
 
 export default (props) => {
 
@@ -14,11 +15,17 @@ export default (props) => {
         if (file.file_id)
             url = `${global.urlServer}/${file.file_id.url}`
 
-        return (
-            <video controls style={style} preload="none" poster={url}>
-                <source src={`${global.urlServer}/${file.url}`} type={file.type}/>
-            </video>
-        )
+        let attributes = {
+            autoplay: false,
+            muted: false
+        }
+
+        if ((props.attributes) && (props.attributes.autoplay)) attributes.autoplay = props.attributes.autoplay
+        if ((props.attributes) && (props.attributes.muted)) attributes.muted = props.attributes.muted
+
+        return <video controls style={style} preload="none" poster={url} autoplay={attributes.autoplay} muted={attributes.muted}>
+            <source src={`${global.urlServer}/${file.url}`} type={file.type}/>
+        </video>
     }
 
     const Image = (file) => {
@@ -35,9 +42,6 @@ export default (props) => {
 
         //файла нет - выход
         if (!file) return null
-
-        console.log('111111111')
-        console.log(file)
 
         if ((file.type === 'video/mp4') || (file.type === 'video/avi'))
             return Video(file)
