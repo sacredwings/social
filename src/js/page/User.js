@@ -47,6 +47,10 @@ function User (props) {
         let access = false
         if (userId === Number (props.myUser.id)) access = true
 
+        let attributes = {
+            autoplay: 'autoplay',
+            muted: 'muted'
+        }
         return (
             <div className="row user"> {/* главнай класс */}
 
@@ -91,7 +95,7 @@ function User (props) {
                         <div className="row">
 
                             <div className="col-lg-12">
-                                <ElementFile file={user.photo_big}/>
+                                <ElementFile file={user.photo_big} attributes={attributes}/>
                             </div>
 
                             <div className="col-lg-12 block-white">

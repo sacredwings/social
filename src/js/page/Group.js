@@ -42,6 +42,10 @@ function User (props) {
         let access = false
         if (Number (group.create_id) === Number (props.myUser.id)) access = true //создатель это я
 
+        let attributes = {
+            autoplay: 'autoplay',
+            muted: 'muted'
+        }
         return (
 
             <div className="row user">
@@ -50,7 +54,7 @@ function User (props) {
                     <div className="social block white social_block_info">
                         <div className="row">
                             <div className="col-lg-12">
-                                <ElementFile file={group.photo_big}/>
+                                <ElementFile file={group.photo_big} attributes={attributes}/>
                             </div>
 
                             <div className="col-lg-12 block-white">
