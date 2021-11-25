@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
 
@@ -20,6 +20,13 @@ function AlbumVideo (props) {
         count: 0,
         items: [],
     })
+
+    let urlOwner = useRef('user')
+    let urlOwnerId = useRef(props.user_id)
+    if (props.group_id) {
+        urlOwner.current = 'group'
+        urlOwnerId.current = props.group_id
+    }
 
     //отслеживаем изменение props
     useEffect(async () => {
@@ -43,10 +50,12 @@ function AlbumVideo (props) {
         }))
     }
 
-    const onChangeForm = (id, name) => {
+    const onChangeForm = (_id, name) => {
+        console.log(_id)
+        console.log(name)
         setForm(prevState => ({
             ...prevState, ...{
-                id: id,
+                id: _id,
                 title: name
             }
         }))
@@ -57,27 +66,31 @@ function AlbumVideo (props) {
         if (!start)
             offset = response.items.length
 
-        let owner_id = props.owner_id; /* из прямой передачи */
-
-        if (!props.owner_id) { /* из url */
-            owner_id = props.match.params.id
-            if (props.match.params.owner === 'group')
-                owner_id = -owner_id
-        }
-
-        let fields = {
+        let arFields = {
             params: {
                 module: 'video',
-                owner_id: owner_id,
                 offset: offset,
                 count: response.step,
-                album_id: props.album_id
             }
         }
 
+        if ((!props.group_id) && (!props.user_id)) { /* из url */
+            if (props.group_id) arFields.params.group_id = props.match.params.id
+            if (props.user_id) arFields.params.user_id = props.match.params.id
+        } else {
+            if (props.group_id) arFields.params.group_id = props.group_id
+            if (props.user_id) arFields.params.user_id = props.user_id
+        }
+
+        //альбом существует
+        if (props.album_id)
+            arFields.params.album_id = props.album_id
+
         const url = `/api/album/get`;
 
-        let result = await axios.get(url, fields);
+        console.log(arFields)
+        console.log(url)
+        let result = await axios.get(url, arFields);
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
 
@@ -90,9 +103,7 @@ function AlbumVideo (props) {
             }}))
     }
 
-    const ElementAlbum = (image_id, video_id, video_title, video) => {
-        let owner = (props.owner_id>0) ? 'user' : 'group'
-        let id = (props.owner_id>0) ? props.owner_id : -props.owner_id
+    const ElementAlbum = (_image_id, _video_id, video_title, video) => {
         let attributes = {
             autoplay: 'autoplay',
             muted: 'muted'
@@ -100,12 +111,12 @@ function AlbumVideo (props) {
 
         return (<div className="row">
             <div className="col-lg-12">
-                <ElementFile file={image_id} attributes={attributes}/>
+                <ElementFile file={_image_id} attributes={attributes}/>
             </div>
             <div className="col-lg-12">
-                <Link to={`/${owner}/id${id}/video/album_id${video_id}`} className="">{video_title}</Link>
+                <Link to={`/${urlOwner.current}/id${urlOwnerId.current}/article/album_id${_video_id}`} className="">{video_title}</Link>
                 <p>
-                    {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
+                    {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(_video_id, video_title)}>Редактировать</button>}
                 </p>
             </div>
         </div>)
@@ -122,18 +133,6 @@ function AlbumVideo (props) {
                             </div>
                         </div>
                     </div>
-                })}
-            </div>
-        )
-    }
-
-    const List1 = (arAlbums) => {
-        return (
-            <div className="list-group">
-                { arAlbums.map(function (video, i) {
-                    return ( <div className="list-group-item list-group-item-action" key={i}>
-                        {(form.id === video.id) ? ElementEdit() : ElementAlbum(video.image_id, video.id, video.title)}
-                    </div>)
                 })}
             </div>
         )
@@ -227,18 +226,18 @@ function AlbumVideo (props) {
 
     return (
         <>
-            <AlbumAddModal owner_id={props.owner_id} module={'article'}/>
+            <AlbumAddModal user_id={props.user_id} group_id={props.group_id} module={'video'}/>
 
             <div className="row">
                 <div className="col-lg-12 block-white">
 
                     <p className="h3">
-                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAlbumAdd">+</button> : null} Категории со статьями
+                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAlbumAdd">+</button> : null} Альбомы с видео
                     </p>
 
                     {(response.items.length) ? List(response.items) : <p>Категорий нет</p>}
 
-                    {(response.items.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>Get()}>еще категории ...</button> : null}
+                    {(response.items.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>Get()}>еще альбомы ...</button> : null}
 
                 </div>
             </div>

@@ -13,12 +13,13 @@ function Group (props) {
         items: [],
     })
 
-    let ownerId = useRef(Number (props.owner_id))
-    let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
-
-    //let [access, setAccess] = useState(false)
-    //let ownerId = useRef(Number (props.owner_id))
-    //let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
+    let urlOwner = useRef('user')
+    let urlOwnerId = useRef(props.user_id)
+    if (props.group_id) {
+        urlOwner.current = 'group'
+        urlOwnerId.current = props.group_id
+    }
+    let urlLink = useRef(`/${urlOwner.current}/id${urlOwnerId.current}/video`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -30,11 +31,24 @@ function Group (props) {
         if (!start)
             offset = response.items.length
 
-        let owner_id = props.owner_id;
+        let arFields = {
+            params: {
+                offset: offset,
+                count: response.step
+            }
+        }
 
-        const url = `/api/video/get?owner_id=${owner_id}&offset=${offset}&count=${response.step}`;
+        if ((!props.group_id) && (!props.user_id)) { /* из url */
+            if (props.group_id) arFields.params.group_id = props.match.params.id
+            if (props.user_id) arFields.params.user_id = props.match.params.id
+        } else {
+            if (props.group_id) arFields.params.group_id = props.group_id
+            if (props.user_id) arFields.params.user_id = props.user_id
+        }
 
-        let result = await axios.get(url);
+        const url = `/api/video/get`
+
+        let result = await axios.get(url, arFields);
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
@@ -58,7 +72,7 @@ function Group (props) {
                                 </video> */}
 
                 <p className="card-text">
-                    <Link to={`/video/id${video.id}`} >{video.title}</Link>
+                    <Link to={`/video/id${video._id}`} >{video.title}</Link>
                 </p>
 
             </div>)
@@ -73,10 +87,10 @@ function Group (props) {
         <div className="social block widget white">
 
             <div className="header">
-                <h3><Link to={linkUrl.current}>Видео</Link></h3>
+                <h3><Link to={urlLink.current}>Видео</Link></h3>
                 <p className="count">{response.count}</p>
                 {props.access ? <a type="button" href="#" className="add" data-bs-toggle="modal" data-bs-target="#modalVideoAdd">Добавить</a> : null}
-                <VideoAddModal owner_id={props.owner_id} module={'video'}/>
+                <VideoAddModal user_id={props.user_id} group_id={props.group_id}/>
             </div>
 
 

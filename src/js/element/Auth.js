@@ -35,7 +35,7 @@ function Auth (props) {
             //ответ со всеми значениями
             if ((!result.err) && (result.response)) {
                 //запоминаем состояние
-                props.Store_myUser(result.response.id, result.response.login, result.response.tid, result.response.token, form.remember);
+                props.Store_myUser(result.response._id, result.response.login, result.response.tid, result.response.token, form.remember);
                 window.location.reload()
                 //this.props.history.push('/accounts')
             } else {

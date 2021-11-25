@@ -40,12 +40,12 @@ function User (props) {
 
     function User(userId) {
 
-        userId = Number (userId);
+        //userId = Number (userId);
         /*if (!user_id)
             user_id = props.myUser.id;*/
 
         let access = false
-        if (userId === Number (props.myUser.id)) access = true
+        if (userId === props.myUser.id) access = true
 
         let attributes = {
             autoplay: 'autoplay',
@@ -60,7 +60,7 @@ function User (props) {
                     <div className="social block" style={{padding: 0}}>
 
                         <div className="shadow">
-                            <img  className="user-photo" src={user.photo ? `${global.urlServer}/${user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
+                            <img  className="user-photo" src={user._photo ? `${global.urlServer}/${user._photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg" }/>
                         </div>
 
                     </div>
@@ -81,10 +81,10 @@ function User (props) {
 
                     </div>
 
-                    <ElementGroup owner_id={userId} access={access}/>
-                    <ElementVideo owner_id={userId} access={access} owner={'user'}/>
-                    <ElementArticle owner_id={userId} access={access} owner={'user'}/>
-                    <ElementTopic owner_id={userId} access={access} owner={'user'}/>
+                    <ElementGroup user_id={userId} access={access}/>
+                    <ElementVideo user_id={userId} access={access}/>
+                    <ElementArticle user_id={userId} access={access}/>
+                    <ElementTopic user_id={userId} access={access}/>
 
                 </div>
 
@@ -95,7 +95,7 @@ function User (props) {
                         <div className="row">
 
                             <div className="col-lg-12">
-                                <ElementFile file={user.photo_big} attributes={attributes}/>
+                                <ElementFile file={user._photo_big} attributes={attributes}/>
                             </div>
 
                             <div className="col-lg-12 block-white">
@@ -105,7 +105,7 @@ function User (props) {
                         </div>
                     </div>
 
-                    <ElementPost owner={'user'} owner_id={userId} access={access}/>
+                    <ElementPost user_id={userId} access={access}/>
 
                 </div>
             </div>

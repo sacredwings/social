@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
 
@@ -10,7 +10,7 @@ import ElementFile from "../../object/ElementFile";
 function AlbumArticle (props) {
     let [form, setForm] = useState({
         id: null,
-        title: ',',
+        title: '',
         processBarLoaded: 0,
         processBarTotal: 0,
         processBar: 0
@@ -20,6 +20,13 @@ function AlbumArticle (props) {
         count: 0,
         items: [],
     })
+
+    let urlOwner = useRef('user')
+    let urlOwnerId = useRef(props.user_id)
+    if (props.group_id) {
+        urlOwner.current = 'group'
+        urlOwnerId.current = props.group_id
+    }
 
     //отслеживаем изменение props
     useEffect(async () => {
@@ -43,10 +50,12 @@ function AlbumArticle (props) {
         }))
     }
 
-    const onChangeForm = (id, name) => {
+    const onChangeForm = (_id, name) => {
+        console.log(_id)
+        console.log(name)
         setForm(prevState => ({
             ...prevState, ...{
-                id: id,
+                id: _id,
                 title: name
             }
         }))
@@ -56,28 +65,30 @@ function AlbumArticle (props) {
         let offset = 0
         if (!start)
             offset = response.items.length
-        
-        let owner_id = props.owner_id; /* из прямой передачи */
 
-        if (!props.owner_id) { /* из url */
-            owner_id = props.match.params.id
-            if (props.match.params.owner === 'group')
-                owner_id = -owner_id
-        }
-
-        let fields = {
+        let arFields = {
             params: {
                 module: 'article',
-                owner_id: owner_id,
                 offset: offset,
-                count: response.step,
-                album_id: props.album_id
+                count: response.step
             }
         }
 
+        if ((!props.group_id) && (!props.user_id)) { /* из url */
+            if (props.group_id) arFields.params.group_id = props.match.params.id
+            if (props.user_id) arFields.params.user_id = props.match.params.id
+        } else {
+            if (props.group_id) arFields.params.group_id = props.group_id
+            if (props.user_id) arFields.params.user_id = props.user_id
+        }
+
+        //альбом существует
+        if (props.album_id)
+            arFields.params.album_id = props.album_id
+
         const url = `/api/album/get`;
 
-        let result = await axios.get(url, fields);
+        let result = await axios.get(url, arFields);
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
 
@@ -90,9 +101,7 @@ function AlbumArticle (props) {
             }}))
     }
 
-    const ElementAlbum = (image_id, video_id, video_title, video) => {
-        let owner = (props.owner_id>0) ? 'user' : 'group'
-        let id = (props.owner_id>0) ? props.owner_id : -props.owner_id
+    const ElementAlbum = (_image_id, _video_id, video_title, video) => {
         let attributes = {
             autoplay: 'autoplay',
             muted: 'muted'
@@ -100,12 +109,12 @@ function AlbumArticle (props) {
 
         return (<div className="row">
                     <div className="col-lg-12">
-                        <ElementFile file={image_id} attributes={attributes}/>
+                        <ElementFile file={_image_id} attributes={attributes}/>
                     </div>
                     <div className="col-lg-12">
-                        <Link to={`/${owner}/id${id}/article/album_id${video_id}`} className="">{video_title}</Link>
+                        <Link to={`/${urlOwner.current}/id${urlOwnerId.current}/article/album_id${_video_id}`} className="">{video_title}</Link>
                         <p>
-                            {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
+                            {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(_video_id, video_title)}>Редактировать</button>}
                         </p>
                     </div>
                 </div>)
@@ -118,22 +127,10 @@ function AlbumArticle (props) {
                     return <div className="col-md-4" key={i}>
                         <div className="card">
                             <div className="card-body">
-                                {(form.id === video.id) ? ElementEdit() : ElementAlbum(video.image_id, video.id, video.title)}
+                                {(form.id === video._id) ? ElementEdit() : ElementAlbum(video._image_id, video._id, video.title)}
                             </div>
                         </div>
                     </div>
-                })}
-            </div>
-        )
-    }
-
-    const List1 = (arAlbums) => {
-        return (
-            <div className="list-group">
-                { arAlbums.map(function (video, i) {
-                    return ( <div className="list-group-item list-group-item-action" key={i}>
-                        {(form.id === video.id) ? ElementEdit() : ElementAlbum(video.image_id, video.id, video.title)}
-                    </div>)
                 })}
             </div>
         )
@@ -227,7 +224,7 @@ function AlbumArticle (props) {
 
     return (
         <>
-            <AlbumAddModal owner_id={props.owner_id} module={'article'}/>
+            <AlbumAddModal user_id={props.user_id} group_id={props.group_id} module={'article'}/>
 
             <div className="row">
                 <div className="col-lg-12 block-white">

@@ -18,10 +18,10 @@ function User (props) {
         await Get(props.match.params.id);
     }, [props.match.params.id])
 
-    async function Get (userId) {
+    async function Get (groupId) {
 
         //запрос
-        let result = await axios.get(`/api/group/getById?ids=${userId}`, {});
+        let result = await axios.get(`/api/group/getById?ids=${groupId}`, {});
         console.log(result)
         result = result.data;
 
@@ -40,7 +40,7 @@ function User (props) {
     function User(group) {
 
         let access = false
-        if (Number (group.create_id) === Number (props.myUser.id)) access = true //создатель это я
+        if (group.create_id === props.myUser.id) access = true //создатель это я
 
         let attributes = {
             autoplay: 'autoplay',
@@ -54,7 +54,7 @@ function User (props) {
                     <div className="social block white social_block_info">
                         <div className="row">
                             <div className="col-lg-12">
-                                <ElementFile file={group.photo_big} attributes={attributes}/>
+                                <ElementFile file={group._photo_big} attributes={attributes}/>
                             </div>
 
                             <div className="col-lg-12 block-white">
@@ -64,7 +64,7 @@ function User (props) {
                         </div>
                     </div>
 
-                    <ElementPost owner={'group'} owner_id={-group.id} access={access}/>
+                    <ElementPost group_id={group._id} access={access}/>
 
                 </div>
                 <div className="col-lg-4">
@@ -73,7 +73,7 @@ function User (props) {
                     <div className="social block" style={{padding: 0}}>
 
                         <div className="shadow">
-                            <img  className="user-photo" src={user.photo ? `${global.urlServer}/${group.photo.url}` : "https://svgsilh.com/svg/479631.svg" }/>
+                            <img  className="user-photo" src={user._photo ? `${global.urlServer}/${group._photo.url}` : "https://svgsilh.com/svg/479631.svg" }/>
                         </div>
 
                     </div>
@@ -81,13 +81,13 @@ function User (props) {
                     {/* кнопки блок */}
                     <div className="social block" style={{padding: 0}}>
                         <div className="d-grid gap-2">
-                            {(access ? <Link to={`/group/settings_id${group.id}`} type="button" className="btn btn-primary btn-sm btn-block">Настройки</Link> : null)}
+                            {(access ? <Link to={`/group/settings_id${group._id}`} type="button" className="btn btn-primary btn-sm btn-block">Настройки</Link> : null)}
                         </div>
                     </div>
 
-                    <ElementVideo owner_id={-group.id} access={access} owner={'group'}/>
-                    <ElementArticle owner_id={-group.id} access={access} owner={'group'}/>
-                    <ElementTopic owner_id={-group.id} access={access} owner={'group'}/>
+                    <ElementVideo group_id={group._id} access={access}/>
+                    <ElementArticle group_id={group._id} access={access}/>
+                    <ElementTopic group_id={group._id} access={access}/>
 
                 </div>
 

@@ -26,11 +26,18 @@ function Group (props) {
         if (!start)
             offset = response.items.length
 
-        let owner_id = props.owner_id;
+        let arFields = {
+            params: {
+                offset: offset,
+                count: response.step
+            }
+        }
+        if (props.group_id) arFields.params.group_id = props.group_id
+        if (props.user_id) arFields.params.user_id = props.user_id
 
-        const url = `/api/group/get?owner_id=${owner_id}&offset=${offset}&count=${response.step}`;
+        const url = `/api/group/get`
 
-        let result = await axios.get(url);
+        let result = await axios.get(url, arFields);
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
@@ -47,13 +54,13 @@ function Group (props) {
     const List = (arr) => {
         return arr.map(function (group, i, arGroup) {
             return ( <div className="group" key={i}>
-                <Link to={`/group/id${group.id}`}>
+                <Link to={`/group/id${group._id}`}>
                     <div className="img">
                         <img src={group.photo ? `${global.urlServer}/${group.photo.url}` : "https://svgsilh.com/svg/479631.svg" } className="card-img-top" alt="..."/>
                     </div>
                 </Link>
 
-                <Link to={`/group/id${group.id}`}>{group.title}</Link>
+                <Link to={`/group/id${group._id}`}>{group.title}</Link>
 
             </div>)
         })

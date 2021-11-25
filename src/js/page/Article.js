@@ -49,27 +49,25 @@ function Article  (props) {
 
     let [access, setAccess] = useState(false)
 
-    let ownerId = useRef((props.match.params.owner === 'group') ? -props.match.params.id : props.match.params.id)
+    let userId = useRef((props.match.params.owner === 'user') ? props.match.params.id : null)
+    let groupId = useRef((props.match.params.owner === 'group') ? props.match.params.id : null)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
         setAccess(await Access(props))
-
-        console.log('props.match.params.album_id')
-        console.log(props.match.params.album_id)
-    }, [props.myUser.id])
+    }, [props.myUser._id])
 
     return (
         <>
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    <AlbumArticle access={access} owner_id={ownerId.current} album_id={props.match.params.album_id}/>
+                    <AlbumArticle access={access} user_id={userId.current} group_id={groupId.current} album_id={props.match.params.album_id}/>
                 </div>
             </div>
 
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    <ElementArticle owner={props.match.params.owner} owner_id={ownerId.current} album_id={props.match.params.album_id} access={access}/>
+                    <ElementArticle user_id={userId.current} group_id={groupId.current} album_id={props.match.params.album_id} access={access}/>
                 </div>
             </div>
         </>

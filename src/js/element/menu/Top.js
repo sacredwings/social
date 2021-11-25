@@ -18,7 +18,7 @@ function MenuTop (props) {
 
             if (result.data && result.data.response) {
                 let response = result.data.response;
-                props.login(response.id, response.login);
+                props.login(response._id, response.login);
             }
 
         } catch (err) {

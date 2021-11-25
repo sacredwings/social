@@ -2,12 +2,11 @@ import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
-import ArticleAdd from "../../element/AddArticle";
+import VideoAddModal from "./VideoAddModal";
 import ElementFile from "../../object/ElementFile";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-import AlbumAddModal from "../AlbumAddModal";
 
-function Article (props) {
+function Video (props) {
     let [form, setForm] = useState({
         id: null,
         title: '',
@@ -31,7 +30,7 @@ function Article (props) {
         urlOwner.current = 'group'
         urlOwnerId.current = props.group_id
     }
-    let urlLink = useRef(`/${urlOwner.current}/id${urlOwnerId.current}/article`)
+    let urlLink = useRef(`/${urlOwner.current}/id${urlOwnerId.current}/video`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -89,7 +88,7 @@ function Article (props) {
         if (props.album_id)
             arFields.params.album_id = props.album_id
 
-        let url = `/api/article/get`;
+        let url = `/api/video/get`
 
         let result = await axios.get(url, arFields);
         result = result.data;
@@ -104,13 +103,26 @@ function Article (props) {
             }}))
     }
 
-    const ElementAlbum = (_image_id, video_id, video_title, video) => {
+    const Delete = async (id) => {
+
+        let url = `/api/video/delete`;
+
+        let result = await axios.post(url, {id: id});
+
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
+
+        if (!result.response) return
+
+    }
+
+    const ElementAlbum = (video, video_id, video_title) => {
         //let owner = (props.owner_id>0) ? 'user' : 'group'
         //let id = (props.owner_id>0) ? props.owner_id : -props.owner_id
 
         return (<div className="row">
             <div className="col-lg-4">
-                <ElementFile file={_image_id}/>
+                <ElementFile file={video}/>
             </div>
             <div className="col-lg-8">
                 <Link to={`/article/id${video_id}`} >{video_title}</Link>
@@ -126,7 +138,7 @@ function Article (props) {
             <div className="list-group">
                 { arAlbums.map(function (video, i) {
                     return ( <div className="list-group-item list-group-item-action" key={i}>
-                        {(form.id === video._id) ? ElementEdit() : ElementAlbum(video._image_id, video._id, video.title)}
+                        {(form.id === video._id) ? ElementEdit() : ElementAlbum(video, video._id, video.title)}
                     </div>)
                 })}
             </div>
@@ -218,23 +230,43 @@ function Article (props) {
         </>
     }
 
+    const ListVideo1 = (arVideo) => {
+        return (
+            <div className="row">
+                { arVideo.map(function (video, i, arVideo) {
 
+                    return ( <div className="col-lg-6" key={i}>
+                        <div className="card">
+                            <div className="card-body">
+                                <ElementFile file={video}/>
+
+                                {/* <video controls style={{width: '100%'}} preload="none" poster={`${global.urlServer}/${video.file_id.url}`}>
+                                    <source src={`${global.urlServer}/${video.url}`} type={video.type}/>
+                                </video> */}
+
+                                <p className="card-text">
+                                    <Link to={`/video/id${video.id}`} >{video.title}</Link>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>)
+                })}
+            </div>
+        )
+    }
 
     return (
         <>
+            <VideoAddModal group_id={props.group_id} user_id={props.user_id}/>
+
             <div className="row">
                 <div className="col-lg-12 block-white">
                     <p className="h3">
-                        {props.access ?
-                            <button type="button" className="btn btn-success btn-sm" onClick={()=>{setFormViewer(!formViewer)}}>{(formViewer) ? `-` : `+`}</button>
-                            : null
-                        }&#160;
-                        Статьи
+                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalVideoAdd">+</button> : null}&#160;
                     </p>
 
-                    {(props.access && formViewer)  ? <ArticleAdd group_id={props.group_id} user_id={props.user_id}/> : null}&#160;
-
-                    {(response.items.length) ? List(response.items) : <p>Статей нет</p>}
+                    {(response.items.length) ? List(response.items) : <p>Видео нет</p>}
 
                     {(response.items.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>Get()}>еще ...</button> : null}
 
@@ -251,5 +283,4 @@ export default connect (
     dispatch => ({
 
     })
-)(Article);
-
+)(Video);
