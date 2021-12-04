@@ -56,7 +56,7 @@ function Group (props) {
             return ( <div className="group" key={i}>
                 <Link to={`/group/id${group._id}`}>
                     <div className="img">
-                        <img src={group.photo ? `${global.urlServer}/${group.photo.url}` : "https://svgsilh.com/svg/479631.svg" } className="card-img-top" alt="..."/>
+                        <img src={group._photo ? `${global.urlServer}/${group._photo.url}` : "https://svgsilh.com/svg/479631.svg" } className="card-img-top" alt="..."/>
                     </div>
                 </Link>
 

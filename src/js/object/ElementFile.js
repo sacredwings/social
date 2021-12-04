@@ -12,8 +12,8 @@ export default (props) => {
         let url = `https://elk21.ru/assets/images/34534535.jpg`
         let style = {width: '100%'}
 
-        if (file.file_id)
-            url = `${global.urlServer}/${file.file_id.url}`
+        if (file._file_id)
+            url = `${global.urlServer}/${file._file_id.url}`
 
         let attributes = {
             autoplay: false,
