@@ -114,7 +114,7 @@ function AlbumVideo (props) {
                 <ElementFile file={_image_id} attributes={attributes}/>
             </div>
             <div className="col-lg-12">
-                <Link to={`/${urlOwner.current}/id${urlOwnerId.current}/article/album_id${_video_id}`} className="">{video_title}</Link>
+                <Link to={`/${urlOwner.current}/id${urlOwnerId.current}/video/album_id${_video_id}`} className="">{video_title}</Link>
                 <p>
                     {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(_video_id, video_title)}>Редактировать</button>}
                 </p>
@@ -129,7 +129,7 @@ function AlbumVideo (props) {
                     return <div className="col-md-4" key={i}>
                         <div className="card">
                             <div className="card-body">
-                                {(form.id === video.id) ? ElementEdit() : ElementAlbum(video.image_id, video.id, video.title)}
+                                {(form.id === video.id) ? ElementEdit() : ElementAlbum(video._image_id, video._id, video.title)}
                             </div>
                         </div>
                     </div>
