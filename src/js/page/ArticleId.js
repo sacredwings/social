@@ -100,7 +100,7 @@ function ArticleId (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
-        const url = '/api/video/edit';
+        const url = '/api/article/edit';
         const formData = new FormData();
 
         console.log(video)

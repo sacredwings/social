@@ -125,7 +125,7 @@ function Video (props) {
                 <ElementFile file={video}/>
             </div>
             <div className="col-lg-8">
-                <Link to={`/article/id${video_id}`} >{video_title}</Link>
+                <Link to={`/video/id${video_id}`} >{video_title}</Link>
                 <p>
                     {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
                 </p>
@@ -148,9 +148,9 @@ function Video (props) {
     const onFormSubmitFile = async (e) => {
         e.preventDefault() // Stop form submit
 
-        let gtoken = await reCaptchaExecute(global.gappkey, 'article')
+        let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
-        const url = '/api/article/edit';
+        const url = '/api/video/edit';
         const formData = new FormData();
 
         console.log(form)

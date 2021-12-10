@@ -31,7 +31,7 @@ function VideoId (props) {
     //отслеживаем изменение props
     useEffect(async () => {
         await Get()
-        await GetAlbums()
+        //await GetAlbums()
     }, [])
 
     //получаем результат выбранных альбомов от checked
@@ -53,7 +53,7 @@ function VideoId (props) {
 
         setVideo(prev => ({...prev, ...result.response[0]}))
     }
-
+/*
     const GetAlbums = async (start) => {
         const url = `/api/video/getAlbums?owner_id=${props.owner_id}&offset=${video.offset}&count=${video.count}`;
 
@@ -71,7 +71,7 @@ function VideoId (props) {
                 arAlbums: (start) ? result.response.items : [...prev.arAlbums, ...result.response.items],
             }}))
     }
-
+*/
     const Element = (video) => {
         return <>
             <div className="row">
