@@ -81,7 +81,7 @@ function User (props) {
                     {/* кнопки блок */}
                     <div className="social block" style={{padding: 0}}>
                         <div className="d-grid gap-2">
-                            {(access ? <Link to={`/group/settings_id${group._id}`} type="button" className="btn btn-primary btn-sm btn-block">Настройки</Link> : null)}
+                            {(access ? <Link to={`/group/id${group._id}/settings`} type="button" className="btn btn-primary btn-sm btn-block">Настройки</Link> : null)}
                         </div>
                     </div>
 

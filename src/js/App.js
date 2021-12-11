@@ -72,7 +72,7 @@ class App extends Component {
             {path: '/settings', component: Settings},
             {path: '/messages/id:id', component: MessagesUserId},
             {path: '/messages', component: Messages},
-            {path: '/group/settings_id:id', component: GroupSettings},
+            {path: '/group/id:id/settings', component: GroupSettings},
             {path: '/friends', component: Friend},
 
         ];
