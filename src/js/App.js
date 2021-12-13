@@ -29,6 +29,7 @@ import NoPage from "./page/NoPage";
 import MessagesUserId from "./page/MessagesUserId";
 import Messages from "./page/Messages";
 import GroupSettings from "./page/GroupSettings";
+import GroupPay from "./page/group/pay";
 import RegActivate from "./page/RegActivate";
 import TopicId from "./page/TopicId";
 import Post from "./page/Post";
@@ -73,6 +74,7 @@ class App extends Component {
             {path: '/messages/id:id', component: MessagesUserId},
             {path: '/messages', component: Messages},
             {path: '/group/id:id/settings', component: GroupSettings},
+            {path: '/group/id:id/settings/pay', component: GroupPay},
             {path: '/friends', component: Friend},
 
         ];
