@@ -19,7 +19,7 @@ function Landing  (props) {
     }, [props.myUser.id])
 
     const GetCount = async () => {
-        let id = props.match.params.id;
+        //let id = props.match.params.id;
 
         const url = `/api/statistic/count`;
 
@@ -144,7 +144,7 @@ function Landing  (props) {
                     <div className="row" style={{width: 'max-content'}}>
                         <iframe
                             src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=%D0%9D%D0%B0%20%D1%80%D0%B0%D0%B7%D0%B2%D0%B8%D1%82%D0%B8%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0&targets-hint=&default-sum=100&button-text=11&hint=&successURL=http%3A%2F%2Furpravovoen.ru%2Fnavigation%2F&quickpay=shop&account=4100110634652084"
-                            width="422" height="223" frameBorder="0" allowTransparency="true" scrolling="no">
+                            width="422" height="223" frameBorder="0" allowtransparency="true" scrolling="no">
                         </iframe>
                     </div>
                 </div>

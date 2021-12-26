@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {BrowserRouter as Router, Route, Redirect, Switch, Link} from 'react-router-dom';
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import { loadReCaptcha }  from 'recaptcha-v3-react-function-async';
 
 import 'bootstrap'; // подключаем бутстрап
@@ -114,7 +114,7 @@ class App extends Component {
     render() {
         let auth = this.props.myUser.auth;
         return (
-            <Router>
+            <BrowserRouter>
                 <MenuTop/>
 
                 {/* сайт */}
@@ -128,38 +128,38 @@ class App extends Component {
 
                         {/* контент социальной сети */}
                         <div className="col-lg-10">
-                            <Switch>
-                                <Route exact path="/" component={Landing} />
+                            <Routes>
+                                <Route exact path="/" element={<Landing />} />
 
-                                <Route exact path="/user/id:id" component={User} />
-                                <Route exact path="/group/id:id" component={Group} />
+                                <Route exact path="/user/id:id" component={<User />} />
+                                <Route exact path="/group/id:id" component={<Group />} />
 
-                                <Route exact path="/topic/id:id" component={TopicId} />
-                                <Route exact path="/video/id:id" component={VideoId} />
-                                <Route exact path="/video" component={VideoAll} />
+                                <Route exact path="/topic/id:id" component={<TopicId />} />
+                                <Route exact path="/video/id:id" component={<VideoId />} />
+                                <Route exact path="/video" component={<VideoAll />} />
 
-                                <Route exact path="/article/id:id" component={ArticleId} />
+                                <Route exact path="/article/id:id" component={<ArticleId />} />
 
-                                <Route exact path="/:owner/id:id/video" component={Video} />
-                                <Route exact path="/:owner/id:id/video/album_id:album_id" component={Video} />
+                                <Route exact path="/:owner/id:id/video" component={<Video />} />
+                                <Route exact path="/:owner/id:id/video/album_id:album_id" component={<Video />} />
 
-                                <Route exact path="/:owner/id:id/article" component={Article} />
-                                <Route exact path="/:owner/id:id/article/album_id:album_id" component={Article} />
+                                <Route exact path="/:owner/id:id/article" component={<Article />} />
+                                <Route exact path="/:owner/id:id/article/album_id:album_id" component={<Article />} />
 
 
-                                <Route exact path="/search/" component={Search} />
+                                <Route exact path="/search/" component={<Search />} />
 
                                 {(auth) ? this.pageAuth() : this.pageNoAuth()}
 
-                                <Route component={NoPage} />
-                            </ Switch >
+                                <Route component={<NoPage />} />
+                            </ Routes >
                         </div>
 
                     </div>
                 </div>
 
             <Footer/>
-            </Router>
+            </BrowserRouter>
         )};
 }
 

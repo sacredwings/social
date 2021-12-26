@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from "react-dom";
+import { Provider } from 'react-redux'
 
 //
 //import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
@@ -7,7 +8,6 @@ import ReactDOM from 'react-dom';
 import 'fontawesome-free/css/all.min.css'
 
 //react-redux.js.org
-import { Provider } from 'react-redux'
 import store from './js/store'
 
 import App from './js/App';
@@ -17,7 +17,7 @@ import io from "./js/util/websocket";
 io.socket = io()
 
 const rootElement = document.getElementById('root');
-ReactDOM.render(
+render(
     <Provider store={store}>
         <App />
     </Provider>,

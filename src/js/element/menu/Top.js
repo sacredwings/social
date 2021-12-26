@@ -2,7 +2,7 @@ import React, {Component, useState, useEffect, useRef} from 'react';
 
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {withRouter} from 'react-router-dom';
+import {Routes} from 'react-router-dom';
 import axios from "axios";
 
 function MenuTop (props) {
@@ -101,4 +101,4 @@ export default connect (
             dispatch({type: 'USER_LOGOUT'});
         }
     })
-)(withRouter(MenuTop));
+)(MenuTop);
