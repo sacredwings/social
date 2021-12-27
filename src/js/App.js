@@ -70,12 +70,12 @@ class App extends Component {
     pageAuth () {
         //массив
         let pages = [
-            {path: '/settings', element: Settings},
-            {path: '/messages/id:id', element: MessagesUserId},
-            {path: '/messages', element: Messages},
-            {path: '/group/id:id/settings', element: GroupSettings},
-            {path: '/group/id:id/settings/pay', element: GroupPay},
-            {path: '/friends', element: Friend},
+            {path: '/settings', element: <Settings/>},
+            {path: '/messages/id:id', element: <MessagesUserId/>},
+            {path: '/messages', element: <Messages/>},
+            {path: '/group/id:id/settings', element: <GroupSettings/>},
+            {path: '/group/id:id/settings/pay', element: <GroupPay/>},
+            {path: '/friends', element: <Friend/>},
 
         ];
         //формирование
@@ -89,9 +89,9 @@ class App extends Component {
     pageNoAuth () {
         //массив
         let pages = [
-            {path: '/auth', element: Auth},
-            {path: '/reg', element: Reg},
-            {path: '/reg-activate/:code', element: RegActivate},
+            {path: '/auth', element: <Auth />},
+            {path: '/reg', element: <Reg />},
+            {path: '/reg-activate/:code', element: <RegActivate/>},
 
             /*
             {path: '/reg', component: Reg},

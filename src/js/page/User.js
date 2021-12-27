@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {useParams, Link} from 'react-router-dom'
-
+import {connect} from "react-redux";
 import axios from "axios";
+
 import ElementMessageAddModal from "../element/MessageAddModal";
 import ElementVideo from "../element/video/VideoBlock";
 import ElementTopic from "../element/topic/TopicBlock";
@@ -9,7 +10,7 @@ import ElementGroup from "../element/group/GroupBlock";
 import ElementPost from "../element/post/PostBlock";
 import ElementArticle from "../element/article/ArticleBlock";
 import FriendButton from "../element/friend/FriendButton";
-import {connect} from "react-redux";
+
 import ElementFile from "../object/ElementFile";
 //import '../../sass/social.sass';
 
@@ -58,7 +59,6 @@ function User (props) {
         }
         return (
             <div className="row user"> {/* главнай класс */}
-                <Link to={'/user/id618dff0f618cffb747080a0f'} >Другая ссылка</Link>
                 <div className="col-lg-4">
 
                     {/* аватарка блок */}
