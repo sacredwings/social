@@ -1,10 +1,11 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
+import {useParams, Link} from 'react-router-dom'
 import axios from "axios";
 import AlbumArticle from "../element/article/ArticleAlbum";
 import ElementArticle from "../element/article/Article";
 
+/*
 const Access = async (props) => {
 
     if (props.match.params.owner === 'user')
@@ -34,9 +35,10 @@ const AccessGroup = async (id) => {
         return 0
 
     return result.response[0].create_id
-}
+}*/
 
 function Article  (props) {
+    const { id, owner, album_id } = useParams()
 
     //запрос
     let [response, setResponse] = useState({
@@ -49,25 +51,25 @@ function Article  (props) {
 
     let [access, setAccess] = useState(false)
 
-    let userId = useRef((props.match.params.owner === 'user') ? props.match.params.id : null)
-    let groupId = useRef((props.match.params.owner === 'group') ? props.match.params.id : null)
+    let userId = useRef((owner === 'user') ? id : null)
+    let groupId = useRef((owner === 'group') ? id : null)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
-        setAccess(await Access(props))
+        //setAccess(await Access(props))
     }, [props.myUser._id])
 
     return (
         <>
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    <AlbumArticle access={access} user_id={userId.current} group_id={groupId.current} album_id={props.match.params.album_id}/>
+                    <AlbumArticle access={access} user_id={userId.current} group_id={groupId.current} album_id={album_id}/>
                 </div>
             </div>
 
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    <ElementArticle user_id={userId.current} group_id={groupId.current} album_id={props.match.params.album_id} access={access}/>
+                    <ElementArticle user_id={userId.current} group_id={groupId.current} album_id={album_id} access={access}/>
                 </div>
             </div>
         </>

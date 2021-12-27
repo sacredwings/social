@@ -1,4 +1,6 @@
-import React, {useState, useEffect, useReducer} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useParams, Link} from 'react-router-dom'
+
 import axios from "axios";
 import ElementMessageAddModal from "../element/MessageAddModal";
 import ElementVideo from "../element/video/VideoBlock";
@@ -11,13 +13,16 @@ import {connect} from "react-redux";
 import ElementFile from "../object/ElementFile";
 //import '../../sass/social.sass';
 
+//props.match.params
 function User (props) {
     let [user, setUser] = useState(null)
+    const { id } = useParams()
 
     //отслеживаем изменение props
     useEffect (async ()=>{
-        await Get(props.match.params.id);
-    }, [props.match.params.id])
+        console.log(props)
+        await Get(id);
+    }, [id])
 
     async function Get (userId) {
 
@@ -53,7 +58,7 @@ function User (props) {
         }
         return (
             <div className="row user"> {/* главнай класс */}
-
+                <Link to={'/user/id618dff0f618cffb747080a0f'} >Другая ссылка</Link>
                 <div className="col-lg-4">
 
                     {/* аватарка блок */}
@@ -115,7 +120,7 @@ function User (props) {
 
     return (
         <>
-            {(user ? User(props.match.params.id) : null)}
+            {(user ? User(id) : null)}
         </>
     );
 }

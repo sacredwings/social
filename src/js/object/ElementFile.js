@@ -23,7 +23,7 @@ export default (props) => {
         if ((props.attributes) && (props.attributes.autoplay)) attributes.autoplay = props.attributes.autoplay
         if ((props.attributes) && (props.attributes.muted)) attributes.muted = props.attributes.muted
 
-        return <video controls style={style} preload="none" poster={url} autoplay={attributes.autoplay} muted={attributes.muted}>
+        return <video controls style={style} preload="none" poster={url} autoPlay={attributes.autoplay} muted={attributes.muted}>
             <source src={`${global.urlServer}/${file.url}`} type={file.type}/>
         </video>
     }

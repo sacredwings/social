@@ -2,12 +2,13 @@ import React, {Component, useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import cookie from '../util/cookie';
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {useParams, Link} from 'react-router-dom'
 
 let style = {
     width: '100%'
 }
 function Landing  (props) {
+    const { id } = useParams()
     let [count, setCount] = useState({
         video: 0,
         user: 0
@@ -19,7 +20,7 @@ function Landing  (props) {
     }, [props.myUser.id])
 
     const GetCount = async () => {
-        //let id = props.match.params.id;
+        //let id = id;
 
         const url = `/api/statistic/count`;
 

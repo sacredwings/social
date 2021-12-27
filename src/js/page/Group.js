@@ -6,17 +6,18 @@ import ElementTopic from "../element/topic/TopicBlock";
 import ElementPost from "../element/post/PostBlock";
 import ElementArticle from "../element/article/ArticleBlock";
 import {connect} from "react-redux";
-import {Link} from "react-router-dom";
+import {useParams, Link} from 'react-router-dom'
 import FriendButton from "../element/friend/FriendButton";
 import ElementFile from "../object/ElementFile";
 
 function User (props) {
+    const { id } = useParams()
     let [user, setUser] = useState(null)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
-        await Get(props.match.params.id);
-    }, [props.match.params.id])
+        await Get(id);
+    }, [id])
 
     async function Get (groupId) {
 

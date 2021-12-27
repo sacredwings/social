@@ -70,17 +70,17 @@ class App extends Component {
     pageAuth () {
         //массив
         let pages = [
-            {path: '/settings', component: Settings},
-            {path: '/messages/id:id', component: MessagesUserId},
-            {path: '/messages', component: Messages},
-            {path: '/group/id:id/settings', component: GroupSettings},
-            {path: '/group/id:id/settings/pay', component: GroupPay},
-            {path: '/friends', component: Friend},
+            {path: '/settings', element: Settings},
+            {path: '/messages/id:id', element: MessagesUserId},
+            {path: '/messages', element: Messages},
+            {path: '/group/id:id/settings', element: GroupSettings},
+            {path: '/group/id:id/settings/pay', element: GroupPay},
+            {path: '/friends', element: Friend},
 
         ];
         //формирование
         pages = pages.map(function (page, i) {
-            return <Route exact key={i} path={page.path} component={page.component} />
+            return <Route exact key={i} path={page.path} element={page.element} />
         });
         //вывод
         return pages
@@ -89,9 +89,9 @@ class App extends Component {
     pageNoAuth () {
         //массив
         let pages = [
-            {path: '/auth', component: Auth},
-            {path: '/reg', component: Reg},
-            {path: '/reg-activate/:code', component: RegActivate},
+            {path: '/auth', element: Auth},
+            {path: '/reg', element: Reg},
+            {path: '/reg-activate/:code', element: RegActivate},
 
             /*
             {path: '/reg', component: Reg},
@@ -105,7 +105,7 @@ class App extends Component {
         ];
         //формирование
         pages = pages.map(function (page, i) {
-            return <Route key={i} path={page.path} component={page.component} />
+            return <Route key={i} path={page.path} element={page.element} />
         });
         //вывод
         return pages
@@ -131,27 +131,27 @@ class App extends Component {
                             <Routes>
                                 <Route exact path="/" element={<Landing />} />
 
-                                <Route exact path="/user/id:id" component={<User />} />
-                                <Route exact path="/group/id:id" component={<Group />} />
+                                <Route exact path="/user/id:id" element={<User />} />
+                                <Route exact path="/group/id:id" element={<Group />} />
 
-                                <Route exact path="/topic/id:id" component={<TopicId />} />
-                                <Route exact path="/video/id:id" component={<VideoId />} />
-                                <Route exact path="/video" component={<VideoAll />} />
+                                <Route exact path="/topic/id:id" element={<TopicId />} />
+                                <Route exact path="/video/id:id" element={<VideoId />} />
+                                <Route exact path="/video" element={<VideoAll />} />
 
-                                <Route exact path="/article/id:id" component={<ArticleId />} />
+                                <Route exact path="/article/id:id" element={<ArticleId />} />
 
-                                <Route exact path="/:owner/id:id/video" component={<Video />} />
-                                <Route exact path="/:owner/id:id/video/album_id:album_id" component={<Video />} />
+                                <Route exact path="/:owner/id:id/video" element={<Video />} />
+                                <Route exact path="/:owner/id:id/video/album_id:album_id" element={<Video />} />
 
-                                <Route exact path="/:owner/id:id/article" component={<Article />} />
-                                <Route exact path="/:owner/id:id/article/album_id:album_id" component={<Article />} />
+                                <Route exact path="/:owner/id:id/article" element={<Article />} />
+                                <Route exact path="/:owner/id:id/article/album_id:album_id" element={<Article />} />
 
 
-                                <Route exact path="/search/" component={<Search />} />
+                                <Route exact path="/search/" element={<Search />} />
 
                                 {(auth) ? this.pageAuth() : this.pageNoAuth()}
 
-                                <Route component={<NoPage />} />
+                                <Route element={<NoPage />} />
                             </ Routes >
                         </div>
 

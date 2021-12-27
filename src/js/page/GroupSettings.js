@@ -2,8 +2,10 @@ import React, {useState, useEffect, useReducer} from 'react';
 import axios from "axios";
 import {connect} from 'react-redux';
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import {useParams, Link} from 'react-router-dom'
 
 function GroupSettings (props) {
+    const { id } = useParams()
     let formDefault = {
         password: '',
         password_replay: '',
@@ -55,7 +57,7 @@ function GroupSettings (props) {
         const formData = new FormData();
 
         formData.append('file', form.inputFilePhoto)
-        formData.append('group_id', props.match.params.id)
+        formData.append('group_id', id)
         formData.append('gtoken', gtoken)
 
         axios.post(url, formData, {
@@ -88,7 +90,7 @@ function GroupSettings (props) {
 
         formData.append('file_img', form.inputFileBigPhoto)
         formData.append('file_video', form.inputFileBigVideo)
-        formData.append('group_id', props.match.params.id)
+        formData.append('group_id', id)
         formData.append('gtoken', gtoken)
 
         axios.post(url, formData, {

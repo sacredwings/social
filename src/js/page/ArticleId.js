@@ -5,8 +5,10 @@ import SelectAlbum from "../object/SelectAlbum";
 import Comment from "../element/Comment";
 import ElementFile from "../object/ElementFile";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import {useParams, Link} from 'react-router-dom'
 
 function ArticleId (props) {
+    const { id } = useParams()
     let [video, setVideo] = useState({
         title: '',
         text: '',
@@ -40,7 +42,7 @@ function ArticleId (props) {
     }
 
     const Get = async (event) => {
-        let id = props.match.params.id;
+        //let id = id;
 
         const url = `/api/article/getById?ids=${id}`;
 
