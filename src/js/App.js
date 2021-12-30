@@ -71,11 +71,11 @@ class App extends Component {
         //массив
         let pages = [
             {path: '/settings', element: <Settings/>},
-            {path: '/messages/id:id', element: <MessagesUserId/>},
-            {path: '/messages', element: <Messages/>},
+            //{path: '/messages/id:id', element: <MessagesUserId/>},
+            //{path: '/messages', element: <Messages/>},
             {path: '/group/id:id/settings', element: <GroupSettings/>},
             {path: '/group/id:id/settings/pay', element: <GroupPay/>},
-            {path: '/friends', element: <Friend/>},
+            //{path: '/friends', element: <Friend/>},
 
         ];
         //формирование
@@ -134,11 +134,11 @@ class App extends Component {
                                 <Route exact path="/user/id:id" element={<User />} />
                                 <Route exact path="/group/id:id" element={<Group />} />
 
-                                <Route exact path="/topic/id:id" element={<TopicId />} />
-                                <Route exact path="/video/id:id" element={<VideoId />} />
-                                <Route exact path="/video" element={<VideoAll />} />
-
+                                {/*<Route exact path="/topic/id:id" element={<TopicId />} />*/}
                                 <Route exact path="/article/id:id" element={<ArticleId />} />
+
+                                {/*<Route exact path="/video/id:id" element={<VideoId />} />*/}
+                                {/*<Route exact path="/video" element={<VideoAll />} />*/}
 
                                 <Route exact path="/:owner/id:id/video" element={<Video />} />
                                 <Route exact path="/:owner/id:id/video/album_id:album_id" element={<Video />} />
