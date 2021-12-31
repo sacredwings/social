@@ -2,8 +2,8 @@ import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import {useParams, Link} from 'react-router-dom'
 import axios from "axios";
-import AlbumArticle from "../element/article/ArticleAlbum";
-import ElementArticle from "../element/article/Article";
+import AlbumArticle from "../../element/article/ArticleAlbum";
+import ElementArticle from "../../element/article/Article";
 
 /*
 const Access = async (props) => {
@@ -57,7 +57,7 @@ function Article  (props) {
     //отслеживаем изменение props
     useEffect (async ()=>{
         //setAccess(await Access(props))
-    }, [props.myUser._id])
+    }, [])
 
     return (
         <>
@@ -69,7 +69,7 @@ function Article  (props) {
 
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    <ElementArticle user_id={userId.current} group_id={groupId.current} album_id={album_id} access={access}/>
+                    <ElementArticle access={access} user_id={userId.current} group_id={groupId.current} album_id={album_id}/>
                 </div>
             </div>
         </>

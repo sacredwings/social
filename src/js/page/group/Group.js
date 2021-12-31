@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useReducer} from 'react';
 import axios from "axios";
-import ElementMessageAddModal from "../element/MessageAddModal";
-import ElementVideo from "../element/video/VideoBlock";
-import ElementTopic from "../element/topic/TopicBlock";
-import ElementPost from "../element/post/PostBlock";
-import ElementArticle from "../element/article/ArticleBlock";
+//import ElementMessageAddModal from "../element/MessageAddModal";
+import ElementVideo from "../../element/video/VideoBlock";
+//import ElementTopic from "../element/topic/TopicBlock";
+//import ElementPost from "../element/post/PostBlock";
+import ElementArticle from "../../element/article/ArticleBlock";
 import {connect} from "react-redux";
 import {useParams, Link} from 'react-router-dom'
-import FriendButton from "../element/friend/FriendButton";
-import ElementFile from "../object/ElementFile";
+//import FriendButton from "../element/friend/FriendButton";
+import ElementFile from "../../object/ElementFile";
 
 function User (props) {
     const { id } = useParams()
@@ -65,7 +65,7 @@ function User (props) {
                         </div>
                     </div>
 
-                    <ElementPost group_id={group._id} access={access}/>
+                    {/*<ElementPost group_id={group._id} access={access}/>*/}
 
                 </div>
                 <div className="col-lg-4">
@@ -88,7 +88,7 @@ function User (props) {
 
                     <ElementVideo group_id={group._id} access={access}/>
                     <ElementArticle group_id={group._id} access={access}/>
-                    <ElementTopic group_id={group._id} access={access}/>
+                    {/*<ElementTopic group_id={group._id} access={access}/>*/}
 
                 </div>
 

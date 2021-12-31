@@ -28,9 +28,10 @@ function AlbumArticle (props) {
         urlOwnerId.current = props.group_id
     }
 
-    //отслеживаем изменение props
+    //отслеживаем изменение альбомов
     useEffect(async () => {
         await Get(true)
+
     }, [props.album_id])
 
     const onChangeFile = (e) => {
@@ -51,8 +52,6 @@ function AlbumArticle (props) {
     }
 
     const onChangeForm = (_id, name) => {
-        console.log(_id)
-        console.log(name)
         setForm(prevState => ({
             ...prevState, ...{
                 id: _id,

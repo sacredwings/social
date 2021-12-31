@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import SelectAlbum from "../object/SelectAlbum";
-import Comment from "../element/Comment";
-import ElementFile from "../object/ElementFile";
+import SelectAlbum from "../../object/SelectAlbum";
+import Comment from "../../element/Comment";
+import ElementFile from "../../object/ElementFile";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import {useParams, Link} from 'react-router-dom'
 
-function VideoId (props) {
+function ArticleId (props) {
     const { id } = useParams()
     let [video, setVideo] = useState({
         title: '',
@@ -44,7 +44,7 @@ function VideoId (props) {
     const Get = async (event) => {
         //let id = id;
 
-        const url = `/api/video/getById?ids=${id}`;
+        const url = `/api/article/getById?ids=${id}`;
 
         let result = await axios.get(url);
 
@@ -55,38 +55,20 @@ function VideoId (props) {
 
         setVideo(prev => ({...prev, ...result.response[0]}))
     }
-/*
-    const GetAlbums = async (start) => {
-        const url = `/api/video/getAlbums?owner_id=${props.owner_id}&offset=${video.offset}&count=${video.count}`;
 
-        let result = await axios.get(url);
-
-        result = result.data;
-        if (result.err) return; //ошибка, не продолжаем обработку
-
-        if (!result.response) return
-
-        setVideo(prev => ({...prev, ...{
-                offset: (start) ? 0 : prev.offset + video.count,
-                count: result.response.count,
-                response: result.response,
-                arAlbums: (start) ? result.response.items : [...prev.arAlbums, ...result.response.items],
-            }}))
-    }
-*/
     const Element = (video) => {
         return <>
             <div className="row">
                 <div className="col-12">
-                    <h1>Видео <button type="button" className="btn btn-success btn-sm" onClick={onChangeForm}>Редактировать</button></h1>
+                    <h1>Статья <button type="button" className="btn btn-success btn-sm" onClick={onChangeForm}>Редактировать</button></h1>
                     <h2>{video.title}</h2>
-                    <ElementFile file={video}/>
-                    <p>{video.text}</p>
+                    <div dangerouslySetInnerHTML={{__html: video.text}}></div>
+
                 </div>
             </div>
             <div className="row">
                 <div className="col-12">
-                    <Comment module='video' object_id={id}/>
+                    <Comment module='video' object_id={video.id}/>
                 </div>
             </div>
         </>
@@ -120,7 +102,7 @@ function VideoId (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
-        const url = '/api/video/edit';
+        const url = '/api/article/edit';
         const formData = new FormData();
 
         console.log(video)
@@ -197,7 +179,7 @@ function VideoId (props) {
                 <div className="col-lg-12">
                     {(video) ?
                         (formEdit) ? ElementEdit(video) : Element(video)
-                     : null}
+                        : null}
                 </div>
             </div>
         </div>
@@ -211,5 +193,5 @@ export default connect (
     dispatch => ({
 
     })
-)(VideoId);
+)(ArticleId);
 
