@@ -11,6 +11,7 @@ function GroupSettings (props) {
         password_replay: '',
         err: null,
         errText: '',
+        price: 0,
 
         inputFilePhoto: null,
         inputFileBigPhoto: null,
@@ -28,7 +29,29 @@ function GroupSettings (props) {
 
     //отслеживаем изменение props
     useEffect(async () => {
+        await GetGroup(id)
     }, [])
+
+    async function GetGroup (groupId) {
+
+        //запрос
+        let result = await axios.get(`/api/group/getById?ids=${groupId}`, {});
+        result = result.data.response;
+
+        if ((result) && (result.length))
+        {
+            if (!result[0].price)
+                result[0].price = 0
+
+            setForm(prevState => ({
+                ...prevState,
+                price: result[0].price,
+                _id: result[0]._id
+            }))
+        }
+
+
+    }
 
     const onChangeFile = (e) => {
         let name = e.target.id;
@@ -113,6 +136,20 @@ function GroupSettings (props) {
         })
     }
 
+    const onSavePrice = async (e) => {
+        e.preventDefault();
+        let gtoken = await reCaptchaExecute(global.gappkey, 'setting')
+
+        //запрос
+        let result = await axios.post('/api/group/setPrice', {
+            price: form.price,
+            group_id: form._id,
+
+            gtoken: gtoken
+        });
+        result = result.data;
+    }
+
     return (
         <div className="container my-3">
             <div className="row">
@@ -162,6 +199,21 @@ function GroupSettings (props) {
                                     <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style={{width: `${form.processBarBig}%`}} aria-valuenow={form.processBarBig} aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                                 <br/>
+                                <button type="submit" className="btn btn-primary">Сохранить</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div className="card mt-3">
+                        <div className="card-header">
+                            Платный доступ к группе
+                        </div>
+                        <div className="card-body">
+                            <form onSubmit={onSavePrice}>
+                                <div className="mb-3">
+                                    <label htmlFor="price" className="form-label">Цена</label>
+                                    <input type="text" className="form-control" placeholder="Цена" name="price" id="price" value={form.price} onChange={onChange}/>
+                                </div>
                                 <button type="submit" className="btn btn-primary">Сохранить</button>
                             </form>
                         </div>
