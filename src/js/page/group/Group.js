@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 import {useParams, Link} from 'react-router-dom'
 //import FriendButton from "../element/friend/FriendButton";
 import ElementFile from "../../object/ElementFile";
+import ElementPay from "../../element/group/Pay";
 
 function User (props) {
     const { id } = useParams()
@@ -65,6 +66,7 @@ function User (props) {
                         </div>
                     </div>
 
+                    <ElementPay group_id={id}/>
                     {/*<ElementPost group_id={group._id} access={access}/>*/}
 
                 </div>
