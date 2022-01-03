@@ -42,7 +42,10 @@ function User (props) {
     function User(group) {
 
         let access = false
-        if (group.create_id === props.myUser.id) access = true //создатель это я
+        let pay = false
+
+        if (user.status.access) access = true //создатель это я
+        if ((user.status.pay) || (user.status.access)) pay = true //оплачено
 
         let attributes = {
             autoplay: 'autoplay',
@@ -66,7 +69,7 @@ function User (props) {
                         </div>
                     </div>
 
-                    <ElementPay group_id={id}/>
+                    {(!pay) ? <ElementPay group_id={id}/> : null}
                     {/*<ElementPost group_id={group._id} access={access}/>*/}
 
                 </div>
@@ -88,8 +91,8 @@ function User (props) {
                         </div>
                     </div>
 
-                    <ElementVideo group_id={group._id} access={access}/>
-                    <ElementArticle group_id={group._id} access={access}/>
+                    <ElementVideo group_id={group._id} access={group.access} />
+                    <ElementArticle group_id={group._id} access={group.access} />
                     {/*<ElementTopic group_id={group._id} access={access}/>*/}
 
                 </div>
