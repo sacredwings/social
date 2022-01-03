@@ -29,7 +29,7 @@ import NoPage from "./page/NoPage";
 //import MessagesUserId from "./page/MessagesUserId";
 //import Messages from "./page/Messages";
 import GroupSettings from "./page/group/Settings";
-import GroupPay from "./page/group/Pay";
+//import GroupPay from "./page/group/Pay";
 import RegActivate from "./page/RegActivate";
 //import TopicId from "./page/TopicId";
 //import Post from "./page/Post";
@@ -71,7 +71,7 @@ function App (props) {
             //{path: '/messages/id:id', element: <MessagesUserId/>},
             //{path: '/messages', element: <Messages/>},
             {path: '/group/id:id/settings', element: <GroupSettings/>},
-            {path: '/group/id:id/settings/pay', element: <GroupPay/>},
+            //{path: '/group/id:id/settings/pay', element: <GroupPay/>},
             //{path: '/friends', element: <Friend/>},
 
         ];
