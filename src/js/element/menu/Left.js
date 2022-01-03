@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import ElementAuth from "../Auth";
+import ElementAuth from "../auth/Auth";
 
 class WidgetLetMenu extends Component {
     render() {
@@ -20,6 +20,7 @@ class WidgetLetMenu extends Component {
                    </>
                    :
                    <ElementAuth />}
+
            </div>
         )
     }

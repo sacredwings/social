@@ -15,13 +15,14 @@ import MenuLeft from "./element/menu/Left";
 import Footer from "./element/Footer";
 
 //элементы
-import Auth from "./element/Auth";
-import Reg from "./element/Reg";
+import Auth from "./element/auth/Auth";
+import Reg from "./element/auth/Reg";
 import Video from "./page/video/Video";
 import Article from "./page/article/Article";
 
 //страницы
 import Landing from "./page/Landing";
+import Charity from "./page/Charity";
 import User from "./page/user/User";
 import Group from "./page/group/Group";
 import Settings from "./page/user/Settings";
@@ -142,6 +143,7 @@ function App (props) {
                             <Route exact path="/:owner/id:id/article" element={<Article />} />
                             <Route exact path="/:owner/id:id/article/album_id:album_id" element={<Article />} />
 
+                            <Route exact path="/charity" element={<Charity />} />
 
                             <Route exact path="/search/" element={<Search />} />
 

@@ -39,28 +39,15 @@ function Landing  (props) {
                 <div className="container">
                     <br/>
                     <br/>
-                    <div className="row text-center">
-                        <div className="col-lg-12">
-                            <img src={`/logo_big.png`} style={{maxWidth: '100px'}}/>
-                            <br/>
-                            {/*<button type="button" className="btn btn-light">💵 ..поддержи проэкт.. 💵</button>*/}
-
-
-                        </div>
-                    </div>
-
-                    <br/>
-                    <hr/>
-                    <br/>
 
                     <div className="row text-center">
                         <div className="col-lg-12">
                             <h1 className="">Социальная сеть для военнослужащих</h1>
                             <br/>
                             <p>Исключительно для военных</p>
-                            <p>Создавайте и учавствуйте в обсуждениях</p>
-                            <p>Бесплатно</p>
                             <p>Анонимно</p>
+
+                            <Link className="btn btn-warning" to="/charity" role="button"><i className="far fa-money-bill-alt"></i> Пожертвовать на развитие</Link>
                         </div>
 
                     </div>
@@ -71,13 +58,14 @@ function Landing  (props) {
 
                     <div className="row text-center">
                         <div className="col-lg-12">
-                            <h2 className="">Как зарегистрироваться</h2>
+                            <h2 className="">Группа: Помощь военных юристов</h2>
 
-                                    <video controls style={{width: '100%'}}>
-                                        <source
-                                            src="https://voenset.ru/files/33/74/3374db8747b7ee985d0a04b98475e8b0.mp4"
-                                            type="video/mp4"/>
-                                    </video>
+                            <video preload="preload" autoPlay="autoplay" muted="muted" loop="loop" style={{width: '100%'}}>
+                                <source src="http:\\urpravovoen.ru\wp-content\uploads\landing\обложка.mp4"
+                                        type="video/mp4"/>
+                            </video>
+
+                            <Link className="btn btn-primary" to="/group/id61a9fdb494f73f29366ecdde" role="button">Страница в ВоенСети</Link>
 
                         </div>
 
@@ -107,9 +95,11 @@ function Landing  (props) {
                     <div className="row text-center">
                         <div className="col-lg-12">
                             <h2 className="">Страница Военного юриста</h2>
-                            <Link className="btn btn-primary" to="/user/id1" role="button">Перейти на страницу</Link>
+                            <Link className="btn btn-primary" to="/user/id61a9fdb194f73f29366e9c22" role="button">Страница в ВоенСети</Link>
+                            <br/>
+                            <br/>
+                            <a className="btn btn-primary" href="https://vk.com/id271765283" role="button">Страница в ВК</a>
                         </div>
-
                     </div>
 
                     <br/>
@@ -119,21 +109,10 @@ function Landing  (props) {
                     <div className="row text-center">
                         <div className="col-lg-12">
                             <h2 className="">Страница разработчика</h2>
-                            <Link className="btn btn-primary" to="/user/id7" role="button">Перейти на страницу</Link>
-                        </div>
-
-                    </div>
-
-                    <br/>
-                    <hr/>
-                    <br/>
-
-                    <div className="row text-center">
-                        <div className="col-lg-12">
-                            <img src={'https://avatars.mds.yandex.net/get-zen_doc/1583807/pub_5e58cf33baedf81f7d511363_5e58e391f8544a5bec015ab8/scale_1200'} style={{height: 150}}/>
-                            <h2 className="">Новости сайта в телеграмм канале</h2>
+                            <Link className="btn btn-primary" to="/user/id7" role="button">Страница в ВоенСети</Link>
                             <br/>
-                            <a className="btn btn-primary" href="https://t.me/voenset" role="button">Перейти на канал</a>
+                            <br/>
+                            <a className="btn btn-primary" href="https://vk.com/sacredwings" role="button">Страница в ВК</a>
                         </div>
 
                     </div>

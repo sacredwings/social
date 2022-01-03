@@ -32,6 +32,8 @@ function Pay (props) {
     return(
         <div className="alert alert-success" role=" alert">
             Доступ к группе 200 руб.
+            <br/>
+
             <button type="button" className="btn btn-primary" onClick={Pay}>Оплатить</button>
         </div>
     )
