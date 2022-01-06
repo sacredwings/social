@@ -285,8 +285,10 @@ function Video (props) {
                 <div className="col-lg-12 block-white">
                     <p className="h3">
                         {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalVideoAdd">+</button> : null}
-                        &#160;{(responseAlbum) ? `Плейлист: ${responseAlbum.title}` : ''}
+                        &#160;{(responseAlbum) ? `Плейлист: ${responseAlbum.title}` : 'Видео'}
                     </p>
+
+                    {(responseAlbum) ? <ElementFile file={responseAlbum._image_id} attributes={{autoplay: 'autoplay', muted: 'muted'}}/> : ''}
 
                     {((response.items.length) && (responseAlbum))? List(response.items) : <p>В этом плейлисте нет видео</p>}
 

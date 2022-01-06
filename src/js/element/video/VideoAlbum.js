@@ -20,6 +20,7 @@ function AlbumVideo (props) {
         count: 0,
         items: [],
     })
+    let [responseAlbum, setResponseAlbum] = useState(null)
 
     let urlOwner = useRef('user')
     let urlOwnerId = useRef(props.user_id)
@@ -31,6 +32,8 @@ function AlbumVideo (props) {
     //отслеживаем изменение props
     useEffect(async () => {
         await Get(true)
+
+        await GetById(props.album_id)
     }, [props.album_id])
 
     const onChangeFile = (e) => {
@@ -59,6 +62,29 @@ function AlbumVideo (props) {
                 title: name
             }
         }))
+    }
+
+    const GetById = async (id) => {
+        if (!id) {
+            setResponseAlbum(null)
+            return
+        }
+
+        let arFields = {
+            params: {
+                ids: id
+            }
+        }
+
+        let url = `/api/album/getById`
+
+        let result = await axios.get(url, arFields);
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
+
+        if (!result.response) return
+
+        setResponseAlbum(result.response[0])
     }
 
     const Get = async (start) => {
@@ -226,7 +252,8 @@ function AlbumVideo (props) {
                 <div className="col-lg-12 block-white">
 
                     <p className="h3">
-                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAlbumAdd">+</button> : null} Плейлисты
+                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAlbumAdd">+</button> : null}
+                        &#160;{(responseAlbum) ? `Плейлисты в "${responseAlbum.title}"` : 'Плейлисты'}
                     </p>
 
                     {(response.items.length) ? List(response.items) : <p>Плейлистов нет</p>}
