@@ -288,7 +288,7 @@ function Video (props) {
                         &#160;{(responseAlbum) ? `Плейлист: ${responseAlbum.title}` : ''}
                     </p>
 
-                    {(response.items.length) ? List(response.items) : <p>В этом плейлисте нет видео</p>}
+                    {((response.items.length) && (responseAlbum))? List(response.items) : <p>В этом плейлисте нет видео</p>}
 
                     {(response.items.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>Get()}>еще ...</button> : null}
 
