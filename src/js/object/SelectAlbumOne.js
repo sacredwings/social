@@ -3,10 +3,10 @@ import axios from "axios";
 
 export default function (props) {
     let [list, setList] = useState([])
-    let [request, setRequest] = useState({
-        response: [],
-        offset: 0,
-        count: 200
+    let [response, setResponse] = useState({
+        step: 200,
+        count: 0,
+        items: [],
     })
 
     useEffect (async () => {
@@ -14,9 +14,23 @@ export default function (props) {
     }, [])
 
     const GetAlbums = async (start) => {
-        const url = `/api/album/get?module=video&owner_id=${props.owner_id}&offset=${request.offset}&count=${request.count}`;
+        let offset = 0
+        if (!start)
+            offset = response.items.length
 
-        let result = await axios.get(url);
+        let arFields = {
+            params: {
+                module: 'video',
+                offset: offset,
+                count: response.step
+            }
+        }
+
+        if (props.group_id) arFields.params.group_id = props.group_id
+
+        const url = `/api/album/get`
+
+        let result = await axios.get(url, arFields);
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
@@ -26,10 +40,10 @@ export default function (props) {
         setList(prev => (
                 (start) ? result.response.items : [...prev, ...result.response.items]
             ))
-        setRequest(prev => ({...prev, ...{
-                offset: (start) ? 0 : prev.offset + prev.count,
+        setResponse(prev => ({...prev, ...{
                 count: result.response.count,
-                response: result.response,
+                items: (start) ? result.response.items : [...prev.items, ...result.response.items],
+                //users: [...prev.arUsers, ...result.response.users],
             }}))
     }
 
@@ -38,7 +52,7 @@ export default function (props) {
 
         //поиск нужного элемента в массиве
         let newChecked = list.map((item, i)=>{
-            if (item.id === id)
+            if (item._id === id)
                 item.checked = true
             else
                 item.checked = false
@@ -56,7 +70,7 @@ export default function (props) {
         <>
             {list.map((item, i)=>{
                 return <div className="form-check" key={i}>
-                    <input className="form-check-input" type="radio" checked={item.checked} onChange={() => onChangeChecked(item.id)}
+                    <input className="form-check-input" type="radio" checked={item.checked} onChange={() => onChangeChecked(item._id)}
                            name="flexRadio" id="flexRadio" />
                         <label className="form-check-label" htmlFor="flexRadio">
                             {item.title}

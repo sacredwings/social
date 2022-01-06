@@ -21,6 +21,8 @@ function Video (props) {
         users: []
     })
 
+    let [responseAlbum, setResponseAlbum] = useState(null)
+
     //показ формы ввода
     let [formViewer, setFormViewer] = useState(false)
 
@@ -35,6 +37,8 @@ function Video (props) {
     //отслеживаем изменение props
     useEffect (async ()=>{
         await Get(true) //с обнулением
+
+        await GetById(props.album_id)
     }, [props])
 
     const onChangeFile = (e) => {
@@ -63,6 +67,29 @@ function Video (props) {
         }))
     }
 
+    const GetById = async (id) => {
+        if (!id) {
+            setResponseAlbum(null)
+            return
+        }
+
+        let arFields = {
+            params: {
+                ids: id
+            }
+        }
+
+        let url = `/api/album/getById`
+
+        let result = await axios.get(url, arFields);
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
+
+        if (!result.response) return
+
+        setResponseAlbum(result.response[0])
+    }
+
     const Get = async (start) => {
 
         let offset = 0
@@ -76,13 +103,7 @@ function Video (props) {
             }
         }
 
-        if ((!props.group_id) && (!props.user_id)) { /* из url */
-            if (props.group_id) arFields.params.group_id = props.match.params.id
-            if (props.user_id) arFields.params.user_id = props.match.params.id
-        } else {
-            if (props.group_id) arFields.params.group_id = props.group_id
-            if (props.user_id) arFields.params.user_id = props.user_id
-        }
+        if (props.group_id) arFields.params.group_id = props.group_id
 
         //альбом существует
         if (props.album_id)
@@ -263,10 +284,11 @@ function Video (props) {
             <div className="row">
                 <div className="col-lg-12 block-white">
                     <p className="h3">
-                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalVideoAdd">+</button> : null}&#160;
+                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalVideoAdd">+</button> : null}
+                        &#160;{(responseAlbum) ? `Плейлист: ${responseAlbum.title}` : ''}
                     </p>
 
-                    {(response.items.length) ? List(response.items) : <p>Видео нет</p>}
+                    {(response.items.length) ? List(response.items) : <p>В этом плейлисте нет видео</p>}
 
                     {(response.items.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>Get()}>еще ...</button> : null}
 

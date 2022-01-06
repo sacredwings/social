@@ -24,7 +24,6 @@ function User (props) {
 
         //запрос
         let result = await axios.get(`/api/group/getById?ids=${groupId}`, {});
-        console.log(result)
         result = result.data;
 
         //ответ со всеми значениями
@@ -91,8 +90,8 @@ function User (props) {
                         </div>
                     </div>
 
-                    <ElementVideo group_id={group._id} access={group.access} />
-                    <ElementArticle group_id={group._id} access={group.access} />
+                    <ElementVideo group_id={group._id} access={access} />
+                    <ElementArticle group_id={group._id} access={false} />
                     {/*<ElementTopic group_id={group._id} access={access}/>*/}
 
                 </div>

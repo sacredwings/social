@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
 import SelectAlbum from "../../object/SelectAlbum";
@@ -10,24 +10,26 @@ function VideoAddModal (props) {
         inputFile: null,
         inputTitle: '',
         inputText: '',
+
+        arSelectAlbums: [],
+
         processBarLoaded: 0,
         processBarTotal: 0,
-        processBar: 0,
-
-        response: {
-            count: 0,
-            items: []
-        },
-        count: 100,
-        offset: 0,
-        arAlbums: [],
-
-        arSelectAlbums: []
+        processBar: 0
+    })
+    let [response, setResponse] = useState({
+        step: 20,
+        count: 0,
+        items: [],
     })
 
     //отслеживаем изменение props
     useEffect (async () => {
-        await GetAlbums()
+        //запрос в момент отображения модального окна
+        let myModalEl = document.getElementById('modalVideoAdd')
+        myModalEl.addEventListener('show.bs.modal', async function (event) {
+            await GetAlbums()
+        })
     }, [])
 
     //получаем результат выбранных альбомов от checked
@@ -36,30 +38,34 @@ function VideoAddModal (props) {
     }
 
     const GetAlbums = async (start) => {
-        let fields = {
+        let offset = 0
+        if (!start)
+            offset = response.items.length
+
+        let arFields = {
             params: {
                 module: 'video',
-                owner_id: props.owner_id,
-                offset: (start) ? 0 : form.offset,
-                count: form.count
+                offset: offset,
+                count: response.step,
             }
         }
 
+        if (props.group_id) arFields.params.group_id = props.group_id
+
         const url = `/api/album/get`;
 
-        let result = await axios.get(url, fields);
+        let result = await axios.get(url, arFields);
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
 
         if (!result.response) return
 
-        setForm(prev => ({...prev, ...{
-            offset: (start) ? 0 : prev.offset + form.count,
-            count: result.response.count,
-            response: result.response,
-            arAlbums: (start) ? result.response.items : [...prev.arAlbums, ...result.response.items],
-        }}))
+        setResponse(prev => ({...prev, ...{
+                count: result.response.count,
+                items: (start) ? result.response.items : [...prev.items, ...result.response.items],
+                //users: [...prev.arUsers, ...result.response.users],
+            }}))
     }
 
     const onChangeFile = (e) => {
@@ -171,7 +177,7 @@ function VideoAddModal (props) {
                             <div className="mb-3">
                                 <label htmlFor="" className="form-label">Альбомы</label>
                                 {/* checked массив альбомов */}
-                                <SelectAlbum albums={form.arAlbums} func={ChangeSelectAlbums}/>
+                                <SelectAlbum albums={response.items} func={ChangeSelectAlbums}/>
                             </div>
 
                             <div className="mb-3">

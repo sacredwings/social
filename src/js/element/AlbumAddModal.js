@@ -8,9 +8,10 @@ function AlbumAddModal (props) {
     let formDefault = {
         inputFileImg: null,
         inputFileVideo: null,
-        //album_id: null,
+        album_id: null,
         inputTitle: '',
         inputText: '',
+
         processBarLoaded: 0,
         processBarTotal: 0,
         processBar: 0
@@ -23,6 +24,7 @@ function AlbumAddModal (props) {
     }, [])
 
     const ChangeSelectAlbum = (album_id) => {
+        console.log(album_id)
         setForm(prev => ({...prev, album_id: album_id}))
     }
 
@@ -70,8 +72,8 @@ function AlbumAddModal (props) {
             formData.append('album_id', form.album_id)
 
         //если это группа, то отправляем ее id
-        if ((props.owner_id) && (props.owner_id<0))
-            formData.append('group_id', -props.owner_id)
+        if (props.group_id)
+            formData.append('group_id', props.group_id)
 
         axios.post(url, formData, {
 
@@ -130,7 +132,7 @@ function AlbumAddModal (props) {
                                        onChange={onChangeText} value={form.inputTitle}/>
                             </div>
 
-                            <SelectAlbumOne owner_id={props.owner_id} func={ChangeSelectAlbum}/>
+                            <SelectAlbumOne user_id={props.user_id} group_id={props.group_id} func={ChangeSelectAlbum}/>
 
                             <div className="mb-3">
                                 <label htmlFor="inputText" className="form-label">Описание</label>

@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import {connect} from 'react-redux'
 import {Link} from "react-router-dom"
 import axios from "axios"
-import VideoAddModal from "../../element/VideoAddModal";
+import VideoAddModal from "../../element/video/VideoAddModal";
 import ElementFile from "../../object/ElementFile";
 
 function Group (props) {

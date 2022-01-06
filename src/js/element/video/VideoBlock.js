@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import {connect} from 'react-redux'
 import {Link} from "react-router-dom"
 import axios from "axios"
-import VideoAddModal from "../../element/VideoAddModal";
+import VideoAddModal from "./VideoAddModal";
 import ElementFile from "../../object/ElementFile";
 
 function Group (props) {
@@ -38,13 +38,7 @@ function Group (props) {
             }
         }
 
-        if ((!props.group_id) && (!props.user_id)) { /* из url */
-            if (props.group_id) arFields.params.group_id = props.match.params.id
-            if (props.user_id) arFields.params.user_id = props.match.params.id
-        } else {
-            if (props.group_id) arFields.params.group_id = props.group_id
-            if (props.user_id) arFields.params.user_id = props.user_id
-        }
+        if (props.group_id) arFields.params.group_id = props.group_id
 
         const url = `/api/video/get`
 

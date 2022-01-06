@@ -74,13 +74,7 @@ function AlbumVideo (props) {
             }
         }
 
-        if ((!props.group_id) && (!props.user_id)) { /* из url */
-            if (props.group_id) arFields.params.group_id = props.match.params.id
-            if (props.user_id) arFields.params.user_id = props.match.params.id
-        } else {
-            if (props.group_id) arFields.params.group_id = props.group_id
-            if (props.user_id) arFields.params.user_id = props.user_id
-        }
+        if (props.group_id) arFields.params.group_id = props.group_id
 
         //альбом существует
         if (props.album_id)
@@ -88,13 +82,12 @@ function AlbumVideo (props) {
 
         const url = `/api/album/get`;
 
-        console.log(arFields)
-        console.log(url)
         let result = await axios.get(url, arFields);
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
 
         if (!result.response) return
+
 
         setResponse(prev => ({...prev, ...{
                 count: result.response.count,
@@ -108,13 +101,14 @@ function AlbumVideo (props) {
             autoplay: 'autoplay',
             muted: 'muted'
         }
+        let link = `/${urlOwner.current}/id${urlOwnerId.current}/video/album_id${_video_id}`
 
         return (<div className="row">
             <div className="col-lg-12">
-                <ElementFile file={_image_id} attributes={attributes}/>
+                <ElementFile file={_image_id} attributes={attributes} link={link}/>
             </div>
             <div className="col-lg-12">
-                <Link to={`/${urlOwner.current}/id${urlOwnerId.current}/video/album_id${_video_id}`} className="">{video_title}</Link>
+                <Link to={link} className="">{video_title}</Link>
                 <p>
                     {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(_video_id, video_title)}>Редактировать</button>}
                 </p>
@@ -232,10 +226,10 @@ function AlbumVideo (props) {
                 <div className="col-lg-12 block-white">
 
                     <p className="h3">
-                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAlbumAdd">+</button> : null} Альбомы с видео
+                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAlbumAdd">+</button> : null} Плейлисты
                     </p>
 
-                    {(response.items.length) ? List(response.items) : <p>Категорий нет</p>}
+                    {(response.items.length) ? List(response.items) : <p>Плейлистов нет</p>}
 
                     {(response.items.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>Get()}>еще альбомы ...</button> : null}
 

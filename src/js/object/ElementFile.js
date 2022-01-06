@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 export default (props) => {
 
@@ -34,6 +34,9 @@ export default (props) => {
 
         if (file)
             url = `${global.urlServer}/${file.url}`
+
+        if (props.link)
+            return <Link to={props.link}><img src={url} style={style} /></Link>
 
         return <img src={url} style={style}/>
     }
