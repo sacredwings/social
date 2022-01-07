@@ -60,13 +60,13 @@ function Video  (props) {
 
     //отслеживаем изменение props
     useEffect (async ()=>{
-        if (params.owner === 'group') await Get(params.id)
+        await Get(params.owner, params.id)
     }, [params.id])
 
-    async function Get (groupId) {
+    async function Get (owner, id) {
 
         //запрос
-        let result = await axios.get(`/api/group/getById?ids=${groupId}`, {});
+        let result = await axios.get(`/api/${owner}/getById?ids=${id}`, {});
         result = result.data;
 
         //ответ со всеми значениями
@@ -82,16 +82,22 @@ function Video  (props) {
     }
 
     function Data () {
+        let access = true
+
+        //у пользователя нет такой вложенной переенной и покажеть ошибку
+        if (params.owner === 'group')
+            access = owner.status.access
+
         return <>
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    <AlbumVideo access={owner.status.access} user_id={userId.current} group_id={groupId.current} album_id={params.album_id}/>
+                    <AlbumVideo access={access} user_id={userId.current} group_id={groupId.current} album_id={params.album_id}/>
                 </div>
             </div>
 
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    <ElementVideo access={owner.status.access} user_id={userId.current} group_id={groupId.current} album_id={params.album_id}/>
+                    <ElementVideo access={access} user_id={userId.current} group_id={groupId.current} album_id={params.album_id}/>
                 </div>
             </div>
         </>
@@ -106,7 +112,7 @@ function Video  (props) {
             if ((owner.status.pay) || (owner.status.access)) pay = true //оплачено
         }
 
-        return (pay) ? Data() : <ElementPay/>
+        return ((params.owner === 'group') && (!pay)) ? <ElementPay/> : Data()
     }
 
     return (owner) ? Result() : null

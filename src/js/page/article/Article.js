@@ -39,8 +39,8 @@ const AccessGroup = async (id) => {
 }*/
 
 function Article  (props) {
-    const { id, owner, album_id } = useParams()
-    let [user, setUser] = useState(null)
+    const params = useParams()
+    let [owner, setOwner] = useState(null)
 
     //запрос
     let [response, setResponse] = useState({
@@ -51,64 +51,71 @@ function Article  (props) {
         arUsers: []
     })
 
-    let [access, setAccess] = useState(false)
+    //let [access, setAccess] = useState(false)
 
-    let userId = useRef((owner === 'user') ? id : null)
-    let groupId = useRef((owner === 'group') ? id : null)
+    let userId = useRef((owner === 'user') ? params.id : null)
+    let groupId = useRef((owner === 'group') ? params.id : null)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
-        if (owner === 'group') await Get(id);
-    }, [id])
+        await Get(params.owner, params.id)
+    }, [params.id])
 
-    async function Get (groupId) {
+    async function Get (owner, id) {
 
         //запрос
-        let result = await axios.get(`/api/group/getById?ids=${groupId}`, {});
-        console.log(result)
+        let result = await axios.get(`/api/${owner}/getById?ids=${id}`, {});
         result = result.data;
 
         //ответ со всеми значениями
         if ((result) && (result.err === 0)) {
 
             if ((result.response) && (result.response[0]))
-                setUser(result.response[0]);
+                setOwner(result.response[0]);
             else
-                setUser(false);
+                setOwner(false);
 
         }
 
     }
 
     function Data () {
+        let access = true
+
+        //у пользователя нет такой вложенной переенной и покажеть ошибку
+        if (params.owner === 'group')
+            access = owner.status.access
+
         return <>
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    <AlbumArticle access={access} user_id={userId.current} group_id={groupId.current} album_id={album_id}/>
+                    <AlbumArticle access={access} user_id={userId.current} group_id={groupId.current} album_id={params.album_id}/>
                 </div>
             </div>
 
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    <ElementArticle access={access} user_id={userId.current} group_id={groupId.current} album_id={album_id}/>
+                    <ElementArticle access={access} user_id={userId.current} group_id={groupId.current} album_id={params.album_id}/>
                 </div>
             </div>
         </>
     }
 
-    function Html () {
+    function Result () {
         let access = false
         let pay = false
 
-        if (owner === 'group') {
-            if (user.status.access) access = true //создатель это я
-            if ((user.status.pay) || (user.status.access)) pay = true //оплачено
+        if (params.owner === 'group') {
+            if (owner.status.access) access = true //создатель это я
+            if ((owner.status.pay) || (owner.status.access)) pay = true //оплачено
         }
 
-        return (pay) ? Data() : <ElementPay/>
+        console.log(params)
+        console.log(pay)
+        return ((params.owner === 'group') && (!pay)) ? <ElementPay/> : Data()
     }
 
-    return (user) ? Html() : null
+    return (owner) ? Result() : null
 }
 
 export default connect (
