@@ -18,20 +18,19 @@ export default function ({albums, func}) {
 
     //меняем свойство checked у элемента в state
     function onChangeChecked (id) {
-
         //поиск нужного элемента в массиве
         let newChecked = checked.map((item, i)=>{
-            if (item.id === id) item.checked = !item.checked
+            if (item._id === id) item.checked = !item.checked
             return item
         })
 
         //оставляем только нужные элементы из массива
         let newResult = newChecked.filter((item, i)=>{
-            if (item.checked === true) return item.id
+            if (item.checked === true) return item._id
         })
         //достаем их id
         newResult = newResult.map((item, i)=>{
-            if (item.checked === true) return item.id
+            if (item.checked === true) return item._id
         })
 
         //сохраняем изменения в state для контроля checked
@@ -45,7 +44,7 @@ export default function ({albums, func}) {
         <>
             {checked.map((item, i)=>{
                 return <div className="form-check" key={i}>
-                    <input className="form-check-input" type="checkbox" checked={item.checked} onChange={() => onChangeChecked(item.id)}/>
+                    <input className="form-check-input" type="checkbox" checked={item.checked} onChange={() => onChangeChecked(item._id)}/>
                     <label className="form-check-label" htmlFor="flexCheckDefault">
                         {item.title}
                     </label>

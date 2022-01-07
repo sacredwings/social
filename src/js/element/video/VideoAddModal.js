@@ -122,8 +122,8 @@ function VideoAddModal (props) {
             formData.append('albums', form.arSelectAlbums.join(','))
 
         //если это группа, то отправляем ее id
-        if ((props.owner_id) && (props.owner_id<0))
-            formData.append('group_id', -props.owner_id)
+        if (props.group_id)
+            formData.append('group_id', props.group_id)
 
         axios.post(url, formData, {
 
