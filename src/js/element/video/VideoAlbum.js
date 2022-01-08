@@ -149,7 +149,7 @@ function AlbumVideo (props) {
                     return <div className="col-md-4" key={i}>
                         <div className="card">
                             <div className="card-body">
-                                {(form.id === video.id) ? ElementEdit() : ElementAlbum(video._image_id, video._id, video.title)}
+                                {(form.id === video._id) ? ElementEdit() : ElementAlbum(video._image_id, video._id, video.title)}
                             </div>
                         </div>
                     </div>

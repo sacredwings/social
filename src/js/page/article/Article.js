@@ -53,8 +53,8 @@ function Article  (props) {
 
     //let [access, setAccess] = useState(false)
 
-    let userId = useRef((owner === 'user') ? params.id : null)
-    let groupId = useRef((owner === 'group') ? params.id : null)
+    let userId = useRef((params.owner === 'user') ? params.id : null)
+    let groupId = useRef((params.owner === 'group') ? params.id : null)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
