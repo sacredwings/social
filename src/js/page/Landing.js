@@ -10,8 +10,8 @@ let style = {
 function Landing  (props) {
     const { id } = useParams()
     let [count, setCount] = useState({
-        video: 0,
-        user: 0
+        //video: 0,
+        //user: 0
     })
 
     //отслеживаем изменение props
