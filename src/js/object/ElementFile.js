@@ -16,14 +16,18 @@ export default (props) => {
             url = `${global.urlServer}/${file._file_id.url}`
 
         let attributes = {
+            controls: true,
             autoplay: false,
-            muted: false
+            muted: false,
+            loop: false
         }
 
+        if ((props.attributes) && (props.attributes.controls)) attributes.controls = props.attributes.controls
         if ((props.attributes) && (props.attributes.autoplay)) attributes.autoplay = props.attributes.autoplay
         if ((props.attributes) && (props.attributes.muted)) attributes.muted = props.attributes.muted
+        if ((props.attributes) && (props.attributes.loop)) attributes.loop = props.attributes.loop
 
-        return <video controls style={style} preload="none" poster={url} autoPlay={attributes.autoplay} muted={attributes.muted}>
+        return <video controls={attributes.controls} style={style} preload="none" poster={url} autoPlay={attributes.autoplay} muted={attributes.muted} loop={attributes.loop}>
             <source src={`${global.urlServer}/${file.url}`} type={file.type}/>
         </video>
     }

@@ -103,7 +103,8 @@ function AlbumArticle (props) {
     const ElementAlbum = (_image_id, _video_id, video_title, video) => {
         let attributes = {
             autoplay: 'autoplay',
-            muted: 'muted'
+            muted: 'muted',
+            loop: 'loop'
         }
 
         return (<div className="row">

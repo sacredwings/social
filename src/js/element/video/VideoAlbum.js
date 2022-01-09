@@ -125,7 +125,8 @@ function AlbumVideo (props) {
     const ElementAlbum = (_image_id, _video_id, video_title, video) => {
         let attributes = {
             autoplay: 'autoplay',
-            muted: 'muted'
+            muted: 'muted',
+            loop: 'loop'
         }
         let link = `/${urlOwner.current}/id${urlOwnerId.current}/video/album_id${_video_id}`
 

@@ -64,12 +64,12 @@ function Group (props) {
     }
 
     const List = (arr) => {
-        return arr.map(function (article, i, arGroup) {
-            return ( <div className="group" key={i}>
-                <Link to={`/article/id${article._id}`} className="">{article.title}</Link>
-
-            </div>)
-        })
+        return <div className="list-group" style={{paddingLeft: '10px'}}>
+            {arr.map(function (article, i, arGroup) {
+                return <Link to={`/article/id${article._id}`} className="list-group-item list-group-item-action" key={i}>
+                    {article.title}
+                </Link>})}
+        </div>
     }
 
     const NoList = () => {
