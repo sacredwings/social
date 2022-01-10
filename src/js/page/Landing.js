@@ -58,6 +58,25 @@ function Landing  (props) {
 
                     <div className="row text-center">
                         <div className="col-lg-12">
+                            <h2 className="">Как зарегистрироваться</h2>
+
+                            <video controls={true} preload="preload" style={{width: '100%'}}>
+                                <source src="http://urpravovoen.ru/wp-content/uploads/2022/01/Регистрация-в-социальной-сети-VoenSet.ru_1.mp4"
+                                        type="video/mp4"/>
+                            </video>
+
+                            <Link className="btn btn-primary" to="/reg" role="button">Регистрация</Link>
+
+                        </div>
+
+                    </div>
+
+                    <br/>
+                    <hr/>
+                    <br/>
+
+                    <div className="row text-center">
+                        <div className="col-lg-12">
                             <h2 className="">Группа: Помощь военных юристов</h2>
 
                             <video preload="preload" autoPlay="autoplay" muted="muted" loop="loop" style={{width: '100%'}}>

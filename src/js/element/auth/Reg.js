@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import {Link} from "react-router-dom";
 
 //https://oauth.vk.com/token?grant_type=password&client_id=2274003&client_secret=hHbZxrka2uZ6jB1inYsH&username=%D0%9B%D0%9E%D0%93%D0%98%D0%9D&password=%D0%9F%D0%90%D0%A0%D0%9E%D0%9B%D0%AC&captcha_key=q24yud&captcha_sid=656412648896
 class Reg extends Component {
@@ -83,7 +84,21 @@ class Reg extends Component {
     Form () {
         return <div className="card card-block login-block shadow my-3 mx-auto">
             <div className="card-body">
-                <h2>Регистрация</h2>
+
+                <div className="row text-center">
+                    <div className="col-lg-12">
+                        <h2 className="">Регистрация</h2>
+
+                        <video controls={true} preload="preload" style={{width: '100%'}}>
+                            <source src="http://urpravovoen.ru/wp-content/uploads/2022/01/Регистрация-в-социальной-сети-VoenSet.ru_1.mp4"
+                                    type="video/mp4"/>
+                        </video>
+
+                    </div>
+
+                </div>
+
+                <hr/>
                 {(this.state.info) ?
                     <div className="alert alert-warning" role="alert">
                         {this.state.info}
