@@ -23,7 +23,9 @@ function Group (props) {
 
     //отслеживаем изменение props
     useEffect (async ()=>{
-        await Get(true) //с обнулением
+        //await Get(true) //с обнулением
+        await GetAlbum(true) //с обнулением
+
     }, [props])
 
     const Get = async (start) => {
@@ -64,12 +66,52 @@ function Group (props) {
     }
 
     const List = (arr) => {
+        let attributes = {
+            controls: false,
+            autoplay: 'autoplay',
+            muted: 'muted',
+            loop: 'loop'
+        }
+
         return <div className="list-group" style={{paddingLeft: '10px'}}>
             {arr.map(function (article, i, arGroup) {
                 return <Link to={`/article/id${article._id}`} className="list-group-item list-group-item-action" key={i}>
+                    <ElementFile file={article._image_id} attributes={attributes}/>
                     {article.title}
                 </Link>})}
         </div>
+    }
+
+    const GetAlbum = async (start) => {
+        let offset = 0
+        if (!start)
+            offset = response.items.length
+
+        let arFields = {
+            params: {
+                module: 'article',
+                offset: offset,
+                count: response.step
+            }
+        }
+
+        if (props.group_id) arFields.params.group_id = props.group_id
+
+        let url = `/api/album/get`
+        //let url = `/api/article/get?owner_id=${owner_id}&offset=${offset}&count=${response.step}`;
+
+        let result = await axios.get(url, arFields);
+
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
+
+        if (!result.response) return
+
+        setResponse(prev => ({...prev, ...{
+                count: result.response.count,
+                items: (start) ? result.response.items : [...prev.items, ...result.response.items],
+                //users: [...prev.arUsers, ...result.response.users],
+            }}))
     }
 
     const NoList = () => {
@@ -89,6 +131,10 @@ function Group (props) {
 
             <div className="row content">
                 {(response.items.length) ? List(response.items) : NoList()}
+            </div>
+
+            <div className="d-grid gap-2">
+                <Link to={urlLink.current} className="btn btn-outline-secondary btn-sm" style={{margin: '5px'}}>Все разделы и статьи</Link>
             </div>
         </div>
 

@@ -110,7 +110,7 @@ function Article (props) {
 
         return (<div className="row">
             <div className="col-lg-4">
-                <ElementFile file={_image_id}/>
+                <ElementFile file={_image_id} attributes={{controls: true}}/>
             </div>
             <div className="col-lg-8">
                 <Link to={`/article/id${video_id}`} >{video_title}</Link>

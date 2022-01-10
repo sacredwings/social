@@ -138,12 +138,13 @@ function Video (props) {
     }
 
     const ElementAlbum = (video, video_id, video_title) => {
-        //let owner = (props.owner_id>0) ? 'user' : 'group'
-        //let id = (props.owner_id>0) ? props.owner_id : -props.owner_id
+        let attributes = {
+            controls: true,
+        }
 
         return (<div className="row">
             <div className="col-lg-4">
-                <ElementFile file={video}/>
+                <ElementFile file={video} attributes={attributes}/>
             </div>
             <div className="col-lg-8">
                 <Link to={`/video/id${video_id}`} >{video_title}</Link>
@@ -288,7 +289,7 @@ function Video (props) {
                         &#160;{(responseAlbum) ? `Плейлист: ${responseAlbum.title}` : 'Видео'}
                     </p>
 
-                    {(responseAlbum) ? <ElementFile file={responseAlbum._image_id} attributes={{autoplay: 'autoplay', muted: 'muted'}}/> : ''}
+                    {(responseAlbum) ? <ElementFile file={responseAlbum._image_id} attributes={{controls: true, autoplay: 'autoplay', muted: 'muted'}}/> : ''}
 
                     {(response.items.length)? List(response.items) : <p>В этом плейлисте нет видео</p>}
 

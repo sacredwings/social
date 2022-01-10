@@ -16,7 +16,7 @@ export default (props) => {
             url = `${global.urlServer}/${file._file_id.url}`
 
         let attributes = {
-            controls: true,
+            controls: false,
             autoplay: false,
             muted: false,
             loop: false

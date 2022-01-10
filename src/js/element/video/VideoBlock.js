@@ -59,7 +59,7 @@ function Group (props) {
     const List = (arr) => {
         return arr.map(function (video, i, arGroup) {
             return ( <div className="group" key={i}>
-                <ElementFile file={video}/>
+                <ElementFile file={video} attributes={{controls: true}}/>
 
                 {/* <video controls style={{width: '100%'}} preload="none" poster={`${global.urlServer}/${video.file_id.url}`}>
                                     <source src={`${global.urlServer}/${video.url}`} type={video.type}/>
@@ -87,9 +87,12 @@ function Group (props) {
                 <VideoAddModal user_id={props.user_id} group_id={props.group_id}/>
             </div>
 
-
             <div className="row content">
                 {(response.items.length) ? List(response.items) : NoList()}
+            </div>
+
+            <div className="d-grid gap-2">
+                <Link to={urlLink.current} className="btn btn-outline-secondary btn-sm" style={{margin: '5px'}}>Все плейлисты и видео</Link>
             </div>
         </div>
 

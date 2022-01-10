@@ -102,6 +102,7 @@ function AlbumArticle (props) {
 
     const ElementAlbum = (_image_id, _video_id, video_title, video) => {
         let attributes = {
+            controls: true,
             autoplay: 'autoplay',
             muted: 'muted',
             loop: 'loop'
@@ -230,12 +231,12 @@ function AlbumArticle (props) {
                 <div className="col-lg-12 block-white">
 
                     <p className="h3">
-                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAlbumAdd">+</button> : null} Категории со статьями
+                        {props.access ? <button type="button" className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAlbumAdd">+</button> : null} Разделы со статьями
                     </p>
 
-                    {(response.items.length) ? List(response.items) : <p>Категорий нет</p>}
+                    {(response.items.length) ? List(response.items) : <p>Разделов нет</p>}
 
-                    {(response.items.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>Get()}>еще категории ...</button> : null}
+                    {(response.items.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>Get()}>еще разделы ...</button> : null}
 
                 </div>
             </div>

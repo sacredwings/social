@@ -57,7 +57,7 @@ function Group (props) {
                                 onClick={()=>{props.SelectVideoId(video.id)}}>
                             <div className="row">
                                 <div className="col-md-4">
-                                    <ElementFile file={video}/>
+                                    <ElementFile file={video} attributes={{controls: true}}/>
                                 </div>
                                 <div className="col-md-8">
                                     <p className="card-text">

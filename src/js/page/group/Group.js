@@ -71,6 +71,17 @@ function User (props) {
                     {(!pay) ? <ElementPay group_id={id}/> : null}
                     {/*<ElementPost group_id={group._id} access={access}/>*/}
 
+                    <div className="social block white social_block_info">
+                        <div className="alert alert-light" role="alert">
+                            Все плейлисты и видео --> <Link to={`/group/id${id}/video`}>открыть</Link>
+                        </div>
+                    </div>
+                    <div className="social block white social_block_info">
+                        <div className="alert alert-light" role="alert">
+                            Все разделы и статьи группы --> <Link to={`/group/id${id}/article`}>открыть</Link>
+                        </div>
+                    </div>
+
                 </div>
                 <div className="col-lg-4">
 
