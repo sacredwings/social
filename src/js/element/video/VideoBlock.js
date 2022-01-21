@@ -38,7 +38,8 @@ function Group (props) {
             }
         }
 
-        if (props.group_id) arFields.params.group_id = props.group_id
+        if ((props.group_id) && (!props.user_id)) arFields.params.group_id = props.group_id
+        if ((!props.group_id) && (props.user_id)) arFields.params.user_id = props.user_id
 
         const url = `/api/video/get`
 

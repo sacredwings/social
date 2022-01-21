@@ -27,8 +27,7 @@ function AddPhoto (props) {
     const onChangeFiles = (e) => {
         props.SendFile(e.target.files)
 
-        //setForm(prev => ({...prev, files: e.target.files}))
-        console.log(e.target.files)
+        window.$(`#modalAddPhoto${formCode}_close`).trigger('click')
     }
 
     const onChangeId = (e) => {
@@ -65,7 +64,7 @@ function AddPhoto (props) {
 
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal"
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" id={`modalAddPhoto${formCode}_close`}
                                         onClick={onFormClose}>Закрыть
                                 </button>
                             </div>

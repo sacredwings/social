@@ -5,7 +5,7 @@ import axios from "axios";
 import ElementFile from "../../object/ElementFile";
 import PostAdd from "./PostAdd";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-import VideoAddModal from "../VideoAddModal";
+//import VideoAddModal from "../VideoAddModal";
 
 function Post (props) {
     //запрос
@@ -19,8 +19,13 @@ function Post (props) {
     //показ формы ввода
     let [formViewer, setFormViewer] = useState(false)
 
-    let ownerId = useRef(Number (props.owner_id))
-    let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
+    let urlOwner = useRef('user')
+    let urlOwnerId = useRef(props.user_id)
+    if (props.group_id) {
+        urlOwner.current = 'group'
+        urlOwnerId.current = props.group_id
+    }
+    let urlLink = useRef(`/${urlOwner.current}/id${urlOwnerId.current}/post`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -32,11 +37,19 @@ function Post (props) {
         if (!start)
             offset = response.items.length
 
-        let owner_id = props.owner_id;
+        let arFields = {
+            params: {
+                offset: offset,
+                count: response.step
+            }
+        }
 
-        const url = `/api/post/get?owner_id=${owner_id}&offset=${offset}&count=${response.step}`;
+        if ((props.group_id) && (!props.user_id)) arFields.params.group_id = props.group_id
+        if ((!props.group_id) && (props.user_id)) arFields.params.user_id = props.user_id
 
-        let result = await axios.get(url);
+        const url = `/api/post/get`;
+
+        let result = await axios.get(url, arFields);
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
@@ -46,7 +59,6 @@ function Post (props) {
         setResponse(prev => ({...prev, ...{
                 count: result.response.count,
                 items: (start) ? result.response.items : [...prev.items, ...result.response.items],
-                users: [...prev.users, ...result.response.users],
             }}))
     }
 
@@ -65,6 +77,10 @@ function Post (props) {
     }
 
     const ListFiles = (files) => {
+
+        let attributes = {
+            controls: true,
+        }
 
         if (!files) return null
 
@@ -90,7 +106,7 @@ function Post (props) {
         return <>
             { files.map((file, i) => {
                 return <div key={i} className={classFile}>
-                    <ElementFile  file={file}/>
+                    <ElementFile  file={file} attributes={attributes}/>
                 </div>
             })}
         </>
@@ -105,14 +121,14 @@ function Post (props) {
 
     const List = (arVideo) => {
         return arVideo.map(function (item, i) {
-            let user = SearchUser(item.from_id)
+            let user = item._from_id
 
             let photo = 'https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg'
-            if (user.photo)
-                photo = `${global.urlServer}/${user.photo.url}`
+            if (user._photo)
+                photo = `${global.urlServer}/${user._photo.url}`
 
-            return (<div className="social block white">
-                <button type="button" className="btn-close" aria-label="Close" style={{float: "right"}} onClick={() => {Delete(item.id)}}></button>
+            return (<div className="social block white" key={i}>
+                {/*<button type="button" className="btn-close" aria-label="Close" style={{float: "right"}} onClick={() => {Delete(item.id)}}></button>*/}
                 <div className="header">
                     <div className="img">
                         <img src={photo}/>
@@ -124,20 +140,20 @@ function Post (props) {
 
                 <p> {item.text}</p>
                 <div className="row">
-                    {item.file_ids ? ListFiles(item.file_ids) : null}
+                    {item._file_ids ? ListFiles(item._file_ids) : null}
                 </div>
 
             </div>)
         })}
 
-    const ListAdd = () => {
+    const Add = () => {
         return <div className="social block white add">
-            <PostAdd owner_id={props.owner_id}/>
+            <PostAdd user_id={props.user_id} group_id={props.group_id}/>
         </div>
     }
 
     return <div className="wall">
-        {(props.access) ? ListAdd() : null}
+        {(props.access) ? Add() : null}
 
         {(response.items.length) ? List(response.items) : null}
     </div>

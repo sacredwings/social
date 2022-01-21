@@ -55,9 +55,8 @@ function PostAdd (props) {
             gtoken: gtoken
         }
 
-        //комуто на стену
-        if ((props.owner_id) && (props.owner_id < 0))
-            arFields.group_id = -props.owner_id
+        if ((props.group_id) && (!props.user_id)) arFields.group_id = props.group_id
+        if ((!props.group_id) && (props.user_id)) arFields.user_id = props.user_id
 
         let result = await axios.post(url, arFields);
 
@@ -79,7 +78,7 @@ function PostAdd (props) {
             </div>
             <div className="row">
                 <div className="col-12">
-                    <AddFile ArFileIds={ArFileIds} owner_id={props.owner_id}/>
+                    <AddFile ArFileIds={ArFileIds} user_id={props.user_id} group_id={props.group_id}/>
                 </div>
             </div>
             <div className="row">

@@ -26,7 +26,7 @@ function AddFile (props) {
         //закрытие модульного окна
 
         //загрузка файлов
-        let gtoken = await reCaptchaExecute(global.gappkey, 'message')
+        let gtoken = await reCaptchaExecute(global.gappkey, 'fileAdd')
 
         const url = '/api/file/add';
         const formData = new FormData();
@@ -38,8 +38,8 @@ function AddFile (props) {
         formData.append('gtoken', gtoken)
 
         //если это группа, то отправляем ее id
-        if ((props.owner_id) && (props.owner_id<0))
-            formData.append('group_id', -props.owner_id)
+        if (props.group_id)
+            formData.append('group_id', props.group_id)
 
         let result = await axios.post(url, formData, {
 
@@ -79,8 +79,8 @@ function AddFile (props) {
     return (
         <div>
 
-            <AddPhoto SendFile={SendFile} SendId={SendId} owner_id={props.owner_id}/>
-            <AddVideo SendFile={SendFile} SendId={SendId} owner_id={props.owner_id}/>
+            <AddPhoto SendFile={SendFile} SendId={SendId} user_id={props.user_id} group_id={props.group_id}/>
+            <AddVideo SendFile={SendFile} SendId={SendId} user_id={props.user_id} group_id={props.group_id}/>
 
             <div className="progress">
                 {((form.processBar >0) && (form.processBar <100)) ? <div className="mb-3"><p className="text-primary">Загружаю</p></div>:null}
