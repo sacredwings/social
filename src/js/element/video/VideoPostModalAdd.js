@@ -13,12 +13,13 @@ function Group (props) {
         items: [],
     })
 
-    let ownerId = useRef(Number (props.owner_id))
-    let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
-
-    //let [access, setAccess] = useState(false)
-    //let ownerId = useRef(Number (props.owner_id))
-    //let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
+    let urlOwner = useRef('user')
+    let urlOwnerId = useRef(props.user_id)
+    if (props.group_id) {
+        urlOwner.current = 'group'
+        urlOwnerId.current = props.group_id
+    }
+    let linkUrl = useRef(`/${urlOwner}/id${urlOwnerId}/video`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -30,11 +31,19 @@ function Group (props) {
         if (!start)
             offset = response.items.length
 
-        let owner_id = props.owner_id;
+        let arFields = {
+            params: {
+                offset: offset,
+                count: response.step
+            }
+        }
 
-        const url = `/api/video/get?owner_id=${owner_id}&offset=${offset}&count=${response.step}`;
+        if ((props.group_id) && (!props.user_id)) arFields.params.group_id = props.group_id
+        if ((!props.group_id) && (props.user_id)) arFields.params.user_id = props.user_id
 
-        let result = await axios.get(url);
+        const url = `/api/video/get`
+
+        let result = await axios.get(url, arFields)
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
@@ -50,18 +59,19 @@ function Group (props) {
 
     const List = (arr) => {
         return <>
-            {arr.map(function (video, i, arGroup) {
+            {arr.map(function (video, i) {
                 return ( <div className="" key={i}>
                     <div className="list-group">
                         <button type="button" className="list-group-item list-group-item-action" aria-current="true"
-                                onClick={()=>{props.SelectVideoId(video.id)}}>
+                                onClick={()=>{props.SelectVideoId(video._id)}}>
                             <div className="row">
                                 <div className="col-md-4">
                                     <ElementFile file={video} attributes={{controls: true}}/>
                                 </div>
                                 <div className="col-md-8">
                                     <p className="card-text">
-                                        <Link to={`/video/id${video.id}`} >{video.title}</Link>
+                                        {/*<Link to={`/video/id${video._id}`} >{video.title}</Link>*/}
+                                        {video.title}
                                     </p>
                                 </div>
                             </div>

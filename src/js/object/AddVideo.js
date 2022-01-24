@@ -34,7 +34,7 @@ function AddVideo (props) {
     const SelectVideoId = (ids) => {
         props.SendId([ids])
 
-        window.$(`#modalAddVideo${formCode}`).modal("hide")
+        window.$(`#modalAddVideo${formCode}_close`).trigger('click')
     }
 
     const onFormClose = (e) => {
@@ -62,7 +62,7 @@ function AddVideo (props) {
                                     <input className="form-control form-control-sm" id="formFileSm" type="file" onChange={onChangeFiles} multiple={true} accept="video/mp4"/>
                                 </div>
                                 <hr/>
-                                {/*<VideoPostModalAdd user_id={props.user_id} group_id={props.group_id} SelectVideoId={SelectVideoId}/>*/}
+                                <VideoPostModalAdd user_id={props.user_id} group_id={props.group_id} SelectVideoId={SelectVideoId}/>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" id={`modalAddVideo${formCode}_close`}
