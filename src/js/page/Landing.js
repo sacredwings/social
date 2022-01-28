@@ -61,7 +61,7 @@ function Landing  (props) {
                             <h2 className="">Как зарегистрироваться</h2>
 
                             <video controls={true} preload="preload" style={{width: '100%'}}>
-                                <source src="http://urpravovoen.ru/wp-content/uploads/2022/01/Регистрация-в-социальной-сети-VoenSet.ru_1.mp4"
+                                <source src="https://voenset.ru/files/f1/97/f197b1a41bd0b659d5db8f73c5badd64.mp4"
                                         type="video/mp4"/>
                             </video>
 
