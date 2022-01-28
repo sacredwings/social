@@ -1,49 +1,37 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 //https://oauth.vk.com/token?grant_type=password&client_id=2274003&client_secret=hHbZxrka2uZ6jB1inYsH&username=%D0%9B%D0%9E%D0%93%D0%98%D0%9D&password=%D0%9F%D0%90%D0%A0%D0%9E%D0%9B%D0%AC&captcha_key=q24yud&captcha_sid=656412648896
-class Reg extends Component {
-    constructor () {
-        super();
-        this.state = {
-            login: '',
-            password: '',
-            email: '',
 
-            requestStatus: null
-        };
+function Reg (props) {
+    //const {id} = useParams()
 
-        this.onChange = this.onChange.bind(this);
-        this.onClickReg = this.onClickReg.bind(this);
-        //this.onChangeRadio = this.onChangeRadio.bind(this);
-    }
+    let [form, setForm] = useState({
+        email: '',
+        login: '',
+        password: ''
+    })
 
-    async componentDidMount () {
-
-    }
-
-    async onClickReg (event) {
+    async function onClickReg (event) {
         event.preventDefault();
-
-
 
         //проверка полей
         if (
-            (this.state.email.length >= 5) &&
-            (this.state.login.length >= 5) &&
-            (this.state.password.length >= 8)
+            (form.email.length >= 5) &&
+            (form.login.length >= 5) &&
+            (form.password.length >= 8)
         ) {
 
             let gtoken = await reCaptchaExecute(global.gappkey, 'reg')
 
             //запрос
             let result = await axios.post('/api/user/reg', {
-                login: this.state.login,
-                password: this.state.password,
-                email: this.state.email,
+                login: form.login,
+                password: form.password,
+                email: form.email,
 
                 gtoken: gtoken
             });
@@ -52,24 +40,26 @@ class Reg extends Component {
 
             //ответ со всеми значениями
             if ((!result.err) && (result.response)) {
-                this.setState({requestStatus: result.err})
+                //this.setState({requestStatus: result.err})
+                props.Store_myUser(result.response._id, result.response.login, result.response.tid, result.response.token, form.remember);
+                document.location.href = `/user/id${result.response._id}`
             } else {
-                this.setState({info: result.msg})
+                setForm(prev => ({...prev, ...{info: result.msg}}))
             }
 
         } else {
-            this.setState({info: 'Форма заполнена не верно'})
+            setForm(prev => ({...prev, ...{info: 'Форма заполнена не верно'}}))
         }
 
     }
 
-    onChange (event) {
+    function onChange (event) {
         if (event.target.value.length <= 30) {
-            const name = event.target.name;
-            this.setState({[name]: event.target.value});
-        }
+            const name = event.target.name
 
-        this.setState({info: null})
+            setForm(prev => ({...prev, ...{[name]: event.target.value}}))
+        }
+        setForm(prev => ({...prev, ...{info: null}}))
     }
 
     /*
@@ -81,7 +71,7 @@ class Reg extends Component {
 
     }*/
 
-    Form () {
+    function Form () {
         return <div className="card card-block login-block shadow my-3 mx-auto">
             <div className="card-body">
 
@@ -99,47 +89,43 @@ class Reg extends Component {
                 </div>
 
                 <hr/>
-                {(this.state.info) ?
-                    <div className="alert alert-warning" role="alert">
-                        {this.state.info}
+                {(form.info) ?
+                    <div className="alert alert-danger" role="alert">
+                        {form.info}
                     </div> : null
                 }
 
-                <form onSubmit={this.onClickReg}>
+                <form onSubmit={onClickReg}>
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">Email</label>
-                        <input type="text" className="form-control" id="email" name="email" minLength="8" maxLength="100" value={this.state.email} onChange={this.onChange} autoComplete=""/>
+                        <input type="text" className="form-control" id="email" name="email" minLength="8" maxLength="100" value={form.email} onChange={onChange} autoComplete=""/>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="login" className="form-label">Логин</label>
-                        <input type="text" className="form-control" id="login" name="login" minLength="5" maxLength="50" value={this.state.login} onChange={this.onChange}/>
+                        <input type="text" className="form-control" id="login" name="login" minLength="5" maxLength="50" value={form.login} onChange={onChange}/>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">Придумайте пароль</label>
-                        <input type="password" className="form-control" id="password" name="password" minLength="8" maxLength="60" value={this.state.password} onChange={this.onChange} autoComplete=""/>
+                        <input type="password" className="form-control" id="password" name="password" minLength="8" maxLength="60" value={form.password} onChange={onChange} autoComplete=""/>
                     </div>
                     <button type="submit" className="btn btn-primary">Зарегистрироваться</button>
                 </form>
             </div>
         </div>
     }
-    Instruction () {
+    function Instruction () {
         return <div className="alert alert-success" role="alert">
-            Письмо отправлено на вашу почту <b>{this.state.email}</b>, следуйте инструкиям в письме !
+            Письмо отправлено на вашу почту <b>{form.email}</b>, следуйте инструкиям в письме !
         </div>
     }
 
-    render() {
-
-        return (
-            <div className="container">
-                <div className="row">
-                    {this.state.requestStatus === 0 ? this.Instruction() : this.Form()}
-
-                </div>
+    return (
+        <div className="container">
+            <div className="row">
+                {Form()}
             </div>
-        )
-    }
+        </div>
+    )
 
 }
 

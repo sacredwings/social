@@ -3,7 +3,7 @@ import axios from "axios";
 //import ElementMessageAddModal from "../element/MessageAddModal";
 import ElementVideo from "../../element/video/VideoBlock";
 //import ElementTopic from "../element/topic/TopicBlock";
-//import ElementPost from "../element/post/PostBlock";
+import ElementPost from "../../element/post/PostBlock";
 import ElementArticle from "../../element/article/ArticleBlock";
 import {connect} from "react-redux";
 import {useParams, Link} from 'react-router-dom'
@@ -68,9 +68,6 @@ function User (props) {
                         </div>
                     </div>
 
-                    {(!pay) ? <ElementPay group_id={id}/> : null}
-                    {/*<ElementPost group_id={group._id} access={access}/>*/}
-
                     <div className="social block white social_block_info">
                         <div className="alert alert-light" role="alert">
                             Все плейлисты и видео --> <Link to={`/group/id${id}/video`}>открыть</Link>
@@ -81,6 +78,9 @@ function User (props) {
                             Все разделы и статьи группы --> <Link to={`/group/id${id}/article`}>открыть</Link>
                         </div>
                     </div>
+
+                    {(!pay) ? <ElementPay group_id={id}/> : null}
+                    <ElementPost group_id={group._id} access={access}/>
 
                 </div>
                 <div className="col-lg-4">
