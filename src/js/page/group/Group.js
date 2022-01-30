@@ -48,7 +48,8 @@ function User (props) {
 
         let attributes = {
             autoplay: 'autoplay',
-            muted: 'muted'
+            muted: 'muted',
+            loop: 'loop'
         }
         return (
 
