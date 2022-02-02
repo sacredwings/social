@@ -13,6 +13,12 @@ function Group (props) {
         items: [],
     })
 
+    let [listGroup, setListGroup] = useState([])
+    let [ownerId, setOwnerId] = useState({
+        user_id: props.myUser.id,
+        group_id: null
+    })
+
     let urlOwner = useRef('user')
     let urlOwnerId = useRef(props.user_id)
     if (props.group_id) {
@@ -24,7 +30,12 @@ function Group (props) {
     //отслеживаем изменение props
     useEffect (async ()=>{
         await Get(true) //с обнулением
+        await GetGroup()
     }, [props])
+
+    useEffect (async ()=>{
+        await Get(true) //с обнулением
+    }, [ownerId])
 
     const Get = async (start) => {
         let offset = 0
@@ -38,8 +49,8 @@ function Group (props) {
             }
         }
 
-        if ((props.group_id) && (!props.user_id)) arFields.params.group_id = props.group_id
-        if ((!props.group_id) && (props.user_id)) arFields.params.user_id = props.user_id
+        if ((ownerId.group_id) && (!ownerId.user_id)) arFields.params.group_id = ownerId.group_id
+        if ((!ownerId.group_id) && (ownerId.user_id)) arFields.params.user_id = ownerId.user_id
 
         const url = `/api/video/get`
 
@@ -57,8 +68,58 @@ function Group (props) {
             }}))
     }
 
+    const GetGroup = async () => {
+        let arFields = {
+            params: {
+                user_id: props.user_id
+            }
+        }
+
+        const url = `/api/group/get`
+
+        let result = await axios.get(url, arFields);
+
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
+
+        if (!result.response) return
+
+        setListGroup(result.response.items)
+    }
+
+    const ChangeId = (owner, id) => {
+        if (owner === 'user')
+            setOwnerId({
+                user_id: id,
+                group_id: null
+            })
+
+        if (owner === 'group')
+            setOwnerId({
+                user_id: null,
+                group_id: id
+            })
+
+        console.log(owner)
+        console.log(id)
+    }
+    const UserList = () => {
+        return <div className="list-group">
+            <button type="button" className="list-group-item list-group-item-action" onClick={()=>{ChangeId('user', props.myUser.id)}}>Мой профиль</button>
+        </div>
+    }
+    const GroupList = () => {
+        return <div className="list-group">
+            {listGroup.map(function (item, i) {
+                return <button key={i} type="button" className="list-group-item list-group-item-action" onClick={()=>{ChangeId('group', item._id)}}>{item.title}</button>
+            })}
+        </div>
+    }
+
     const List = (arr) => {
         return <>
+            <UserList/>
+            <GroupList/>
             {arr.map(function (video, i) {
                 return ( <div className="" key={i}>
                     <div className="list-group">
