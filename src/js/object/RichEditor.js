@@ -1,21 +1,30 @@
 import React, {useEffect, useRef, useState} from 'react';
-import './fontawesome-free.css'
-import './style.css'
 
-function RichEdit () {
-    const [result, setResult] = useState('')
-    const editor = useRef(null);
+function RichEditor (props) {
+
+    const refRichEditor = useRef(null);
 
     useEffect (async ()=>{
-        setResult(editor.current.innerHTML)
+        onResult(refRichEditor.current.innerHTML)
     }, [])
 
-    function OnClick(type) {
-        console.log(type)
+    //Выводим результат
+    const onResult = (content) => {
+        props.onResult(content)
+    }
+
+    //Нажатие кнопки
+    const OnClickButton = (type) => {
         document.execCommand(type, false, null)
     }
 
-    function OnPaste(e) {
+    //Изменение текста в редакторе
+    const OnInput = () => {
+        onResult(refRichEditor.current.innerHTML)
+    }
+
+    //В редактор встален текст из буфера
+    const OnPaste = (e) => {
         //отменяем автоматическое действие
         e.preventDefault()
 
@@ -53,62 +62,55 @@ function RichEdit () {
     const Buttons = () => {
         return <div>
             <div className="btn-group" role="group" aria-label="Button group with nested dropdown">
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="bold" onClick={()=>{OnClick('bold')}}>
+                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="bold" onClick={()=>{OnClickButton('bold')}}>
                     <i className="fa fa-bold"></i>
                 </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="italic" onClick={()=>{OnClick('italic')}}>
+                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="italic" onClick={()=>{OnClickButton('italic')}}>
                     <i className="fa fa-italic"></i>
                 </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="underline" onClick={()=>{OnClick('underline')}}>
+                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="underline" onClick={()=>{OnClickButton('underline')}}>
                     <i className="fa fa-underline"></i>
                 </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="insertUnorderedList" onClick={()=>{OnClick('insertUnorderedList')}}>
+                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="insertUnorderedList" onClick={()=>{OnClickButton('insertUnorderedList')}}>
                     <i className="fa fa-list-ul"></i>
                 </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="insertOrderedList" onClick={()=>{OnClick('insertOrderedList')}}>
+                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="insertOrderedList" onClick={()=>{OnClickButton('insertOrderedList')}}>
                     <i className="fa fa-list-ol"></i>
                 </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="createLink" onClick={()=>{OnClick('createLink')}}>
+                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="createLink" onClick={()=>{OnClickButton('createLink')}}>
                     <i className="fa fa-link"></i>
                 </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="justifyLeft" onClick={()=>{OnClick('justifyLeft')}}>
+                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="justifyLeft" onClick={()=>{OnClickButton('justifyLeft')}}>
                     <i className="fa fa-align-left"></i>
                 </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="justifyCenter" onClick={()=>{OnClick('justifyCenter')}}>
+                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="justifyCenter" onClick={()=>{OnClickButton('justifyCenter')}}>
                     <i className="fa fa-align-center"></i>
                 </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="justifyRight" onClick={()=>{OnClick('justifyRight')}}>
+                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="justifyRight" onClick={()=>{OnClickButton('justifyRight')}}>
                     <i className="fa fa-align-right"></i>
                 </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="justifyFull" onClick={()=>{OnClick('justifyFull')}}>
+                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="justifyFull" onClick={()=>{OnClickButton('justifyFull')}}>
                     <i className="fa fa-align-justify"></i>
                 </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="insertImage" onClick={()=>{OnClick('insertImage')}}>
+                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="insertImage" onClick={()=>{OnClickButton('insertImage')}}>
                     <i className="fa fa-image"></i>
                 </button>
             </div>
         </div>
     }
 
-    function OnInput() {
-        setResult(editor.current.innerHTML)
-    }
+
 
     return (
-        <div className="App">
+        <div className="rich-edit">
             <Buttons/>
-            <div contentEditable={true} suppressContentEditableWarning={true} ref={editor} onPaste={OnPaste} onInput={OnInput}></div>
-            <hr/>
+            <div className="content-editable" contentEditable={true} suppressContentEditableWarning={true} ref={refRichEditor} onPaste={OnPaste} onInput={OnInput}>{props.content}</div>
             <Buttons/>
-            <hr/>
-            <h3>Результат</h3>
-            <div dangerouslySetInnerHTML={{ __html: result }}></div>
-
         </div>
     )
 }
 
-export default RichEdit;
+export default RichEditor;
 
 function isValidHttpUrl(string) {
     let url;

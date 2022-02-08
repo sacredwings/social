@@ -6,9 +6,12 @@ import Comment from "../../element/Comment";
 import ElementFile from "../../object/ElementFile";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import {useParams, Link} from 'react-router-dom'
+import RichEditor from '../../object/RichEditor'
 
 function ArticleId (props) {
     const { id } = useParams()
+    let [newContent, setNewContent] = useState('')
+
     let [video, setVideo] = useState({
         title: '',
         text: '',
@@ -135,6 +138,10 @@ function ArticleId (props) {
         await Get()
     }
 
+    const onResult = (content) => {
+        setNewContent(content)
+    }
+
     const ElementEdit = (video) => {
         return <>
             <form onSubmit={onFormSubmitFile}>
@@ -151,15 +158,25 @@ function ArticleId (props) {
                 </div>
 
                 <div className="mb-3">
-                    <label htmlFor="inputTitle" className="form-label">Название</label>
+                    <label htmlFor="title" className="form-label">Название</label>
                     <input type="text" className="form-control" id="title"
                            onChange={onChangeText} value={video.title}/>
                 </div>
+
                 <div className="mb-3">
+                    <label className="form-label">Текст</label>
+                    <RichEditor content={video.text} onResult={onResult}/>
+                </div>
+
+                <hr/>
+                <h3>Результат</h3>
+                <div dangerouslySetInnerHTML={{ __html: newContent }}></div>
+                <br/>
+                {/*<div className="mb-3">
                     <label htmlFor="inputText" className="form-label">Описание</label>
                     <textarea className="form-control" id="text" rows="5"
                               onChange={onChangeText} value={video.text}></textarea>
-                </div>
+                </div>*/}
 
                 <div className="">
                     <button type="button" className="btn btn-secondary btn-sm" data-bs-dismiss="modal" onClick={onChangeForm}>Отмена</button>&nbsp;
