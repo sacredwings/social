@@ -60,17 +60,17 @@ function ArticleId (props) {
         return <>
             <div className="row">
                 <div className="col-12">
-                    <h1>Статья <button type="button" className="btn btn-success btn-sm" onClick={onChangeForm}>Редактировать</button></h1>
-                    <h2>{video.title}</h2>
+                    <h1>{video.title} <button type="button" className="btn btn-outline-secondary" onClick={onChangeForm}><i className="far fa-edit"></i></button></h1>
                     <div dangerouslySetInnerHTML={{__html: video.text}}></div>
 
                 </div>
             </div>
+            {/*
             <div className="row">
                 <div className="col-12">
                     <Comment module='video' object_id={video.id}/>
                 </div>
-            </div>
+            </div>*/}
         </>
     }
 
@@ -161,10 +161,9 @@ function ArticleId (props) {
                               onChange={onChangeText} value={video.text}></textarea>
                 </div>
 
-
                 <div className="">
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={onChangeForm}>Отмена</button>
-                    <button type="submit" className="btn btn-primary" >
+                    <button type="button" className="btn btn-secondary btn-sm" data-bs-dismiss="modal" onClick={onChangeForm}>Отмена</button>&nbsp;
+                    <button type="submit" className="btn btn-primary btn-sm">
                         Сохранить
                     </button>
                 </div>
@@ -174,12 +173,10 @@ function ArticleId (props) {
     }
 
     return (
-        <div className="container">
+        <div className="container article">
             <div className="row">
-                <div className="col-lg-12">
-                    {(video) ?
-                        (formEdit) ? ElementEdit(video) : Element(video)
-                        : null}
+                <div className="col-lg-12 block">
+                    {(formEdit) ? ElementEdit(video) : Element(video)}
                 </div>
             </div>
         </div>
