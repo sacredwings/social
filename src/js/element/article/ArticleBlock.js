@@ -116,14 +116,14 @@ function Group (props) {
     }
 
     const NoList = () => {
-        return <p className="no">Статей нет</p>
+        return <p className="no">Разделов нет</p>
     }
 
     return (
         <div className="social block widget white">
 
             <div className="header">
-                <h3><Link to={urlLink.current}>Статьи</Link></h3>
+                <h3><Link to={urlLink.current}>Разделы сайта</Link></h3>
                 <p className="count">{response.count}</p>
                 {props.access ? <a type="button" href="#" className="add" >Добавить</a> : null}
                 {/*<VideoAddModal />*/}
