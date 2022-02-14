@@ -10,7 +10,7 @@ import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 function Post (props) {
     //запрос
     let [response, setResponse] = useState({
-        step: 10,
+        step: 2,
         count: 0,
         items: [],
         users: []
@@ -156,6 +156,8 @@ function Post (props) {
         {(props.access) ? Add() : null}
 
         {(response.items.length) ? List(response.items) : null}
+
+        {(response.items.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>Get()}>еще ...</button> : null}
     </div>
 }
 
