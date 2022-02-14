@@ -10,7 +10,7 @@ import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 function Post (props) {
     //запрос
     let [response, setResponse] = useState({
-        step: 2,
+        step: 10,
         count: 0,
         items: [],
         users: []
