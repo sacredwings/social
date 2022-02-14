@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
+import axios from "axios";
 
 function RichEditor (props) {
 
@@ -7,6 +8,24 @@ function RichEditor (props) {
     useEffect (async ()=>{
         onResult(refRichEditor.current.innerHTML)
     }, [])
+
+    const Get = async (str) => {
+        //разбор строки / достаем id
+        let id = str.substr(str.length-24, 24)
+
+        //запрос
+        let result = await axios.get(`/api/video/getById?ids=${id}`, {})
+        result = result.data
+
+        console.log(result)
+
+        //ответ со всеми значениями
+        if ((!result) || (result.err !== 0)) return false
+
+        if ((!result.response) || (!result.response[0])) return false
+
+        return result.response[0]
+    }
 
     //Выводим результат
     const onResult = (content) => {
@@ -19,14 +38,24 @@ function RichEditor (props) {
     }
 
     //Изменение текста в редакторе
-    const OnInput = () => {
+    const OnInput = (e) => {
+        console.log(e)
         onResult(refRichEditor.current.innerHTML)
+    }
+    //Изменение текста в редакторе
+    const OnKeyDown = (e) => {
+        console.log(e)
+        if (e.keyCode === 13) {
+            document.execCommand('insertLineBreak')
+            e.preventDefault()
+        }
     }
 
     //В редактор встален текст из буфера
-    const OnPaste = (e) => {
+    const OnPaste = async (e) => {
         //отменяем автоматическое действие
         e.preventDefault()
+        console.log('OnPaste')
 
         //перехват вставленного HTML
         let content = (e.originalEvent || e).clipboardData.getData('text/plain')
@@ -56,8 +85,26 @@ function RichEditor (props) {
 
         console.log('ищу на сайте')
 
+        let file = await Get(content)
+        console.log(file)
+
+        //файла нет
+        if (!file) {
+            document.execCommand('insertHTML', false, content)
+            return true
+        }
+
+
+        //
+        let video = `<video controls={true} poster="${global.urlServer}/${file._file_id.url}" >
+            <source src="${global.urlServer}/${file.url}" type="${file.type}"/>
+        </video><br/><br/>`
+
+        document.execCommand('insertHTML', false, video)
 
     }
+
+
 
     const Buttons = () => {
         return <div>
@@ -104,7 +151,7 @@ function RichEditor (props) {
     return (
         <div className="rich-edit">
             <Buttons/>
-            <div className="content-editable" contentEditable={true} suppressContentEditableWarning={true} ref={refRichEditor} onPaste={OnPaste} onInput={OnInput}>{props.content}</div>
+            <div className="content-editable" contentEditable={true} suppressContentEditableWarning={true} ref={refRichEditor} onPaste={OnPaste} onInput={OnInput} onKeyDown={OnKeyDown} dangerouslySetInnerHTML={{ __html: props.content }}></div>
             <Buttons/>
         </div>
     )

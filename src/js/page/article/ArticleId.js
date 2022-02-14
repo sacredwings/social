@@ -110,9 +110,9 @@ function ArticleId (props) {
 
         console.log(video)
 
-        formData.append('id', video.id)
+        formData.append('id', video._id)
         formData.append('title', video.title)
-        formData.append('text', video.text)
+        formData.append('text', newContent) //новый контент
         formData.append('gtoken', gtoken)
 
         //файл есть
@@ -123,10 +123,6 @@ function ArticleId (props) {
         if (video.arSelectAlbums.length)
             formData.append('albums', video.arSelectAlbums.join(','))
 
-        //если это группа, то отправляем ее id
-        if ((props.owner_id) && (props.owner_id<0))
-            formData.append('group_id', -props.owner_id)
-
         axios.post(url, formData, {
 
             headers: {
@@ -135,7 +131,8 @@ function ArticleId (props) {
 
         })
 
-        await Get()
+        setVideo(prev => ({...prev, text: newContent}))
+        //await Get()
     }
 
     const onResult = (content) => {
@@ -168,10 +165,11 @@ function ArticleId (props) {
                     <RichEditor content={video.text} onResult={onResult}/>
                 </div>
 
+                {/*
                 <hr/>
                 <h3>Результат</h3>
                 <div dangerouslySetInnerHTML={{ __html: newContent }}></div>
-                <br/>
+                <br/>*/}
                 {/*<div className="mb-3">
                     <label htmlFor="inputText" className="form-label">Описание</label>
                     <textarea className="form-control" id="text" rows="5"
@@ -179,7 +177,7 @@ function ArticleId (props) {
                 </div>*/}
 
                 <div className="">
-                    <button type="button" className="btn btn-secondary btn-sm" data-bs-dismiss="modal" onClick={onChangeForm}>Отмена</button>&nbsp;
+                    <button type="button" className="btn btn-secondary btn-sm" onClick={onChangeForm}>Отмена</button>&nbsp;
                     <button type="submit" className="btn btn-primary btn-sm">
                         Сохранить
                     </button>

@@ -10,7 +10,11 @@ export default (props) => {
 
     const Video = (file) => {
         let url = `https://elk21.ru/assets/images/34534535.jpg`
-        let style = {width: '100%'}
+        let style = {
+            width: '100%',
+            height: 'auto',
+            maxHeight: '100%'
+        }
 
         if (file._file_id)
             url = `${global.urlServer}/${file._file_id.url}`
@@ -34,7 +38,11 @@ export default (props) => {
 
     const Image = (file) => {
         let url = `https://elk21.ru/assets/images/34534535.jpg`
-        let style = {width: '100%'}
+        let style = {
+            width: '100%',
+            height: 'auto',
+            maxHeight: '100%'
+        }
 
         if (file)
             url = `${global.urlServer}/${file.url}`

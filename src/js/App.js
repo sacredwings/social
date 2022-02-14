@@ -1,6 +1,6 @@
 import React, {Component, useEffect} from 'react';
 import {connect} from "react-redux";
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import { loadReCaptcha }  from 'recaptcha-v3-react-function-async';
 
 import 'bootstrap'; // подключаем бутстрап
@@ -39,6 +39,7 @@ import ArticleId from "./page/article/ArticleId";
 import Search from "./page/Search";
 //import Friend from "./page/friend/friend";
 //import VideoAll from "./page/video/Video";
+import Embed from "./page/Embed"
 
 /*
 import Reg from "./pages/Reg";
@@ -109,9 +110,8 @@ function App (props) {
         return pages
     }
 
-
-    return (
-        <BrowserRouter>
+    const All = () => {
+        return <>
             <MenuTop/>
 
             {/* сайт */}
@@ -126,37 +126,47 @@ function App (props) {
                     {/* контент социальной сети */}
                     <div className="col-lg-10">
                         <Routes>
-                            <Route exact path="/" element={<Landing />} />
+                            <Route path="/" element={<Landing />} />
 
-                            <Route exact path="/user/id:id" element={<User />} />
-                            <Route exact path="/group/id:id" element={<Group />} />
+                            <Route path="/user/id:id" element={<User />} />
+                            <Route path="/group/id:id" element={<Group />} />
 
                             {/*<Route exact path="/topic/id:id" element={<TopicId />} />*/}
-                            <Route exact path="/article/id:id" element={<ArticleId />} />
+                            <Route path="/article/id:id" element={<ArticleId />} />
 
-                            {<Route exact path="/video/id:id" element={<VideoId />} />}
+                            {<Route path="/video/id:id" element={<VideoId />} />}
                             {/*<Route exact path="/video" element={<VideoAll />} />*/}
 
-                            <Route exact path="/:owner/id:id/video" element={<Video />} />
-                            <Route exact path="/:owner/id:id/video/album_id:album_id" element={<Video />} />
+                            <Route path="/:owner/id:id/video" element={<Video />} />
+                            <Route path="/:owner/id:id/video/album_id:album_id" element={<Video />} />
 
-                            <Route exact path="/:owner/id:id/article" element={<Article />} />
-                            <Route exact path="/:owner/id:id/article/album_id:album_id" element={<Article />} />
+                            <Route path="/:owner/id:id/article" element={<Article />} />
+                            <Route path="/:owner/id:id/article/album_id:album_id" element={<Article />} />
 
-                            <Route exact path="/charity" element={<Charity />} />
+                            <Route path="/charity" element={<Charity />} />
 
-                            <Route exact path="/search/" element={<Search />} />
+                            <Route path="/search/" element={<Search />} />
 
                             {(props.myUser.auth) ? pageAuth() : pageNoAuth()}
 
                             <Route element={<NoPage />} />
-                        </ Routes >
+                        </Routes>
                     </div>
 
                 </div>
             </div>
 
             <Footer/>
+        </>
+    }
+
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/embed/:type/:id" element={<Embed />} />
+                <Route path="*" element={<All />} />
+            </Routes>
+
         </BrowserRouter>
     )
 
