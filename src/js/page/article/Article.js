@@ -5,6 +5,7 @@ import axios from "axios";
 import AlbumArticle from "../../element/article/ArticleAlbum";
 import ElementArticle from "../../element/article/Article";
 import ElementPay from "../../element/group/Pay";
+import Video from "../video/Video";
 
 /*
 const Access = async (props) => {
@@ -76,7 +77,6 @@ function Article  (props) {
                 setOwner(false);
 
         }
-
     }
 
     function Data () {
@@ -110,20 +110,11 @@ function Article  (props) {
             if ((owner.status.pay) || (owner.status.access)) pay = true //оплачено
         }
 
-        console.log(params)
-        console.log(pay)
         return ((params.owner === 'group') && (!pay)) ? <ElementPay/> : Data()
     }
 
     return (owner) ? Result() : null
 }
 
-export default connect (
-    state => ({
-        myUser: state.myUser,
-    }),
-    dispatch => ({
-
-    })
-)(Article);
+export default Article
 
