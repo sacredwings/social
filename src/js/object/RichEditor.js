@@ -70,18 +70,34 @@ function RichEditor (props) {
             return true
         }
 
-        //ссылка на соц сеть
+        //ссылка на соц сеть и ютуб
+        let substrYouTube = 'https://youtu.be'
         let substr = 'https://voenset.ru'
         let substrLocalhost = 'http://localhost:3030'
 
+        let resUrlYouTube = content.includes(substrYouTube)
         let resUrlMy = content.includes(substr)
         let resUrlMyLocalhost = content.includes(substrLocalhost)
 
-        if ((!resUrlMy) && (!resUrlMyLocalhost)) {
+        //проверка что ссылка не на ютуб и не на соц сеть
+        if ((!resUrlMy) && (!resUrlMyLocalhost) && (!resUrlYouTube)) {
             console.log('просто ссылка')
             document.execCommand('createLink', false, content)
             return true
         }
+
+        if (resUrlYouTube) {
+            console.log('Ютуб ссылка')
+
+            //
+            let video = `<div class="ratio ratio-16x9">
+                <iframe src="https://www.youtube.com/embed/ft_WS9VPSV0?rel=0" title="YouTube video" allowfullscreen></iframe>
+            </div><br/><br/>`
+
+            document.execCommand('insertHTML', false, video)
+            return true
+        }
+        //https://youtu.be/ft_WS9VPSV0
 
         console.log('ищу на сайте')
 
