@@ -26,6 +26,17 @@ function RichEditor (props) {
 
         return result.response[0]
     }
+    const GetYouTube = (str) => {
+
+        //разбор строки / достаем id
+        let id = str.substr(str.length-11, 11)
+
+        let video = `<div class="ratio ratio-16x9">
+                <iframe src="https://www.youtube.com/embed/${id}" title="YouTube video" allowfullscreen></iframe>
+            </div><br/><br/>`
+
+        return video
+    }
 
     //Выводим результат
     const onResult = (content) => {
@@ -89,12 +100,10 @@ function RichEditor (props) {
         if (resUrlYouTube) {
             console.log('Ютуб ссылка')
 
-            //
-            let video = `<div class="ratio ratio-16x9">
-                <iframe src="https://www.youtube.com/embed/ft_WS9VPSV0?rel=0" title="YouTube video" allowfullscreen></iframe>
-            </div><br/><br/>`
+            let resulttt = GetYouTube(content)
 
-            document.execCommand('insertHTML', false, video)
+            console.log(resulttt)
+            document.execCommand('insertHTML', false, resulttt)
             return true
         }
         //https://youtu.be/ft_WS9VPSV0
