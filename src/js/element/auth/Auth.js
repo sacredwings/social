@@ -63,8 +63,11 @@ function Auth (props) {
     }
 
     const onChangeRemember = (event) => {
+        let remember = false
+        if (event.target.value === 'on') remember = true
+
         setForm(prev => ({
-            ...prev, remember: event.target.value
+            ...prev, remember: remember
         }))
     }
 
