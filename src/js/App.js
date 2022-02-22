@@ -110,8 +110,8 @@ function App (props) {
         return pages
     }
 
-    const All = () => {
-        return <>
+    return (
+        <BrowserRouter>
             <MenuTop/>
 
             {/* сайт */}
@@ -157,15 +157,6 @@ function App (props) {
             </div>
 
             <Footer/>
-        </>
-    }
-
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/embed/:type/:id" element={<Embed />} />
-                <Route path="*" element={<All />} />
-            </Routes>
 
         </BrowserRouter>
     )
