@@ -84,7 +84,7 @@ function Landing  (props) {
                                         type="video/mp4"/>
                             </video>
 
-                            <Link className="btn btn-primary" to="/group/id61a9fdb494f73f29366ecdde" role="button">Страница в ВоенСети</Link>
+                            <Link className="btn btn-primary" to="/group/61a9fdb494f73f29366ecdde" role="button">Страница в ВоенСети</Link>
 
                         </div>
 
@@ -114,7 +114,7 @@ function Landing  (props) {
                     <div className="row text-center">
                         <div className="col-lg-12">
                             <h2 className="">Страница Военного юриста</h2>
-                            <Link className="btn btn-primary" to="/user/id61a9fdb194f73f29366e9c22" role="button">Страница в ВоенСети</Link>
+                            <Link className="btn btn-primary" to="/user/61a9fdb194f73f29366e9c22" role="button">Страница в ВоенСети</Link>
                             <br/>
                             <br/>
                             <a className="btn btn-primary" href="https://vk.com/id271765283" role="button">Страница в ВК</a>
@@ -128,7 +128,7 @@ function Landing  (props) {
                     <div className="row text-center">
                         <div className="col-lg-12">
                             <h2 className="">Страница разработчика</h2>
-                            <Link className="btn btn-primary" to="/user/id7" role="button">Страница в ВоенСети</Link>
+                            <Link className="btn btn-primary" to="/user/61a9fdb194f73f29366e9c9d" role="button">Страница в ВоенСети</Link>
                             <br/>
                             <br/>
                             <a className="btn btn-primary" href="https://vk.com/sacredwings" role="button">Страница в ВК</a>

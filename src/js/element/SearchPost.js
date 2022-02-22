@@ -55,7 +55,7 @@ export default function ({q}) {
                 Постов найдено: <strong>{response.count}</strong>
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/post/id${item.id}`} className="list-group-item list-group-item-action">
+                        <Link to={`/post/${item.id}`} className="list-group-item list-group-item-action">
                             <p> {item.text}</p>
                             <div className="row">
                                 {item.file_ids ? ElementFiles(item.file_ids) : null}

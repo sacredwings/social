@@ -19,7 +19,7 @@ function Group (props) {
         urlOwner.current = 'group'
         urlOwnerId.current = props.group_id
     }
-    let urlLink = useRef(`/${urlOwner.current}/id${urlOwnerId.current}/article`)
+    let urlLink = useRef(`/${urlOwner.current}/${urlOwnerId.current}/article`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -75,7 +75,7 @@ function Group (props) {
 
         return <div className="list-group" style={{paddingLeft: '10px'}}>
             {arr.map(function (article, i, arGroup) {
-                return <Link to={`/${urlOwner.current}/id${urlOwnerId.current}/article/album_id${article._id}`} className="list-group-item list-group-item-action" key={i}>
+                return <Link to={`/${urlOwner.current}/${urlOwnerId.current}/article/${article._id}`} className="list-group-item list-group-item-action" key={i}>
                     <ElementFile file={article._image_id} attributes={attributes}/>
                     {article.title}
                 </Link>})}

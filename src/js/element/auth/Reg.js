@@ -42,7 +42,7 @@ function Reg (props) {
             if ((!result.err) && (result.response)) {
                 //this.setState({requestStatus: result.err})
                 props.Store_myUser(result.response._id, result.response.login, result.response.tid, result.response.token, form.remember);
-                document.location.href = `/user/id${result.response._id}`
+                document.location.href = `/user/${result.response._id}`
             } else {
                 setForm(prev => ({...prev, ...{info: result.msg}}))
             }

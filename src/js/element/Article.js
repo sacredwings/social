@@ -19,7 +19,7 @@ function Article (props) {
     //показ формы ввода
     let [formViewer, setFormViewer] = useState(false)
     let ownerId = useRef(Number (props.owner_id))
-    let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/article`)
+    let linkUrl = useRef(`/${props.owner}/${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/article`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -54,7 +54,7 @@ function Article (props) {
             <div className="row">
                 { arTopic.map(function (topic, i, arTopic) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/article/id${topic.id}`} className="list-group-item list-group-item-action">{topic.title}</Link>
+                        <Link to={`/article/${topic.id}`} className="list-group-item list-group-item-action">{topic.title}</Link>
                     </div>)
                 })}
             </div>

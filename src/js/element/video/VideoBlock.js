@@ -19,7 +19,7 @@ function Group (props) {
         urlOwner.current = 'group'
         urlOwnerId.current = props.group_id
     }
-    let urlLink = useRef(`/${urlOwner.current}/id${urlOwnerId.current}/video`)
+    let urlLink = useRef(`/${urlOwner.current}/${urlOwnerId.current}/video`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -67,7 +67,7 @@ function Group (props) {
                                 </video> */}
 
                 <p className="card-text">
-                    <Link to={`/video/id${video._id}`} >{video.title}</Link>
+                    <Link to={`/video/${video._id}`} >{video.title}</Link>
                 </p>
 
             </div>)

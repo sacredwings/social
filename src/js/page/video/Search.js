@@ -18,7 +18,7 @@ function Video (props) {
 
     //let [access, setAccess] = useState(false)
     let ownerId = useRef(Number (props.owner_id))
-    let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
+    let linkUrl = useRef(`/${props.owner}/${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -104,10 +104,10 @@ function Video (props) {
                     </div>
                     <div className="name">
                         <p className="name-video">
-                            <Link to={`/video/id${video.id}`} >{video.title}</Link>
+                            <Link to={`/video/${video.id}`} >{video.title}</Link>
                         </p>
                         <p className="name-owner">
-                            <Link to={`/${owner.type}/id${owner.id}`} >{owner.name}</Link>
+                            <Link to={`/${owner.type}/${owner.id}`} >{owner.name}</Link>
                         </p>
                     </div>
                 </div>

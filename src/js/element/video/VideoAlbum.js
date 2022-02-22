@@ -129,7 +129,7 @@ function AlbumVideo (props) {
             muted: 'muted',
             loop: 'loop'
         }
-        let link = `/${urlOwner.current}/id${urlOwnerId.current}/video/album_id${_video_id}`
+        let link = `/${urlOwner.current}/${urlOwnerId.current}/video/${_video_id}`
 
         return (<div className="row">
             <div className="col-lg-12">

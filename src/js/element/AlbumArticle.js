@@ -149,7 +149,7 @@ function AlbumArticle (props) {
         return <>
             <img src={(image_id) ? `${global.urlServer}/${image_id.url}` : `https://elk21.ru/assets/images/34534535.jpg`} style={{width: '100%'}}/>
             <p className="card-text">
-                <Link to={`/${owner}/id${id}/article/album_id${video_id}`} >{video_title}</Link>
+                <Link to={`/${owner}/${id}/article/${video_id}`} >{video_title}</Link>
             </p>
             <button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id)}>Редактировать</button>
         </>

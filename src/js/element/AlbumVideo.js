@@ -151,7 +151,7 @@ function AlbumVideo (props) {
         return <>
             <ElementFile file={image_id}/>
             <p className="card-text">
-                <Link to={`/${owner}/id${id}/video/album_id${video_id}`} >{video_title}</Link>
+                <Link to={`/${owner}/${id}/video/${video_id}`} >{video_title}</Link>
             </p>
             <button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id)}>Редактировать</button>
         </>

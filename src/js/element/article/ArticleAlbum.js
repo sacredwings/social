@@ -113,7 +113,7 @@ function AlbumArticle (props) {
                         <ElementFile file={_image_id} attributes={attributes}/>
                     </div>
                     <div className="col-lg-12">
-                        <Link to={`/${urlOwner.current}/id${urlOwnerId.current}/article/album_id${_video_id}`} className="">{video_title}</Link>
+                        <Link to={`/${urlOwner.current}/${urlOwnerId.current}/article/${_video_id}`} className="">{video_title}</Link>
                         <p>
                             {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(_video_id, video_title)}>Редактировать</button>}
                         </p>

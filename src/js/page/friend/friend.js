@@ -14,7 +14,7 @@ function Friend (props) {
 
     //let [access, setAccess] = useState(false)
     //let ownerId = useRef(Number (props.owner_id))
-    //let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
+    //let linkUrl = useRef(`/${props.owner}/${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{

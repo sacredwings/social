@@ -41,7 +41,7 @@ export default function ({q}) {
                 Обсуждений найдено: <strong>{response.count}</strong>
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/topic/id${item.id}`} className="list-group-item list-group-item-action">{item.title}</Link>
+                        <Link to={`/topic/${item.id}`} className="list-group-item list-group-item-action">{item.title}</Link>
                     </div>)
                 })}
             </div>

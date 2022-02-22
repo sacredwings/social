@@ -32,7 +32,7 @@ function Video (props) {
         urlOwner.current = 'group'
         urlOwnerId.current = props.group_id
     }
-    let urlLink = useRef(`/${urlOwner.current}/id${urlOwnerId.current}/video`)
+    let urlLink = useRef(`/${urlOwner.current}/${urlOwnerId.current}/video`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -147,7 +147,7 @@ function Video (props) {
                 <ElementFile file={video} attributes={attributes}/>
             </div>
             <div className="col-lg-8">
-                <Link to={`/video/id${video_id}`} >{video_title}</Link>
+                <Link to={`/video/${video_id}`} >{video_title}</Link>
                 <p>
                     {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
                 </p>
@@ -267,7 +267,7 @@ function Video (props) {
                                 </video> */}
 
                                 <p className="card-text">
-                                    <Link to={`/video/id${video.id}`} >{video.title}</Link>
+                                    <Link to={`/video/${video.id}`} >{video.title}</Link>
                                 </p>
                             </div>
 

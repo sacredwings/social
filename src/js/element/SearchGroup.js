@@ -41,7 +41,7 @@ export default function ({q}) {
                 Групп найдено: <strong>{response.count}</strong>
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/group/id${item._id}`} className="list-group-item list-group-item-action">
+                        <Link to={`/group/${item._id}`} className="list-group-item list-group-item-action">
                             <img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item.photo) ? `${global.urlServer}/${item.photo.url}` : "https://svgsilh.com/svg/479631.svg"} />
                             {item.title}
                         </Link>

@@ -41,7 +41,7 @@ function MenuTop (props) {
                     </a>
                     <ul className="dropdown-menu dropdown-menu-right"
                         aria-labelledby="navbarDropdownMenuLink">
-                        <li><Link className="dropdown-item" to={`/user/id${props.myUser.id}`}>Моя страница</Link></li>
+                        <li><Link className="dropdown-item" to={`/user/${props.myUser.id}`}>Моя страница</Link></li>
                         <li><Link className="dropdown-item" to="/settings">Настройки</Link></li>
                         <div className="dropdown-divider"/>
                         <li><Link className="dropdown-item" to="#" onClick={logout}>Выход</Link></li>

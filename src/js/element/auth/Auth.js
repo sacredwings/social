@@ -36,7 +36,7 @@ function Auth (props) {
             if ((!result.err) && (result.response)) {
                 //запоминаем состояние
                 props.Store_myUser(result.response._id, result.response.login, result.response.tid, result.response.token, form.remember);
-                document.location.href = `/user/id${result.response._id}`
+                document.location.href = `/user/${result.response._id}`
                 //this.props.history.push('/accounts')
             } else {
                 setForm(prev => ({...prev, info: result.msg}))

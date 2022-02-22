@@ -42,7 +42,7 @@ export default function ({q}) {
                 Видео найдено: <strong>{response.count}</strong>
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/video/id${item.id}`} className="list-group-item list-group-item-action">
+                        <Link to={`/video/${item.id}`} className="list-group-item list-group-item-action">
                             <div className="row">
                                 <div className="col-lg-4">
                                     <ElementFile file={item}/>

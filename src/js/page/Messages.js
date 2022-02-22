@@ -102,7 +102,7 @@ function Messages () {
                                                 <b>{message.user.first_name}</b>
                                                 <button style={{float: 'right'}} type="button" className="btn-close" aria-label="Close" onClick={()=>{DeleteAll(message.user.id)}}></button>
                                             </div>
-                                            <Link to={`/messages/id${message.user.id}`}>
+                                            <Link to={`/messages/${message.user.id}`}>
                                                 {MessageInRead(message)}
                                             </Link>
                                         </div>

@@ -71,12 +71,12 @@ function User (props) {
 
                     <div className="social block white social_block_info">
                         <div className="alert alert-light" role="alert">
-                            Все плейлисты и видео --> <Link to={`/group/id${id}/video`}>открыть</Link>
+                            Все плейлисты и видео --> <Link to={`/group/${id}/video`}>открыть</Link>
                         </div>
                     </div>
                     <div className="social block white social_block_info">
                         <div className="alert alert-light" role="alert">
-                            Все разделы и статьи группы --> <Link to={`/group/id${id}/article`}>открыть</Link>
+                            Все разделы и статьи группы --> <Link to={`/group/${id}/article`}>открыть</Link>
                         </div>
                     </div>
 
@@ -98,7 +98,7 @@ function User (props) {
                     {/* кнопки блок */}
                     <div className="social block" style={{padding: 0}}>
                         <div className="d-grid gap-2">
-                            {(access ? <Link to={`/group/id${group._id}/settings`} type="button" className="btn btn-primary btn-sm btn-block">Настройки</Link> : null)}
+                            {(access ? <Link to={`/group/${group._id}/settings`} type="button" className="btn btn-primary btn-sm btn-block">Настройки</Link> : null)}
                         </div>
                     </div>
 

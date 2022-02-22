@@ -31,7 +31,7 @@ function Article (props) {
         urlOwner.current = 'group'
         urlOwnerId.current = props.group_id
     }
-    let urlLink = useRef(`/${urlOwner.current}/id${urlOwnerId.current}/article`)
+    let urlLink = useRef(`/${urlOwner.current}/${urlOwnerId.current}/article`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -113,7 +113,7 @@ function Article (props) {
                 <ElementFile file={_image_id} attributes={{controls: true}}/>
             </div>
             <div className="col-lg-8">
-                <Link to={`/article/id${video_id}`} >{video_title}</Link>
+                <Link to={`/article/${video_id}`} >{video_title}</Link>
                 <p>
                     {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
                 </p>

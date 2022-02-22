@@ -70,10 +70,10 @@ function App (props) {
         //массив
         let pages = [
             {path: '/settings', element: <Settings/>},
-            //{path: '/messages/id:id', element: <MessagesUserId/>},
+            //{path: '/messages/:id', element: <MessagesUserId/>},
             //{path: '/messages', element: <Messages/>},
-            {path: '/group/id:id/settings', element: <GroupSettings/>},
-            //{path: '/group/id:id/settings/pay', element: <GroupPay/>},
+            {path: '/group/:id/settings', element: <GroupSettings/>},
+            //{path: '/group/:id/settings/pay', element: <GroupPay/>},
             //{path: '/friends', element: <Friend/>},
 
         ];
@@ -128,20 +128,20 @@ function App (props) {
                         <Routes>
                             <Route path="/" element={<Landing />} />
 
-                            <Route path="/user/id:id" element={<User />} />
-                            <Route path="/group/id:id" element={<Group />} />
+                            <Route path="/user/:id" element={<User />} />
+                            <Route path="/group/:id" element={<Group />} />
 
-                            {/*<Route exact path="/topic/id:id" element={<TopicId />} />*/}
-                            <Route path="/article/id:id" element={<ArticleId />} />
+                            {/*<Route exact path="/topic/:id" element={<TopicId />} />*/}
+                            <Route path="/article/:id" element={<ArticleId />} />
 
-                            {<Route path="/video/id:id" element={<VideoId />} />}
+                            {<Route path="/video/:id" element={<VideoId />} />}
                             {/*<Route exact path="/video" element={<VideoAll />} />*/}
 
-                            <Route path="/:owner/id:id/video" element={<Video />} />
-                            <Route path="/:owner/id:id/video/album_id:album_id" element={<Video />} />
+                            <Route path="/:owner/:id/video" element={<Video />} />
+                            <Route path="/:owner/:id/video/:album_id" element={<Video />} />
 
-                            <Route path="/:owner/id:id/article" element={<Article />} />
-                            <Route path="/:owner/id:id/article/album_id:album_id" element={<Article />} />
+                            <Route path="/:owner/:id/article" element={<Article />} />
+                            <Route path="/:owner/:id/article/:album_id" element={<Article />} />
 
                             <Route path="/charity" element={<Charity />} />
 
@@ -160,120 +160,6 @@ function App (props) {
 
         </BrowserRouter>
     )
-
-/*
-class App extends Component {
-    constructor () {
-        super();
-    }
-
-    componentDidMount() {
-        loadReCaptcha(
-            global.gappkey,
-        )
-            .then(() => {
-                console.log('ReCaptcha loaded')
-            })
-            .catch((e) => {
-                console.error('Error when load ReCaptcha', e)
-            })
-    }
-
-    //страницы с авторизацией
-    pageAuth () {
-        //массив
-        let pages = [
-            {path: '/settings', element: <Settings/>},
-            //{path: '/messages/id:id', element: <MessagesUserId/>},
-            //{path: '/messages', element: <Messages/>},
-            {path: '/group/id:id/settings', element: <GroupSettings/>},
-            {path: '/group/id:id/settings/pay', element: <GroupPay/>},
-            //{path: '/friends', element: <Friend/>},
-
-        ];
-        //формирование
-        pages = pages.map(function (page, i) {
-            return <Route exact key={i} path={page.path} element={page.element} />
-        });
-        //вывод
-        return pages
-    }
-    //страницы без авторизации
-    pageNoAuth () {
-        //массив
-        let pages = [
-            {path: '/auth', element: <Auth />},
-            {path: '/reg', element: <Reg />},
-            {path: '/reg-activate/:code', element: <RegActivate/>},
-
-
-            //{path: '/reg', component: Reg},
-            //{path: '/reg-active/:code', component: RegActive},
-            //{path: '/reset', component: Reset},
-            //{path: '/reset-active/:code', component: ResetActive},
-            //{path: '/ref/:ref', component: Landing},
-            //{path: '/oauth-vk', component: OAuthVK},
-
-        ];
-        //формирование
-        pages = pages.map(function (page, i) {
-            return <Route key={i} path={page.path} element={page.element} />
-        });
-        //вывод
-        return pages
-    }
-
-    render() {
-        let auth = this.props.myUser.auth;
-        return (
-            <BrowserRouter>
-                <MenuTop/>
-
-
-                <div className="container main" style={{maxWidth: '992px'}}>
-                    <div className="row">
-
-
-                        <div className="col-lg-2">
-                            <MenuLeft />
-                        </div>
-
-
-                        <div className="col-lg-10">
-                            <Routes>
-                                <Route exact path="/" element={<Landing />} />
-
-                                <Route exact path="/user/id:id" element={<User />} />
-                                <Route exact path="/group/id:id" element={<Group />} />
-
-                                {<Route exact path="/topic/id:id" element={<TopicId />} />}
-                                <Route exact path="/article/id:id" element={<ArticleId />} />
-
-                                {<Route exact path="/video/id:id" element={<VideoId />} />}
-                                {Route exact path="/video" element={<VideoAll />} />}
-
-                                <Route exact path="/:owner/id:id/video" element={<Video />} />
-                                <Route exact path="/:owner/id:id/video/album_id:album_id" element={<Video />} />
-
-
-                                <Route exact path="/:owner/id:id/article" element={<Article />} />
-                                <Route exact path="/:owner/id:id/article/album_id:album_id" element={<Article />} />
-
-
-                                <Route exact path="/search/" element={<Search />} />
-
-                                {(auth) ? this.pageAuth() : this.pageNoAuth()}
-
-                                <Route element={<NoPage />} />
-                            </ Routes >
-                        </div>
-
-                    </div>
-                </div>
-
-            <Footer/>
-            </BrowserRouter>
-        )};*/
 }
 
 export default connect (

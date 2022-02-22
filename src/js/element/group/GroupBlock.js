@@ -14,7 +14,7 @@ function Group (props) {
 
     //let [access, setAccess] = useState(false)
     //let ownerId = useRef(Number (props.owner_id))
-    //let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
+    //let linkUrl = useRef(`/${props.owner}/${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -54,13 +54,13 @@ function Group (props) {
     const List = (arr) => {
         return arr.map(function (group, i, arGroup) {
             return ( <div className="group" key={i}>
-                <Link to={`/group/id${group._id}`}>
+                <Link to={`/group/${group._id}`}>
                     <div className="img">
                         <img src={group._photo ? `${global.urlServer}/${group._photo.url}` : "https://svgsilh.com/svg/479631.svg" } className="card-img-top" alt="..."/>
                     </div>
                 </Link>
 
-                <Link to={`/group/id${group._id}`}>{group.title}</Link>
+                <Link to={`/group/${group._id}`}>{group.title}</Link>
 
             </div>)
         })

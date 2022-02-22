@@ -54,7 +54,7 @@ class Group extends Component {
                             <img src={group.photo ? `${global.urlServer}/${group.photo.url}` : "https://svgsilh.com/svg/479631.svg" } className="card-img-top" alt="..."/>
                             <div className="card-body">
                                 <p className="card-text">
-                                    <Link to={`/group/id${group.id}`}>{group.title}</Link>
+                                    <Link to={`/group/${group.id}`}>{group.title}</Link>
                                 </p>
                             </div>
 

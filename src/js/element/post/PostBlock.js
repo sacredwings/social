@@ -25,7 +25,7 @@ function Post (props) {
         urlOwner.current = 'group'
         urlOwnerId.current = props.group_id
     }
-    let urlLink = useRef(`/${urlOwner.current}/id${urlOwnerId.current}/post`)
+    let urlLink = useRef(`/${urlOwner.current}/${urlOwnerId.current}/post`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{

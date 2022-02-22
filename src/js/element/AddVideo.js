@@ -69,7 +69,7 @@ function Video (props) {
                                     <source src={`${global.urlServer}/${video.url}`} type={video.type}/>
                                 </video> */}
                                 <p className="card-text">
-                                    <Link to={`/video/id${video.id}`} >{video.title}</Link>
+                                    <Link to={`/video/${video.id}`} >{video.title}</Link>
                                 </p>
                             </div>
 

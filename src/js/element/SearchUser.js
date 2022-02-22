@@ -41,7 +41,7 @@ export default function ({q}) {
                 Пользователей найдено: <strong>{response.count}</strong>
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/user/id${item.id}`} className="list-group-item list-group-item-action">
+                        <Link to={`/user/${item.id}`} className="list-group-item list-group-item-action">
                             <img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item.photo) ? `${global.urlServer}/${item.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg"} />
                             {item.first_name}
                         </Link>

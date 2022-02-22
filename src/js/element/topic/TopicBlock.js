@@ -16,11 +16,11 @@ function Group (props) {
     //показ формы ввода
     let [formViewer, setFormViewer] = useState(false)
     let ownerId = useRef(Number (props.owner_id))
-    let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/article`)
+    let linkUrl = useRef(`/${props.owner}/${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/article`)
 
     //let [access, setAccess] = useState(false)
     //let ownerId = useRef(Number (props.owner_id))
-    //let linkUrl = useRef(`/${props.owner}/id${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
+    //let linkUrl = useRef(`/${props.owner}/${(ownerId.current > 0) ? ownerId.current : -ownerId.current}/video`)
 
     //отслеживаем изменение props
     useEffect (async ()=>{
@@ -53,7 +53,7 @@ function Group (props) {
     const List = (arr) => {
         return arr.map(function (article, i, arGroup) {
             return ( <div className="group" key={i}>
-                <Link to={`/article/id${article.id}`} className="">{article.title}</Link>
+                <Link to={`/article/${article.id}`} className="">{article.title}</Link>
 
             </div>)
         })
