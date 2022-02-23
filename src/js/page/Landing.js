@@ -102,7 +102,7 @@ function Landing  (props) {
                             <h5>Видео <span className="badge bg-warning text-dark"> {count.video}</span></h5>
                             <h5>Статьи <span className="badge bg-warning text-dark"> {count.article}</span></h5>
                             <h5>Посты <span className="badge bg-warning text-dark"> {count.post}</span></h5>
-                            <h5>Обсуждения <span className="badge bg-warning text-dark"> {count.topic}</span></h5>
+                            {/*<h5>Обсуждения <span className="badge bg-warning text-dark"> {count.topic}</span></h5>*/}
                         </div>
 
                     </div>
