@@ -36,7 +36,7 @@ import RegActivate from "./page/RegActivate";
 //import Post from "./page/Post";
 import VideoId from "./page/video/VideoId";
 import ArticleId from "./page/article/ArticleId";
-import Search from "./page/Search";
+import Search from "./page/search/Search";
 //import Friend from "./page/friend/friend";
 //import VideoAll from "./page/video/Video";
 import Embed from "./page/Embed"

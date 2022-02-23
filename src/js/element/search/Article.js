@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
 import {Link} from "react-router-dom";
-import ElementFile from "../object/ElementFile";
 
 export default function ({q}) {
     //настройки запроса
@@ -21,7 +20,7 @@ export default function ({q}) {
 
     async function Get (start) {
         //запрос
-        const url = `/api/video/search?q=${q}&offset=${(start) ? 0 : response.offset}&count=${count}`;
+        const url = `/api/article/get?q=${q}&offset=${(start) ? 0 : response.offset}&count=${count}`;
 
         let result = await axios.get(url);
 
@@ -34,25 +33,16 @@ export default function ({q}) {
             items: (start) ? result.response.items : [...prev.items, ...result.response.items]
         }))
     }
-//<img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item.photo) ? `${global.urlServer}/${item.photo.url}` : "https://www.freelancejob.ru/upload/663/32785854535177.jpg"} />
+
     function Result (result) {
         return <div className="row">
 
             <div className="col-lg-12">
-                Видео найдено: <strong>{response.count}</strong>
+                Статей найдено: <strong>{response.count}</strong>
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/video/${item.id}`} className="list-group-item list-group-item-action">
-                            <div className="row">
-                                <div className="col-lg-4">
-                                    <ElementFile file={item}/>
-                                </div>
-                                <div className="col-lg-4">
-                                    {item.title}
-                                </div>
-                            </div>
-
-
+                        <Link to={`/article/${item._id}`} className="list-group-item list-group-item-action">
+                            {item.title}
                         </Link>
                     </div>)
                 })}
@@ -67,7 +57,7 @@ export default function ({q}) {
 
     return (
         <>
-            {(response.items.length) ? Result(response.items) : <p>Видео не найдены</p>}
+            {(response.items.length) ? Result(response.items) : <p>Статьи не найдены</p>}
         </>
     );
 }

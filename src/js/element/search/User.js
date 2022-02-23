@@ -20,7 +20,7 @@ export default function ({q}) {
 
     async function Get (start) {
         //запрос
-        const url = `/api/article/search?q=${q}&offset=${(start) ? 0 : response.offset}&count=${count}`;
+        const url = `/api/user/get?q=${q}&offset=${(start) ? 0 : response.offset}&count=${count}`;
 
         let result = await axios.get(url);
 
@@ -38,11 +38,12 @@ export default function ({q}) {
         return <div className="row">
 
             <div className="col-lg-12">
-                Статей найдено: <strong>{response.count}</strong>
+                Пользователей найдено: <strong>{response.count}</strong>
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
-                        <Link to={`/article/${item.id}`} className="list-group-item list-group-item-action">
-                            {item.title}
+                        <Link to={`/user/${item._id}`} className="list-group-item list-group-item-action">
+                            <img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item._photo) ? `${global.urlServer}/${item._photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg"} />
+                            {item.first_name}
                         </Link>
                     </div>)
                 })}
@@ -57,7 +58,7 @@ export default function ({q}) {
 
     return (
         <>
-            {(response.items.length) ? Result(response.items) : <p>Статьи не найдены</p>}
+            {(response.items.length) ? Result(response.items) : <p>Пользователи не найдены</p>}
         </>
     );
 }

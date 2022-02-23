@@ -20,7 +20,7 @@ export default function ({q}) {
 
     async function Get (start) {
         //запрос
-        const url = `/api/group/search?q=${q}&offset=${(start) ? 0 : response.offset}&count=${count}`;
+        const url = `/api/group/get?q=${q}&offset=${(start) ? 0 : response.offset}&count=${count}`;
 
         let result = await axios.get(url);
 
@@ -42,7 +42,7 @@ export default function ({q}) {
                 { result.map(function (item, i) {
                     return ( <div className="list-group" key={i}>
                         <Link to={`/group/${item._id}`} className="list-group-item list-group-item-action">
-                            <img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item.photo) ? `${global.urlServer}/${item.photo.url}` : "https://svgsilh.com/svg/479631.svg"} />
+                            <img style={{maxHeight: '100px', maxWidth: '100px'}} src={(item._photo) ? `${global.urlServer}/${item._photo.url}` : "https://svgsilh.com/svg/479631.svg"} />
                             {item.title}
                         </Link>
                     </div>)

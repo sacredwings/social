@@ -84,11 +84,12 @@ function VideoId (props) {
                     <p>{video.text}</p>
                 </div>
             </div>
+            {/*
             <div className="row">
                 <div className="col-12">
                     <Comment module='video' object_id={id}/>
                 </div>
-            </div>
+            </div>*/}
         </>
     }
 
