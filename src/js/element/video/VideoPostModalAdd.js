@@ -49,8 +49,13 @@ function Group (props) {
             }
         }
 
-        if ((ownerId.group_id) && (!ownerId.user_id)) arFields.params.group_id = ownerId.group_id
-        if ((!ownerId.group_id) && (ownerId.user_id)) arFields.params.user_id = ownerId.user_id
+        if ((!props.group_id) && (!props.user_id)) { /* из url */
+            if (props.group_id) arFields.params.group_id = props.match.params.id
+            if (props.user_id) arFields.params.user_id = props.match.params.id
+        } else {
+            if (props.group_id) arFields.params.group_id = props.group_id
+            if (props.user_id) arFields.params.user_id = props.user_id
+        }
 
         const url = `/api/video/get`
 
