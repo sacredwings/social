@@ -44,8 +44,13 @@ function RichEditor (props) {
     }
 
     //Нажатие кнопки
-    const OnClickButton = (type) => {
-        document.execCommand(type, false, null)
+    const OnClickButton = (commandId, showUi = false, value = null) => {
+        /*
+        if (type === 'foreColor') {
+            document.execCommand(commandId, showUi, value)
+            return true
+        }*/
+        document.execCommand(commandId, showUi, value)
     }
 
     //Изменение текста в редакторе
@@ -73,7 +78,7 @@ function RichEditor (props) {
 
         //проверка на ссылку
         let resUrl = isValidHttpUrl(content)
-        console.log(resUrl)
+
         //не ссылка - вставляем текст
         if (!resUrl) {
             console.log('просто текст')
@@ -82,16 +87,20 @@ function RichEditor (props) {
         }
 
         //ссылка на соц сеть и ютуб
-        let substrYouTube = 'https://youtu.be'
-        let substr = 'https://voenset.ru'
-        let substrLocalhost = 'http://localhost:3030'
+        let substrYouTube = [
+            'https://youtu.be',
+            'https://www.youtube.com/'
+        ]
+        let substrMy = [
+            'https://voenset.ru',
+            'http://localhost:3030'
+        ]
 
-        let resUrlYouTube = content.includes(substrYouTube)
-        let resUrlMy = content.includes(substr)
-        let resUrlMyLocalhost = content.includes(substrLocalhost)
+        let resUrlYouTube = includes(content, substrYouTube)
+        let resUrlMy = includes(content, substrMy)
 
         //проверка что ссылка не на ютуб и не на соц сеть
-        if ((!resUrlMy) && (!resUrlMyLocalhost) && (!resUrlYouTube)) {
+        if ((!resUrlMy) && (!resUrlYouTube)) {
             console.log('просто ссылка')
             document.execCommand('createLink', false, content)
             return true
@@ -100,13 +109,10 @@ function RichEditor (props) {
         if (resUrlYouTube) {
             console.log('Ютуб ссылка')
 
-            let resulttt = GetYouTube(content)
-
-            console.log(resulttt)
-            document.execCommand('insertHTML', false, resulttt)
+            let result = GetYouTube(content)
+            document.execCommand('insertHTML', false, result)
             return true
         }
-        //https://youtu.be/ft_WS9VPSV0
 
         console.log('ищу на сайте')
 
@@ -119,7 +125,6 @@ function RichEditor (props) {
             return true
         }
 
-
         //
         let video = `<video controls={true} poster="${global.urlServer}/${file._file_id.url}" >
             <source src="${global.urlServer}/${file.url}" type="${file.type}"/>
@@ -131,9 +136,22 @@ function RichEditor (props) {
 
 
 
-    const Buttons = () => {
-        return <div>
-            <div className="btn-group" role="group" aria-label="Button group with nested dropdown">
+    const Buttons = (format = 'line') => {
+        let className = `btn-group`
+        let style = {}
+        if (format === 'vertical') {
+            className = `btn-group-vertical`
+            style = {
+                position: "fixed",
+                top: "20px",
+                right: "20px",
+                background: "white",
+                borderRadius: "5px"
+            }
+        }
+
+        return <div className="btn-group-line" style={style}>
+            <div className={className} role="group" aria-label="Button group with nested dropdown">
                 <button type="button" className="btn btn-outline-secondary btn-sm" data-element="bold" onClick={()=>{OnClickButton('bold')}}>
                     <i className="fa fa-bold"></i>
                 </button>
@@ -167,6 +185,135 @@ function RichEditor (props) {
                 <button type="button" className="btn btn-outline-secondary btn-sm" data-element="insertImage" onClick={()=>{OnClickButton('insertImage')}}>
                     <i className="fa fa-image"></i>
                 </button>
+
+                <div className="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" className="btn btn-outline-secondary btn-sm dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <i className="fas fa-heading"></i>
+                    </button>
+                    <ul className="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('formatBlock', false, "H1")}}>H1</button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('formatBlock', false, "H2")}}>H2</button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('formatBlock', false, "H3")}}>H3</button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('formatBlock', false, "H4")}}>H4</button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('formatBlock', false, "H5")}}>H5</button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('formatBlock', false, "H6")}}>H6</button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('formatBlock', false, "p")}}>P</button></li>
+                    </ul>
+                </div>
+
+                <div className="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" className="btn btn-outline-secondary btn-sm dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <i className="fas fa-vial"></i> Цвет
+                    </button>
+                    <ul className="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(0, 0, 0,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(0, 0, 0,1)'}}></i> Черный
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(128, 128, 128,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(128, 128, 128,1)'}}></i> Серый
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(192, 192, 192,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(192, 192, 192,1)'}}></i> Серебро
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(255, 255, 255,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(255, 255, 255,1)'}}></i> Белый
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(255, 0, 255,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(255, 0, 255,1)'}}></i> Фуксия
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(128, 0, 128,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(128, 0, 128,1)'}}></i> Фиолетовый
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(255, 0, 0,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(255, 0, 0,1)'}}></i> Красный
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(128, 0, 0,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(128, 0, 0,1)'}}></i> Бордовый
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(255, 255, 0,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(255, 255, 0,1)'}}></i> Желтый
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(128, 128, 0,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(128, 128, 0,1)'}}></i> Олива
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(0, 255, 0,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(0, 255, 0,1)'}}></i> Лайм
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(0, 128, 0,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(0, 128, 0,1)'}}></i> Зеленый
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(0, 255, 255,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(0, 255, 255,1)'}}></i> Аква
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(0, 128, 128,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(0, 128, 128,1)'}}></i> Бирюзовый
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(0, 0, 255,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(0, 0, 255,1)'}}></i> Синий
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(0, 0, 128,1)")}}>
+                            <i className="fas fa-vial" style={{color: 'rgba(0, 0, 128,1)'}}></i> Флот
+                        </button></li>
+                    </ul>
+                </div>
+                <div className="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" className="btn btn-outline-secondary btn-sm dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <i className="fas fa-fire-extinguisher"></i> Цвет фона
+                    </button>
+                    <ul className="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(0, 0, 0,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(0, 0, 0,1)'}}></i> Черный
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(128, 128, 128,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(128, 128, 128,1)'}}></i> Серый
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(192, 192, 192,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(192, 192, 192,1)'}}></i> Серебро
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(255, 255, 255,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(255, 255, 255,1)'}}></i> Белый
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(255, 0, 255,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(255, 0, 255,1)'}}></i> Фуксия
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(128, 0, 128,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(128, 0, 128,1)'}}></i> Фиолетовый
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(255, 0, 0,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(255, 0, 0,1)'}}></i> Красный
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(128, 0, 0,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(128, 0, 0,1)'}}></i> Бордовый
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(255, 255, 0,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(255, 255, 0,1)'}}></i> Желтый
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(128, 128, 0,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(128, 128, 0,1)'}}></i> Олива
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(0, 255, 0,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(0, 255, 0,1)'}}></i> Лайм
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(0, 128, 0,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(0, 128, 0,1)'}}></i> Зеленый
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(0, 255, 255,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(0, 255, 255,1)'}}></i> Аква
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(0, 128, 128,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(0, 128, 128,1)'}}></i> Бирюзовый
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(0, 0, 255,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(0, 0, 255,1)'}}></i> Синий
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(0, 0, 128,1)")}}>
+                            <i className="fas fa-fire-extinguisher" style={{color: 'rgba(0, 0, 128,1)'}}></i> Флот
+                        </button></li>
+                    </ul>
+                </div>
             </div>
         </div>
     }
@@ -176,6 +323,7 @@ function RichEditor (props) {
     return (
         <div className="rich-edit">
             <Buttons/>
+            {Buttons('vertical')}
             <div className="content-editable" contentEditable={true} suppressContentEditableWarning={true} ref={refRichEditor} onPaste={OnPaste} onInput={OnInput} onKeyDown={OnKeyDown} dangerouslySetInnerHTML={{ __html: props.content }}></div>
             <Buttons/>
         </div>
@@ -194,4 +342,19 @@ function isValidHttpUrl(string) {
     }
 
     return url.protocol === "http:" || url.protocol === "https:";
+}
+function includes(content, substr) {
+    let res = false
+
+    if (typeof substr === 'string') {
+        res = content.includes(substr)
+        return res
+    }
+
+    for (let str of substr) {
+        res = content.includes(str)
+        if (res === true) return true
+    }
+
+    return false
 }
