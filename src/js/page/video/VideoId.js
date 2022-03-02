@@ -75,12 +75,13 @@ function VideoId (props) {
     }
 */
     const Element = (video) => {
+
         return <>
             <div className="row">
                 <div className="col-12">
                     <h1>Видео <button type="button" className="btn btn-success btn-sm" onClick={onChangeForm}>Редактировать</button></h1>
                     <h2>{video.title}</h2>
-                    <ElementFile file={video}/>
+                    <ElementFile file={video} attributes={{controls: true}}/>
                     <p>{video.text}</p>
                 </div>
             </div>
