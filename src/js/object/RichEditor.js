@@ -3,10 +3,12 @@ import axios from "axios";
 
 function RichEditor (props) {
 
-    const refRichEditor = useRef(null);
+    const refRichEditor = useRef(null)
+    let [content, setContent] = useState([])
 
     useEffect (async ()=>{
-        onResult(refRichEditor.current.innerHTML)
+        //onResult(refRichEditor.current.innerHTML)
+        setContent(props.content)
     }, [])
 
     const Get = async (str) => {
@@ -38,10 +40,12 @@ function RichEditor (props) {
         return video
     }
 
+    /*
     //Выводим результат
     const onResult = (content) => {
         props.onResult(content)
-    }
+        //console.log(content)
+    }*/
 
     //Нажатие кнопки
     const OnClickButton = (commandId, showUi = false, value = null) => {
@@ -56,7 +60,7 @@ function RichEditor (props) {
     //Изменение текста в редакторе
     const OnInput = (e) => {
         console.log(e)
-        onResult(refRichEditor.current.innerHTML)
+        props.onResult(refRichEditor.current.innerHTML)
     }
     //Изменение текста в редакторе
     const OnKeyDown = (e) => {
@@ -170,21 +174,30 @@ function RichEditor (props) {
                 <button type="button" className="btn btn-outline-secondary btn-sm" data-element="createLink" onClick={()=>{OnClickButton('createLink')}}>
                     <i className="fa fa-link"></i>
                 </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="justifyLeft" onClick={()=>{OnClickButton('justifyLeft')}}>
-                    <i className="fa fa-align-left"></i>
-                </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="justifyCenter" onClick={()=>{OnClickButton('justifyCenter')}}>
-                    <i className="fa fa-align-center"></i>
-                </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="justifyRight" onClick={()=>{OnClickButton('justifyRight')}}>
-                    <i className="fa fa-align-right"></i>
-                </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="justifyFull" onClick={()=>{OnClickButton('justifyFull')}}>
-                    <i className="fa fa-align-justify"></i>
-                </button>
                 <button type="button" className="btn btn-outline-secondary btn-sm" data-element="insertImage" onClick={()=>{OnClickButton('insertImage')}}>
                     <i className="fa fa-image"></i>
                 </button>
+
+                <div className="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" className="btn btn-outline-secondary btn-sm dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <i className="fa fa-align-justify"></i>
+                    </button>
+                    <ul className="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('justifyLeft')}}>
+                            <i className="fa fa-align-left"></i>
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('justifyCenter')}}>
+                            <i className="fa fa-align-center"></i>
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('justifyRight')}}>
+                            <i className="fa fa-align-right"></i>
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('justifyFull')}}>
+                            <i className="fa fa-align-justify"></i>
+                        </button></li>
+                    </ul>
+                </div>
 
                 <div className="btn-group" role="group">
                     <button id="btnGroupDrop1" type="button" className="btn btn-outline-secondary btn-sm dropdown-toggle"
@@ -205,7 +218,7 @@ function RichEditor (props) {
                 <div className="btn-group" role="group">
                     <button id="btnGroupDrop1" type="button" className="btn btn-outline-secondary btn-sm dropdown-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                        <i className="fas fa-vial"></i> Цвет
+                        <i className="fas fa-vial"></i>
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="btnGroupDrop1">
                         <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('foreColor', false, "rgba(0, 0, 0,1)")}}>
@@ -261,7 +274,7 @@ function RichEditor (props) {
                 <div className="btn-group" role="group">
                     <button id="btnGroupDrop1" type="button" className="btn btn-outline-secondary btn-sm dropdown-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                        <i className="fas fa-fire-extinguisher"></i> Цвет фона
+                        <i className="fas fa-fire-extinguisher"></i>
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="btnGroupDrop1">
                         <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(0, 0, 0,1)")}}>
@@ -322,10 +335,10 @@ function RichEditor (props) {
 
     return (
         <div className="rich-edit">
-            <Buttons/>
-            {Buttons('vertical')}
-            <div className="content-editable" contentEditable={true} suppressContentEditableWarning={true} ref={refRichEditor} onPaste={OnPaste} onInput={OnInput} onKeyDown={OnKeyDown} dangerouslySetInnerHTML={{ __html: props.content }}></div>
-            <Buttons/>
+            {(props.btnPosition.right) ? Buttons('vertical') : null}
+            {(props.btnPosition.top) ? <Buttons/> : null}
+            <div className="content-editable" contentEditable={true} suppressContentEditableWarning={true} ref={refRichEditor} onPaste={OnPaste} onInput={OnInput} onKeyDown={OnKeyDown} dangerouslySetInnerHTML={{ __html: content }}></div>
+            {(props.btnPosition.bottom) ? <Buttons/> : null}
         </div>
     )
 }

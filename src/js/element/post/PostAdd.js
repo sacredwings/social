@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-//import AddFile from "../objects/AddFile";
+import RichEditor from '../../object/RichEditor'
 import AddFile from "../../object/AddFile";
 
 function PostAdd (props) {
@@ -22,14 +22,15 @@ function PostAdd (props) {
     //отслеживаем изменение props
     useEffect(async () => {
         //await GetAlbums()
-    }, [])
+        console.log(form)
+    }, [form])
 
-    const onChangeText = (e) => {
-        let name = e.target.id;
-        let value = e.target.value;
+    const onChangeText = (content) => {
+        //let name = e.target.id;
+        //let value = e.target.value;
 
         setForm(prev => ({
-            ...prev, [name]: value
+            ...prev, ['inputText']: content
         }))
     }
 
@@ -74,9 +75,10 @@ function PostAdd (props) {
         return <form onSubmit={onFormSubmit} className="">
 
             <div className="mb-3">
-                <textarea className="form-control" id="inputText" rows="5" placeholder="Что у вас нового ?" onChange={onChangeText} value={form.inputText}></textarea>
+                {/*<textarea className="form-control" id="inputText" rows="5" placeholder="Что у вас нового ?" onChange={onChangeText} value={form.inputText}></textarea>*/}
+                <RichEditor content={form.inputText} onResult={onChangeText} btnPosition={{top: true, right: false, bottom: false}}/>
             </div>
-            <div className="row">
+            <div className="row button-file">
                 <div className="col-12">
                     <AddFile ArFileIds={ArFileIds} user_id={props.user_id} group_id={props.group_id}/>
                 </div>

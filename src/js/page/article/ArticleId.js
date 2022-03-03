@@ -136,6 +136,7 @@ function ArticleId (props) {
     }
 
     const onResult = (content) => {
+        console.log(content)
         setNewContent(content)
     }
 
@@ -162,7 +163,7 @@ function ArticleId (props) {
 
                 <div className="mb-3">
                     <label className="form-label">Текст</label>
-                    <RichEditor content={video.text} onResult={onResult}/>
+                    <RichEditor content={video.text} onResult={onResult} btnPosition={{top: true, right: true, bottom: true}}/>
                 </div>
 
                 {/*

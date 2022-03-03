@@ -4,7 +4,6 @@ import axios from "axios";
 import SelectAlbum from "../object/SelectAlbum";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import AddFile from "../object/AddFile";
-import MyEditor from "../object/MyEditor";
 
 
 function ArticleAdd (props) {
@@ -92,7 +91,6 @@ function ArticleAdd (props) {
             <div className="mb-3">
                 <label htmlFor="inputText" className="form-label">Описание</label>
                 <textarea className="form-control" id="inputText" rows="5" onChange={onChangeText} value={form.inputText}></textarea>
-                <MyEditor />
             </div>
 
             <br/>
