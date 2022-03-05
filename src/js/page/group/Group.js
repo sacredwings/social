@@ -10,6 +10,7 @@ import {useParams, Link} from 'react-router-dom'
 //import FriendButton from "../element/friend/FriendButton";
 import ElementFile from "../../object/ElementFile";
 import ElementPay from "../../element/group/Pay";
+import {ServerUrl} from '../../util/proxy'
 
 function User (props) {
     const { id } = useParams()
@@ -23,7 +24,7 @@ function User (props) {
     async function Get (groupId) {
 
         //запрос
-        let result = await axios.get(`/api/group/getById?ids=${groupId}`, {});
+        let result = await axios.get(`${ServerUrl()}/api/group/getById?ids=${groupId}`, {});
         result = result.data;
 
         //ответ со всеми значениями

@@ -5,6 +5,7 @@ import axios from "axios";
 import VideoAddModal from "./VideoAddModal";
 import ElementFile from "../../object/ElementFile";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import {ServerUrl} from '../../util/proxy'
 
 function Video (props) {
     let [form, setForm] = useState({
@@ -79,7 +80,7 @@ function Video (props) {
             }
         }
 
-        let url = `/api/album/getById`
+        let url = `${ServerUrl()}/api/album/getById`
 
         let result = await axios.get(url, arFields);
         result = result.data;
@@ -115,7 +116,7 @@ function Video (props) {
         if (props.album_id)
             arFields.params.album_id = props.album_id
 
-        let url = `/api/video/get`
+        let url = `${ServerUrl()}/api/video/get`
 
         let result = await axios.get(url, arFields);
         result = result.data;
@@ -132,7 +133,7 @@ function Video (props) {
 
     const Delete = async (id) => {
 
-        let url = `/api/video/delete`;
+        let url = `${ServerUrl()}/api/video/delete`;
 
         let result = await axios.post(url, {id: id});
 
@@ -178,7 +179,7 @@ function Video (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
-        const url = '/api/video/edit';
+        const url = `${ServerUrl()}/api/video/edit`;
         const formData = new FormData();
 
         console.log(form)

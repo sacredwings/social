@@ -4,6 +4,7 @@ import axios from "axios";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import RichEditor from '../../object/RichEditor'
 import AddFile from "../../object/AddFile";
+import {ServerUrl} from '../../util/proxy'
 
 function PostAdd (props) {
     let [form, setForm] = useState({
@@ -47,7 +48,7 @@ function PostAdd (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'post')
 
-        const url = '/api/post/add';
+        const url = `${ServerUrl()}/api/post/add`;
 
         let arFields = {
             text: form.inputText,

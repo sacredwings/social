@@ -3,6 +3,7 @@ import axios from "axios";
 import {connect} from 'react-redux';
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import {useParams, Link} from 'react-router-dom'
+import {ServerUrl} from '../../util/proxy'
 
 function Pay (props) {
 
@@ -21,7 +22,7 @@ function Pay (props) {
         }
 
         //запрос
-        let result = await axios.post(`/api/group/pay`, arFields)
+        let result = await axios.post(`${ServerUrl()}/api/group/pay`, arFields)
         result = result.data
 
         if (result.response)

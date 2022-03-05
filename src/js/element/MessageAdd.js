@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import axios from "axios";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import AddFile from "../object/AddFile";
+import {ServerUrl} from '../util/proxy'
 
 function MessageAdd (props) {
     let [message, setMessage] = useState('')
@@ -29,7 +30,7 @@ function MessageAdd (props) {
             gtoken: gtoken
         }
 
-        const url = `/api/message/add`;
+        const url = `${ServerUrl()}/api/message/add`;
 
         let result = await axios.post(url, arFields);
 

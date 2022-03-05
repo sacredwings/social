@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-
+import {ServerUrl} from '../util/proxy'
 import AlbumAddModal from "../element/AlbumAddModal";
 import {Link} from "react-router-dom";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
@@ -76,7 +76,7 @@ function AlbumVideo (props) {
             }
         }
 
-        const url = `/api/album/get`;
+        const url = `${ServerUrl()}/api/album/get`;
 
         let result = await axios.get(url, fields);
 
@@ -119,7 +119,7 @@ function AlbumVideo (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
-        const url = '/api/album/edit';
+        const url = `${ServerUrl()}/api/album/edit`;
         const formData = new FormData();
 
         console.log(form)

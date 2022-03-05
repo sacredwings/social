@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import axios from "axios";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import AddFile from "../object/AddFile";
+import {ServerUrl} from '../util/proxy'
 
 function CommentsAdd (props) {
     let [form, setForm] = useState({
@@ -31,7 +32,7 @@ function CommentsAdd (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'comment')
 
-        const url = '/api/comment/add';
+        const url = `${ServerUrl()}/api/comment/add`;
 
         let arFields = {
             module: props.module,

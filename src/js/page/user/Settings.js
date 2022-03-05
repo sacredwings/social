@@ -2,6 +2,7 @@ import React, {useState, useEffect, useReducer} from 'react';
 import axios from "axios";
 import {connect} from 'react-redux';
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import {ServerUrl} from '../../util/proxy'
 
 function Settings (props) {
     let formDefault = {
@@ -32,7 +33,7 @@ function Settings (props) {
     async function Get (userId) {
 
         //запрос
-        let result = await axios.get(`/api/account/get`, {});
+        let result = await axios.get(`${ServerUrl()}/api/account/get`, {});
         console.log(result)
         result = result.data;
 
@@ -83,7 +84,7 @@ function Settings (props) {
             }))
 
             //запрос
-            let result = await axios.post('/api/account/setPassword', {
+            let result = await axios.post(`${ServerUrl()}/api/account/setPassword`, {
                 password: form.password,
                 gtoken: gtoken
             });
@@ -141,7 +142,7 @@ function Settings (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'setting')
 
-        const url = '/api/account/setPhoto';
+        const url = `${ServerUrl()}/api/account/setPhoto`;
         const formData = new FormData();
 
         formData.append('file', form.inputFilePhoto)
@@ -172,7 +173,7 @@ function Settings (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'setting')
 
-        const url = '/api/account/setPhotoBig';
+        const url = `${ServerUrl()}/api/account/setPhotoBig`;
         const formData = new FormData();
 
         formData.append('file_img', form.inputFileBigPhoto)
@@ -204,7 +205,7 @@ function Settings (props) {
         let gtoken = await reCaptchaExecute(global.gappkey, 'setting')
 
         //запрос
-        let result = await axios.post('/api/account/setName', {
+        let result = await axios.post(`${ServerUrl()}/api/account/setName`, {
             first_name: form.first_name,
             last_name: form.last_name,
             second_name: form.second_name,

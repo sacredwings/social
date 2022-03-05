@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useParams, Link} from 'react-router-dom'
 import {connect} from "react-redux";
 import axios from "axios";
-
+import {ServerUrl} from '../../util/proxy'
 import ElementMessageAddModal from "../../element/MessageAddModal";
 import ElementVideo from "../../element/video/VideoBlock";
 //import ElementTopic from "../element/topic/TopicBlock";
@@ -27,7 +27,7 @@ function User (props) {
     async function Get (userId) {
 
         //запрос
-        let result = await axios.get(`/api/user/getById?ids=${userId}`, {});
+        let result = await axios.get(`${ServerUrl()}/api/user/getById?ids=${userId}`, {});
         result = result.data;
 
         //ответ со всеми значениями

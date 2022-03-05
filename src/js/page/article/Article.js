@@ -5,7 +5,7 @@ import axios from "axios";
 import AlbumArticle from "../../element/article/ArticleAlbum";
 import ElementArticle from "../../element/article/Article";
 import ElementPay from "../../element/group/Pay";
-import Video from "../video/Video";
+import {ServerUrl} from '../../util/proxy'
 
 /*
 const Access = async (props) => {
@@ -65,7 +65,7 @@ function Article  (props) {
     async function Get (owner, id) {
 
         //запрос
-        let result = await axios.get(`/api/${owner}/getById?ids=${id}`, {});
+        let result = await axios.get(`${ServerUrl()}/api/${owner}/getById?ids=${id}`, {});
         result = result.data;
 
         //ответ со всеми значениями

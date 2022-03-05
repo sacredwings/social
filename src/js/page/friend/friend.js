@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import {connect} from 'react-redux'
 import {Link} from "react-router-dom"
 import axios from "axios"
+import {ServerUrl} from '../../util/proxy'
 
 function Friend (props) {
     //запрос
@@ -26,7 +27,7 @@ function Friend (props) {
         if (!start)
             offset = response.items.length
 
-        let url = `/api/friend/get?offset=${offset}&count=${response.step}`
+        let url = `${ServerUrl()}/api/friend/get?offset=${offset}&count=${response.step}`
 
         let result = await axios.get(url);
 

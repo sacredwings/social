@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from "react-router-dom"
 import axios from "axios"
 import GroupAddModal from "../../element/GroupAddModal";
+import {ServerUrl} from '../../util/proxy'
 
 function Group (props) {
     //запрос
@@ -35,7 +36,7 @@ function Group (props) {
         if (props.group_id) arFields.params.group_id = props.group_id
         if (props.user_id) arFields.params.user_id = props.user_id
 
-        const url = `/api/group/get`
+        const url = `${ServerUrl()}/api/group/get`
 
         let result = await axios.get(url, arFields);
 

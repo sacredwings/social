@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
 import ElementFile from "../../object/ElementFile";
+import {ServerUrl} from '../../util/proxy'
 
 function Video (props) {
     //запрос
@@ -31,7 +32,7 @@ function Video (props) {
             offset = response.items.length
 
         let owner_id = props.owner_id;
-        const url = `/api/video/search?q=${search}&offset=${offset}&count=${response.step}`;
+        const url = `${ServerUrl()}/api/video/search?q=${search}&offset=${offset}&count=${response.step}`;
 
         let result = await axios.get(url);
 

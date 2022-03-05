@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-
+import {ServerUrl} from '../../util/proxy'
 import AlbumAddModal from "../../element/AlbumAddModal";
 import {Link} from "react-router-dom";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
@@ -85,9 +85,9 @@ function AlbumArticle (props) {
         if (props.album_id)
             arFields.params.album_id = props.album_id
 
-        const url = `/api/album/get`;
+        const url = `${ServerUrl()}/api/album/get`
 
-        let result = await axios.get(url, arFields);
+        let result = await axios.get(url, arFields)
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
 
@@ -142,8 +142,8 @@ function AlbumArticle (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'article')
 
-        const url = '/api/album/edit';
-        const formData = new FormData();
+        const url = `${ServerUrl()}/api/album/edit`
+        const formData = new FormData()
 
         console.log(form)
 

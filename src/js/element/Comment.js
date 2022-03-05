@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import CommentAdd from "./CommentAdd";
 import axios from "axios";
 import ElementFile from "../object/ElementFile";
+import {ServerUrl} from '../util/proxy'
 
 function Comments (props) {
     //настройки запроса
@@ -26,7 +27,7 @@ function Comments (props) {
         let object_id = props.object_id;
 
         //запрос
-        const url = `/api/comment/get?module=${module}&object_id=${object_id}&offset=${(start) ? 0 : response.offset}&count=${count}`;
+        const url = `${ServerUrl()}/api/comment/get?module=${module}&object_id=${object_id}&offset=${(start) ? 0 : response.offset}&count=${count}`;
 
         let result = await axios.get(url);
 

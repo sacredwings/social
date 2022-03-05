@@ -4,6 +4,7 @@ import axios from "axios";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import AddPhoto from '../object/AddPhoto';
 import AddVideo from '../object/AddVideo';
+import {ServerUrl} from '../util/proxy'
 
 function AddFile (props) {
     let [form, setForm] = useState({
@@ -28,7 +29,7 @@ function AddFile (props) {
         //загрузка файлов
         let gtoken = await reCaptchaExecute(global.gappkey, 'fileAdd')
 
-        const url = '/api/file/add';
+        const url = `${ServerUrl()}/api/file/add`;
         const formData = new FormData();
 
         if ((files) && (files.length))

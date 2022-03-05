@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
 import GroupAddModal from "../element/GroupAddModal";
+import {ServerUrl} from '../util/proxy'
 
 class Group extends Component {
     constructor () {
@@ -27,7 +28,7 @@ class Group extends Component {
     async Get (event) {
         let owner_id = this.props.owner_id;
 
-        const url = `/api/group/get?owner_id=${owner_id}&offset=${this.state.offset}&count=${this.state.count}`;
+        const url = `${ServerUrl()}/api/group/get?owner_id=${owner_id}&offset=${this.state.offset}&count=${this.state.count}`;
 
         let result = await axios.get(url);
 

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import {ServerUrl} from '../../util/proxy'
 
 function FriendButton (props) {
     let [status, setStatus] = useState('none')
@@ -70,7 +71,7 @@ function FriendButton (props) {
             gtoken: gtoken
         }
 
-        const url = `/api/friend/add`;
+        const url = `${ServerUrl()}/api/friend/add`;
 
         let result = await axios.post(url, arFields);
 
@@ -92,7 +93,7 @@ function FriendButton (props) {
             gtoken: gtoken
         }
 
-        const url = `/api/friend/delete`;
+        const url = `${ServerUrl()}/api/friend/delete`;
 
         let result = await axios.post(url, arFields);
 
@@ -111,7 +112,7 @@ function FriendButton (props) {
             }
         }
 
-        const url = `/api/friend/status`;
+        const url = `${ServerUrl()}/api/friend/status`;
 
         let result = await axios.get(url, arFields);
 
