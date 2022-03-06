@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import cookie from '../util/cookie';
 import axios from "axios";
 import {useParams, Link} from 'react-router-dom'
-import {ServerUrl} from '../util/proxy'
+
 
 let style = {
     width: '100%'
@@ -23,7 +23,7 @@ function Landing  (props) {
     const GetCount = async () => {
         //let id = id;
 
-        const url = `${ServerUrl()}/api/statistic/count`;
+        const url = `/api/statistic/count`;
 
         let result = await axios.get(url);
 

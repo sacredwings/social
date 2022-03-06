@@ -2,7 +2,7 @@ import React, {Component, useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import axios from "axios";
-import {ServerUrl} from '../../util/proxy'
+
 
 function MenuTop (props) {
     useEffect(async () => {
@@ -13,7 +13,7 @@ function MenuTop (props) {
         if (props.myUser.auth) return;
 
         try {
-            let result = await axios.get(`${ServerUrl()}/api/account/get`);
+            let result = await axios.get(`/api/account/get`);
 
             if (result.data && result.data.response) {
                 let response = result.data.response;

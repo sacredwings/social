@@ -4,7 +4,7 @@ import {Link} from "react-router-dom"
 import axios from "axios"
 import VideoAddModal from "../../element/video/VideoAddModal";
 import ElementFile from "../../object/ElementFile";
-import {ServerUrl} from '../../util/proxy'
+
 
 function Group (props) {
     //запрос
@@ -58,7 +58,7 @@ function Group (props) {
             if (props.user_id) arFields.params.user_id = props.user_id
         }
 
-        const url = `${ServerUrl()}/api/video/get`
+        const url = `/api/video/get`
 
         let result = await axios.get(url, arFields)
 
@@ -81,7 +81,7 @@ function Group (props) {
             }
         }
 
-        const url = `${ServerUrl()}/api/group/get`
+        const url = `/api/group/get`
 
         let result = await axios.get(url, arFields);
 

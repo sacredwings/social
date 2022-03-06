@@ -4,7 +4,7 @@ import axios from "axios";
 import ElementMessageAdd from "../element/MessageAdd";
 import ElementFile from "../object/ElementFile";
 import io from "../util/websocket";
-import {ServerUrl} from '../util/proxy'
+
 
 function Messages (props) {
     //настройки запроса
@@ -45,7 +45,7 @@ function Messages (props) {
         }
 
         //запрос
-        const url = `${ServerUrl()}/api/message/delete`;
+        const url = `/api/message/delete`;
 
         let result = await axios.post(url, arFields);
 
@@ -56,7 +56,7 @@ function Messages (props) {
     const Get = async (start) => {
 
         //запрос
-        let result = await axios.get(`${ServerUrl()}/api/message/getByUserId?to_id=${props.match.params.id}&offset=${(start) ? 0 : response.offset}&count=${count}`);
+        let result = await axios.get(`/api/message/getByUserId?to_id=${props.match.params.id}&offset=${(start) ? 0 : response.offset}&count=${count}`);
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
@@ -72,7 +72,7 @@ function Messages (props) {
     const GetById = async (id) => {
 
         //запрос
-        let result = await axios.get(`${ServerUrl()}/api/message/getById?id=${id}`);
+        let result = await axios.get(`/api/message/getById?id=${id}`);
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку

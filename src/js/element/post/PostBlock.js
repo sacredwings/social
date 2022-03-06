@@ -4,7 +4,7 @@ import axios from "axios";
 import ElementFile from "../../object/ElementFile";
 import PostAdd from "./PostAdd";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-import {ServerUrl} from '../../util/proxy'
+
 
 function Post (props) {
     //запрос
@@ -46,7 +46,7 @@ function Post (props) {
         if ((props.group_id) && (!props.user_id)) arFields.params.group_id = props.group_id
         if ((!props.group_id) && (props.user_id)) arFields.params.user_id = props.user_id
 
-        const url = `${ServerUrl()}/api/post/get`;
+        const url = `/api/post/get`;
 
         let result = await axios.get(url, arFields);
 
@@ -64,7 +64,7 @@ function Post (props) {
     const Delete = async (id) => {
         let gtoken = await reCaptchaExecute(global.gappkey, 'topic')
 
-        let url = `${ServerUrl()}/api/post/delete`;
+        let url = `/api/post/delete`;
 
         let result = await axios.post(url, {id: id, gtoken: gtoken});
 

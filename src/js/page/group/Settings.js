@@ -3,7 +3,7 @@ import axios from "axios";
 import {connect} from 'react-redux';
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import {useParams, Link} from 'react-router-dom'
-import {ServerUrl} from '../../util/proxy'
+
 
 function GroupSettings (props) {
     const { id } = useParams()
@@ -36,7 +36,7 @@ function GroupSettings (props) {
     async function GetGroup (groupId) {
 
         //запрос
-        let result = await axios.get(`${ServerUrl()}/api/group/getById?ids=${groupId}`, {});
+        let result = await axios.get(`/api/group/getById?ids=${groupId}`, {});
         result = result.data.response;
 
         if ((result) && (result.length))
@@ -77,7 +77,7 @@ function GroupSettings (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'setting')
 
-        const url = `${ServerUrl()}/api/group/setPhoto`;
+        const url = `/api/group/setPhoto`;
         const formData = new FormData();
 
         formData.append('file', form.inputFilePhoto)
@@ -109,7 +109,7 @@ function GroupSettings (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'setting')
 
-        const url = `${ServerUrl()}/api/group/setPhotoBig`;
+        const url = `/api/group/setPhotoBig`;
         const formData = new FormData();
 
         formData.append('file_img', form.inputFileBigPhoto)
@@ -142,7 +142,7 @@ function GroupSettings (props) {
         let gtoken = await reCaptchaExecute(global.gappkey, 'setting')
 
         //запрос
-        let result = await axios.post(`${ServerUrl()}/api/group/setPrice`, {
+        let result = await axios.post(`/api/group/setPrice`, {
             price: form.price,
             group_id: form._id,
 

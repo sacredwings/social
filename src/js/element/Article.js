@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
 import ArticleAdd from "../element/AddArticle";
-import {ServerUrl} from '../util/proxy'
+
 
 function Article (props) {
     //запрос
@@ -27,7 +27,7 @@ function Article (props) {
 
     const Get = async (start) => {
 
-        let url = `${ServerUrl()}/api/article/get?owner_id=${ownerId.current}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
+        let url = `/api/article/get?owner_id=${ownerId.current}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
 
         //альбом существует
         if (props.album_id)

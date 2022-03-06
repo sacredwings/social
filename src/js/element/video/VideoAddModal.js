@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import axios from "axios";
 import SelectAlbum from "../../object/SelectAlbum";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-import {ServerUrl} from '../../util/proxy'
+
 
 function VideoAddModal (props) {
     let [form, setForm] = useState({
@@ -59,7 +59,7 @@ function VideoAddModal (props) {
             if (props.user_id) arFields.params.user_id = props.user_id
         }
 
-        const url = `${ServerUrl()}/api/album/get`;
+        const url = `/api/album/get`;
 
         let result = await axios.get(url, arFields);
 
@@ -110,7 +110,7 @@ function VideoAddModal (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
-        const url = `${ServerUrl()}/api/video/add`;
+        const url = `/api/video/add`;
         const formData = new FormData();
 
         console.log(form)

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
 import {Link} from "react-router-dom";
-import {ServerUrl} from '../util/proxy'
+
 
 function Messages () {
     //настройки запроса
@@ -24,7 +24,7 @@ function Messages () {
     const Get = async (start) => {
 
         //запрос
-        const url = `${ServerUrl()}/api/message/get?offset=${(start) ? 0 : response.offset + count}&count=${count}`;
+        const url = `/api/message/get?offset=${(start) ? 0 : response.offset + count}&count=${count}`;
 
         let result = await axios.get(url);
 
@@ -46,7 +46,7 @@ function Messages () {
         }
 
         //запрос
-        const url = `${ServerUrl()}/api/message/deleteAll`;
+        const url = `/api/message/deleteAll`;
 
         let result = await axios.post(url, arFields);
 

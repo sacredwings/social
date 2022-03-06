@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import {ServerUrl} from '../util/proxy'
+
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import AddFile from "../object/AddFile";
 
@@ -46,7 +46,7 @@ function TopicAdd (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'topic')
 
-        const url = `${ServerUrl()}/api/topic/add`;
+        const url = `/api/topic/add`;
 
         let arFields = {
             title: form.inputTitle,

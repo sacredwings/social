@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import axios from "axios";
 import TopicAdd from "../element/TopicAdd";
-import {ServerUrl} from '../util/proxy'
+
 
 function Topic (props) {
     //запрос
@@ -26,7 +26,7 @@ function Topic (props) {
 
     const Get = async (start) => {
 
-        let url = `${ServerUrl()}/api/topic/get?owner_id=${ownerId.current}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
+        let url = `/api/topic/get?owner_id=${ownerId.current}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
 
         let result = await axios.get(url);
 

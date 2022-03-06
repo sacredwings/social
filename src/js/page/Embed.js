@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useParams, Link} from 'react-router-dom'
 import {connect} from "react-redux";
 import axios from "axios";
-import {ServerUrl} from '../util/proxy'
+
 import ElementFile from "../object/ElementFile";
 //import '../../sass/social.sass';
 
@@ -19,7 +19,7 @@ function User (props) {
     async function Get (id) {
 
         //запрос
-        let result = await axios.get(`${ServerUrl()}/api/video/getById?ids=${id}`, {});
+        let result = await axios.get(`/api/video/getById?ids=${id}`, {});
         result = result.data;
 
         //ответ со всеми значениями

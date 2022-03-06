@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import {connect} from 'react-redux'
 import {Link} from "react-router-dom"
 import axios from "axios"
-import {ServerUrl} from '../../util/proxy'
+
 import ElementFile from "../../object/ElementFile";
 
 function Group (props) {
@@ -48,7 +48,7 @@ function Group (props) {
             if (props.user_id) arFields.params.user_id = props.user_id
         }
 
-        let url = `${ServerUrl()}/api/article/get`;
+        let url = `/api/article/get`;
         //let url = `/api/article/get?owner_id=${owner_id}&offset=${offset}&count=${response.step}`;
 
         let result = await axios.get(url, arFields);
@@ -98,7 +98,7 @@ function Group (props) {
         if ((props.group_id) && (!props.user_id)) arFields.params.group_id = props.group_id
         if ((!props.group_id) && (props.user_id)) arFields.params.user_id = props.user_id
 
-        let url = `${ServerUrl()}/api/album/get`
+        let url = `/api/album/get`
         //let url = `/api/article/get?owner_id=${owner_id}&offset=${offset}&count=${response.step}`;
 
         let result = await axios.get(url, arFields);

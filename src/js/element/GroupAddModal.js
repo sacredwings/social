@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-import {ServerUrl} from '../util/proxy'
+
 
 class GroupAddModal extends Component {
     constructor () {
@@ -58,7 +58,7 @@ class GroupAddModal extends Component {
 
         let _this = this
 
-        const url = `${ServerUrl()}/api/group/add`;
+        const url = `/api/group/add`;
         const formData = new FormData();
 
 

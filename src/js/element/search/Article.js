@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
 import {Link} from "react-router-dom";
-import {ServerUrl} from '../../util/proxy'
+
 
 export default function ({q}) {
     //настройки запроса
@@ -21,7 +21,7 @@ export default function ({q}) {
 
     async function Get (start) {
         //запрос
-        const url = `${ServerUrl()}/api/article/get?q=${q}&offset=${(start) ? 0 : response.offset}&count=${count}`;
+        const url = `/api/article/get?q=${q}&offset=${(start) ? 0 : response.offset}&count=${count}`;
 
         let result = await axios.get(url);
 

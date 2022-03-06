@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
 import {Link} from "react-router-dom";
-import {ServerUrl} from '../../util/proxy'
+
 
 export default function (props) {
     //настройки запроса
@@ -35,7 +35,7 @@ export default function (props) {
         }
 
         //запрос
-        const url = `${ServerUrl()}/api/user/get`
+        const url = `/api/user/get`
 
         let result = await axios.get(url, arFields);
 

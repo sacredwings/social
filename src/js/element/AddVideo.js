@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import VideoAddModal from "./VideoAddModal";
 import ElementFile from "../object/ElementFile";
-import {ServerUrl} from '../util/proxy'
+
 
 function Video (props) {
     //запрос
@@ -22,7 +22,7 @@ function Video (props) {
 
     const Get = async (start) => {
 
-        let url = `${ServerUrl()}/api/video/get?q=${props.q}owner_id=${props.ownerId}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
+        let url = `/api/video/get?q=${props.q}owner_id=${props.ownerId}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
 
         //альбом существует
         if (props.album_id)
@@ -45,7 +45,7 @@ function Video (props) {
 
     const Delete = async (id) => {
 
-        let url = `${ServerUrl()}/api/video/delete`;
+        let url = `/api/video/delete`;
 
         let result = await axios.post(url, {id: id});
 

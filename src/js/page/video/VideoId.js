@@ -6,7 +6,7 @@ import Comment from "../../element/Comment";
 import ElementFile from "../../object/ElementFile";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import {useParams, Link} from 'react-router-dom'
-import {ServerUrl} from '../../util/proxy'
+
 
 function VideoId (props) {
     const { id } = useParams()
@@ -45,7 +45,7 @@ function VideoId (props) {
     const Get = async (event) => {
         //let id = id;
 
-        const url = `${ServerUrl()}/api/video/getById?ids=${id}`;
+        const url = `/api/video/getById?ids=${id}`;
 
         let result = await axios.get(url);
 
@@ -123,7 +123,7 @@ function VideoId (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
-        const url = `${ServerUrl()}/api/video/edit`;
+        const url = `/api/video/edit`;
         const formData = new FormData();
 
         console.log(video)

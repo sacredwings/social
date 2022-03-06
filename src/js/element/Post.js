@@ -5,7 +5,7 @@ import axios from "axios";
 import ElementFile from "../object/ElementFile";
 import PostAdd from "./post/PostAdd";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-import {ServerUrl} from '../util/proxy'
+
 
 function Post (props) {
     //запрос
@@ -29,7 +29,7 @@ function Post (props) {
 
     const Get = async (start) => {
 
-        let url = `${ServerUrl()}/api/post/get?owner_id=${ownerId.current}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
+        let url = `/api/post/get?owner_id=${ownerId.current}&offset=${(start) ? 0 : response.offset}&count=${response.count}`;
 
         let result = await axios.get(url);
 
@@ -49,7 +49,7 @@ function Post (props) {
     const Delete = async (id) => {
         let gtoken = await reCaptchaExecute(global.gappkey, 'topic')
 
-        let url = `${ServerUrl()}/api/post/delete`;
+        let url = `/api/post/delete`;
 
         let result = await axios.post(url, {id: id, gtoken: gtoken});
 

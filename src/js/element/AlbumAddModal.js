@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import axios from "axios";
 import SelectAlbumOne from "../object/SelectAlbumOne";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-import {ServerUrl} from '../util/proxy'
+
 
 function AlbumAddModal (props) {
     let formDefault = {
@@ -54,7 +54,7 @@ function AlbumAddModal (props) {
 
         if (props.group_id) arFields.params.group_id = props.group_id
 
-        const url = `${ServerUrl()}/api/album/get`
+        const url = `/api/album/get`
 
         let result = await axios.get(url, arFields);
 
@@ -94,7 +94,7 @@ function AlbumAddModal (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'album')
 
-        const url = `${ServerUrl()}/api/album/add`;
+        const url = `/api/album/add`;
         const formData = new FormData();
 
         formData.append('title', form.inputTitle)

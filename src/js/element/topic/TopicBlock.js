@@ -4,7 +4,7 @@ import {Link} from "react-router-dom"
 import axios from "axios"
 //import ArticleAddModal from "../../element/ArticleAddModal";
 import ElementFile from "../../object/ElementFile";
-import {ServerUrl} from '../../util/proxy'
+
 
 function Group (props) {
     //запрос
@@ -35,7 +35,7 @@ function Group (props) {
 
         let owner_id = props.owner_id;
 
-        let url = `${ServerUrl()}/api/topic/get?owner_id=${owner_id}&offset=${offset}&count=${response.step}`;
+        let url = `/api/topic/get?owner_id=${owner_id}&offset=${offset}&count=${response.step}`;
 
         let result = await axios.get(url);
 

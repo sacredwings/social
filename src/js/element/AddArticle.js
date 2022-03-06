@@ -4,7 +4,7 @@ import axios from "axios";
 import SelectAlbum from "../object/SelectAlbum";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import AddFile from "../object/AddFile";
-import {ServerUrl} from '../util/proxy'
+
 
 function ArticleAdd (props) {
     let [form, setForm] = useState({
@@ -47,7 +47,7 @@ function ArticleAdd (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'topic')
 
-        const url = `${ServerUrl()}/api/topic/add`;
+        const url = `/api/topic/add`;
 
         let arFields = {
             title: form.inputTitle,

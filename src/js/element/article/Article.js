@@ -5,7 +5,7 @@ import axios from "axios"
 import ArticleAdd from "../../element/AddArticle"
 import ElementFile from "../../object/ElementFile"
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
-import {ServerUrl} from '../../util/proxy'
+
 
 function Article (props) {
     let [form, setForm] = useState({
@@ -89,7 +89,7 @@ function Article (props) {
         if (props.album_id)
             arFields.params.album_id = props.album_id
 
-        let url = `${ServerUrl()}/api/article/get`
+        let url = `/api/article/get`
 
         let result = await axios.get(url, arFields)
         result = result.data
@@ -138,7 +138,7 @@ function Article (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'article')
 
-        const url = `${ServerUrl()}/api/article/edit`
+        const url = `/api/article/edit`
         const formData = new FormData();
 
         console.log(form)

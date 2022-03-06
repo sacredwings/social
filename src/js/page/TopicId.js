@@ -4,7 +4,7 @@ import axios from "axios";
 //import {Player} from "video-top-react";
 import Comment from "../element/Comment";
 import ElementFile from "../object/ElementFile";
-import {ServerUrl} from '../util/proxy'
+
 
 class TopicId extends Component {
     constructor () {
@@ -23,7 +23,7 @@ class TopicId extends Component {
         let id = this.props.match.params.id;
         console.log(`Загрузка ${id}`)
 
-        const url = `${ServerUrl()}/api/topic/getById?ids=${id}`;
+        const url = `/api/topic/getById?ids=${id}`;
 
         let result = await axios.get(url);
 

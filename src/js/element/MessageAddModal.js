@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import MessageAdd from "../element/MessageAdd";
-import {ServerUrl} from '../util/proxy'
+
 
 function MessageAddModal (props) {
 
