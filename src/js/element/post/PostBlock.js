@@ -136,8 +136,7 @@ function Post (props) {
                         {user.first_name} {user.last_name}
                     </p>
                 </div>
-
-                <p> {item.text}</p>
+                <div dangerouslySetInnerHTML={{__html: item.text}}></div>
                 <div className="row">
                     {item._file_ids ? ListFiles(item._file_ids) : null}
                 </div>
