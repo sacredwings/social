@@ -1,10 +1,16 @@
 import React, {useEffect, useRef, useState} from 'react';
 import axios from "axios";
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 function RichEditor (props) {
 
     const refRichEditor = useRef(null)
     let [content, setContent] = useState([])
+    let [formLoad, setFormLoad] = useState({
+        processBarLoaded: 0,
+        processBarTotal: 0,
+        processBar: 0
+    })
 
     useEffect (async ()=>{
         //onResult(refRichEditor.current.innerHTML)
@@ -138,7 +144,96 @@ function RichEditor (props) {
 
     }
 
+    const OnChangeImg = async (e) => {
+        //нет выбранных файлов
+        if ((!e.target.files) || (!e.target.files.length)) return false
 
+        let arFilesId = await SendFile(e.target.files)
+        let arFiles = await GetFile(arFilesId)
+
+        let html = await Promise.all(arFiles.map(async (item, i)=>{
+            if (item.type === 'image/jpeg')
+                return `<img  key={i} src="${global.urlServer}/${item.url}" className="img-fluid" alt=${item.title}><br/><br/>`
+
+            if (item.type === 'video/mp4') {
+                let poster = ''
+                if (item._file_id)
+                    poster = `${global.urlServer}/${item._file_id.url}`
+
+                return `<div class="ratio ratio-16x9"><video controls="${true}" poster="${poster}" ><source src="${global.urlServer}/${item.url}" type="${item.type}"/></video></div><br/><br/>`
+            }
+
+        }))
+
+        //фокус на лементе перед вставкой
+        refRichEditor.current.focus()
+
+        document.execCommand('insertHTML', false, html)
+    }
+
+    const GetFile = async (arIds) => {
+        //разбор строки / достаем id
+        arIds = arIds.join(',')
+
+        //запрос
+        let result = await axios.get(`/api/file/getById?ids=${arIds}`, {})
+        result = result.data
+
+        //ответ со всеми значениями
+        if ((!result) || (result.err !== 0)) return false
+
+        if ((!result.response) || (!result.response.length)) return false
+
+        return result.response
+    }
+
+    const SendFile = async (files) => {
+        //закрытие модульного окна
+
+        //загрузка файлов
+        let gtoken = await reCaptchaExecute(global.gappkey, 'fileAdd')
+
+        const url = `/api/file/add`;
+        const formData = new FormData();
+
+        if ((files) && (files.length))
+            for (let i=0; i < files.length; i++)
+                formData.append(`files[${i}]`, files[i])
+
+        formData.append('gtoken', gtoken)
+
+        //если это группа, то отправляем ее id
+        if (props.group_id)
+            formData.append('group_id', props.group_id)
+
+        let result = await axios.post(url, formData, {
+
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            onUploadProgress: function (progressEvent) {
+                console.log(progressEvent)
+                if (progressEvent.lengthComputable) {
+                    let percentage = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
+                    console.log(progressEvent.loaded + ' ' + progressEvent.total + ' ' + percentage);
+
+                    setFormLoad(prev => ({...prev, ...{
+                            processBarLoaded: progressEvent.loaded,
+                            processBarTotal: progressEvent.total,
+                            processBar: percentage
+                        }}))
+
+                }
+                // Do whatever you want with the native progress event
+            },
+
+        })
+
+        if ((!result.data) || (result.data.err)) return
+
+
+        return result.data.response
+    }
 
     const Buttons = (format = 'line') => {
         let className = `btn-group`
@@ -174,9 +269,18 @@ function RichEditor (props) {
                 <button type="button" className="btn btn-outline-secondary btn-sm" data-element="createLink" onClick={()=>{OnClickButton('createLink')}}>
                     <i className="fa fa-link"></i>
                 </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="insertImage" onClick={()=>{OnClickButton('insertImage')}}>
-                    <i className="fa fa-image"></i>
-                </button>
+
+                <div className="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" className="btn btn-outline-secondary btn-sm dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <i className="fa fa-image"></i>
+                    </button>
+                    <ul className="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <div className="mb-3">
+                                <input style={{width: "max-content"}} className="form-control form-control-sm" type="file" onChange={OnChangeImg}/>
+                            </div>
+                    </ul>
+                </div>
 
                 <div className="btn-group" role="group">
                     <button id="btnGroupDrop1" type="button" className="btn btn-outline-secondary btn-sm dropdown-toggle"

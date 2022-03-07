@@ -77,7 +77,7 @@ function PostAdd (props) {
 
             <div className="mb-3">
                 {/*<textarea className="form-control" id="inputText" rows="5" placeholder="Что у вас нового ?" onChange={onChangeText} value={form.inputText}></textarea>*/}
-                <RichEditor content={form.inputText} onResult={onChangeText} btnPosition={{top: true, right: false, bottom: false}}/>
+                <RichEditor content={form.inputText} onResult={onChangeText} btnPosition={{top: true, right: false, bottom: false}} user_id={props.user_id} group_id={props.group_id}/>
             </div>
             <div className="row button-file">
                 <div className="col-12">
