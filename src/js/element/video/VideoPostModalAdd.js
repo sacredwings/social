@@ -50,13 +50,9 @@ function Group (props) {
             }
         }
 
-        if ((!props.group_id) && (!props.user_id)) { /* из url */
-            if (props.group_id) arFields.params.group_id = props.match.params.id
-            if (props.user_id) arFields.params.user_id = props.match.params.id
-        } else {
-            if (props.group_id) arFields.params.group_id = props.group_id
-            if (props.user_id) arFields.params.user_id = props.user_id
-        }
+        //беруться из переменной выбранного элемента /группа/пользователь
+        if (ownerId.group_id) arFields.params.group_id = ownerId.group_id
+        if (ownerId.user_id) arFields.params.user_id = ownerId.user_id
 
         const url = `/api/video/get`
 
@@ -105,9 +101,6 @@ function Group (props) {
                 user_id: null,
                 group_id: id
             })
-
-        console.log(owner)
-        console.log(id)
     }
     const UserList = () => {
         return <div className="list-group">
