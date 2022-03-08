@@ -284,6 +284,37 @@ function RichEditor (props) {
                     </ul>
                 </div>
 
+
+                <div className="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" className="btn btn-outline-secondary btn-sm dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <i className="fas fa-text-height"></i>
+                    </button>
+                    <ul className="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('fontSize', false, 1)}}>
+                            1
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('fontSize', false, 2)}}>
+                            2
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('fontSize', false, 3)}}>
+                            3
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('fontSize', false, 4)}}>
+                            4
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('fontSize', false, 5)}}>
+                            5
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('fontSize', false, 6)}}>
+                            6
+                        </button></li>
+                        <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('fontSize', false, 7)}}>
+                            7
+                        </button></li>
+                    </ul>
+                </div>
+
                 <div className="btn-group" role="group">
                     <button id="btnGroupDrop1" type="button" className="btn btn-outline-secondary btn-sm dropdown-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
