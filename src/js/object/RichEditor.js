@@ -1,6 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react';
-import axios from "axios";
-import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import React, {useEffect, useRef, useState} from 'react'
+import axios from "axios"
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
+import {Link} from "react-router-dom"
 
 function RichEditor (props) {
 
@@ -103,7 +104,8 @@ function RichEditor (props) {
         ]
         let substrMy = [
             'https://voenset.ru',
-            'http://localhost:3030'
+            'http://localhost:3030',
+            'http://test.voenset.ru'
         ]
 
         let resUrlYouTube = includes(content, substrYouTube)
@@ -136,9 +138,9 @@ function RichEditor (props) {
         }
 
         //
-        let video = `<video controls={true} poster="${global.urlServer}/${file._file_id.url}" >
+        let video = `<div class="voenset-video"><div class="ratio ratio-16x9"><video controls={true} poster="${global.urlServer}/${file._file_id.url}" >
             <source src="${global.urlServer}/${file.url}" type="${file.type}"/>
-        </video><br/><br/>`
+        </video></div><small><a href="${global.urlServer}/video/${file._id}">${file.title}</Link></small></div><br/><br/>`
 
         document.execCommand('insertHTML', false, video)
 
@@ -153,14 +155,14 @@ function RichEditor (props) {
 
         let html = await Promise.all(arFiles.map(async (item, i)=>{
             if (item.type === 'image/jpeg')
-                return `<img  key={i} src="${global.urlServer}/${item.url}" className="img-fluid" alt=${item.title}><br/><br/>`
+                return `<div class="voenset-img"><img  key={i} src="${global.urlServer}/${item.url}" className="img-fluid" alt=${item.title}></div><br/><br/>`
 
             if (item.type === 'video/mp4') {
                 let poster = ''
                 if (item._file_id)
                     poster = `${global.urlServer}/${item._file_id.url}`
 
-                return `<div class="ratio ratio-16x9"><video controls="${true}" poster="${poster}" ><source src="${global.urlServer}/${item.url}" type="${item.type}"/></video></div><br/><br/>`
+                return `<div class="voenset-video"></div><div class="ratio ratio-16x9"><video controls="${true}" poster="${poster}" ><source src="${global.urlServer}/${item.url}" type="${item.type}"/></video></div><small><a href="${global.urlServer}/video/${item._id}">${item.title}</Link></small><div></div><br/><br/>`
             }
 
         }))
