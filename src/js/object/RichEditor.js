@@ -66,8 +66,7 @@ function RichEditor (props) {
 
     //Изменение текста в редакторе
     const OnInput = (e) => {
-        console.log(e)
-        props.onResult(refRichEditor.current.innerHTML)
+        props.onResult(refRichEditor.current.innerHTML, props.id)
     }
     //Изменение текста в редакторе
     const OnKeyDown = (e) => {

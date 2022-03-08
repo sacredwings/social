@@ -4,7 +4,7 @@ import axios from "axios";
 import ElementFile from "../../object/ElementFile";
 import PostAdd from "./PostAdd";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-
+import RichEditor from '../../object/RichEditor'
 
 function Post (props) {
     //запрос
@@ -16,7 +16,9 @@ function Post (props) {
     })
 
     //показ формы ввода
-    let [formViewer, setFormViewer] = useState(false)
+    //let [formViewer, setFormViewer] = useState(false)
+    //let [newContent, setNewContent] = useState('')
+    //let [listChecked, setListChecked] = useState([])
 
     let urlOwner = useRef('user')
     let urlOwnerId = useRef(props.user_id)
@@ -62,16 +64,27 @@ function Post (props) {
     }
 
     const Delete = async (id) => {
-        let gtoken = await reCaptchaExecute(global.gappkey, 'topic')
+        let gtoken = await reCaptchaExecute(global.gappkey, 'post')
 
-        let url = `/api/post/delete`;
+        let url = `/api/post/delete`
 
-        let result = await axios.post(url, {id: id, gtoken: gtoken});
+        let result = await axios.post(url, {id: id, gtoken: gtoken})
 
-        result = result.data;
-        if (result.err) return; //ошибка, не продолжаем обработку
+        result = result.data
+        if (result.err) return //ошибка, не продолжаем обработку
 
         if (!result.response) return
+
+        let newList = []
+        response.items.forEach(function(item, i, arr) {
+            if (item._id !== id) {
+                newList.push(item)
+            }
+        })
+
+        setResponse(prev => ({...prev, ...{
+                items: newList,
+            }}))
 
     }
 
@@ -118,8 +131,64 @@ function Post (props) {
 
     }
 
+    const OnChecked = async (element) => {
+        let newList = response.items.map(function(item, i, arr) {
+            if (item._id === element._id) {
+                item.checked = !item.checked
+            }
+
+            return item
+        })
+        setResponse(prev => ({...prev, ...{
+                items: newList,
+            }}))
+    }
+
+    const OnResult = (content, id) => {
+        let newList = response.items.map(function(item, i, arr) {
+            if (item._id === id) {
+                item.text = content
+            }
+
+            return item
+        })
+        setResponse(prev => ({...prev, ...{
+                items: newList,
+            }}))
+    }
+
+    const OnSave = async (id) => {
+        let element = null
+        response.items.forEach(function(item, i, arr) {
+            if (item._id === id) {
+                element = item
+            }
+        })
+
+        if (!element) return false
+        await OnChecked(element)
+
+        let arFields = {
+            id: element._id,
+            text: element.text,
+
+            gtoken: await reCaptchaExecute(global.gappkey, 'post')
+        }
+        const url = `/api/post/edit`
+
+        let result = await axios.post(url, arFields)
+
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
+
+        if (!result.response) return
+    }
+
+
+
     const List = (arVideo) => {
         return arVideo.map(function (item, i) {
+
             let user = item._from_id
 
             let photo = 'https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg'
@@ -127,19 +196,26 @@ function Post (props) {
                 photo = `${global.urlServer}/${user._photo.url}`
 
             return (<div className="social block white" key={i}>
-                {/*<button type="button" className="btn-close" aria-label="Close" style={{float: "right"}} onClick={() => {Delete(item.id)}}></button>*/}
+
+                {(props.access) ? <button type="button" className="btn-close" aria-label="Close" style={{float: "right"}} onClick={() => {Delete(item._id)}}></button> : null}
                 <div className="header">
                     <div className="img">
                         <img src={photo}/>
                     </div>
                     <p className="name">
-                        {user.first_name} {user.last_name}
+                        {user.first_name} {user.last_name} {(props.access) ? <button type="button" className="btn btn-outline-secondary btn-sm" onClick={()=>OnChecked(item)}><i className="fas fa-edit"></i></button> : null}
                     </p>
                 </div>
-                <div dangerouslySetInnerHTML={{__html: item.text}}></div>
+                {(item.checked) ?
+                    <div>
+                        <RichEditor content={item.text} id={item._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}}/>
+                        <button type="button" className="btn btn-primary btn-sm" onClick={()=>OnSave(item._id)}>Сохранить</button>
+                    </div>
+                    : <div dangerouslySetInnerHTML={{__html: item.text}}></div>}
                 <div className="row">
                     {item._file_ids ? ListFiles(item._file_ids) : null}
                 </div>
+
 
             </div>)
         })}
