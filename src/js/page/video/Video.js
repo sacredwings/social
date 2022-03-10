@@ -13,12 +13,12 @@ import ElementPay from "../../element/group/Pay";
 const Access = async (props) => {
 
     if (props.match.params.owner === 'user')
-        if (props.myUser.id === Number (props.match.params.id))
+        if (props.myUser._id === Number (props.match.params.id))
             return true
         else
             return false
 
-    if (props.myUser.id === await AccessGroup(props.match.params.id))
+    if (props.myUser._id === await AccessGroup(props.match.params.id))
         return true
     else
         return false

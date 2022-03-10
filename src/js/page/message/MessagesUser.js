@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
-import {connect} from 'react-redux';
-import axios from "axios";
-import ElementMessageAdd from "../../element/message/MessageAdd";
-import ElementFile from "../../object/ElementFile";
-import io from "../../util/websocket";
-import {useParams} from "react-router-dom";
+import React, {useState, useEffect} from 'react'
+import {connect} from 'react-redux'
+import axios from "axios"
+import MessageAdd from "../../element/message/MessageAdd"
+import ElementFile from "../../object/ElementFile"
+import io from "../../util/websocket"
+import {useParams} from "react-router-dom"
 
 function Messages (props) {
     //настройки запроса
@@ -17,6 +17,9 @@ function Messages (props) {
         items: []
     })
 
+    //запрос
+    let [userList, setUserList] = useState(null)
+
     const params = useParams()
 
     //отслеживаем изменение props
@@ -26,7 +29,6 @@ function Messages (props) {
 
     //отслеживаем изменение props
     useEffect (async ()=>{
-        //await Get(true) //с обнулением
     }, [])
 
 
@@ -116,7 +118,7 @@ function Messages (props) {
             delete_from: null,
             delete_to: null,
             files: null,
-            from_id: props.myUser.id,
+            from_id: props.myUser._id,
             to_id: props.match.params.id,
             id: arr.id,
             important: null,
@@ -124,7 +126,7 @@ function Messages (props) {
             message: arr.message,
             message_type: "P",
             read: null,
-            user_id: props.myUser.id
+            user_id: props.myUser._id
         }
 
         //обновляем
@@ -139,16 +141,8 @@ function Messages (props) {
     }
 
     //подготовка текста сообщения
-    const MessageInRead = (message) => {
-        //входящие
-        /*
-        let result = <p>Вы: &crarr; {message.message}</p>
-
-        if (message.in)
-            result = <p>{message.message}</p>
-        */
-
-        let result = <p>{message.message}</p>
+    const StatusInRead = (message) => {
+        let result = <p className="message">{message.message}</p>
 
         //чтение
         if (message.read)
@@ -158,13 +152,6 @@ function Messages (props) {
             {result}
         </div>
 
-    }
-
-    //сортировка массива
-    function compareNumericMessages(a, b) {
-        if (a.id > b.id) return 1;
-        if (a.id === b.id) return 0;
-        if (a.id < b.id) return -1;
     }
 
     const ElementFiles = (files) => {
@@ -180,9 +167,10 @@ function Messages (props) {
         </>
     }
 
-    const result = (arMessages) => {
+    const MessageList = (arMessages) => {
 
-        //arMessages = arMessages.sort(compareNumericMessages)
+        //обратная сортировка сообщений
+        arMessages = arMessages.sort((prev, next) => new Date(prev.create_date) - new Date(next.create_date))
 
         return (
             <div className="row">
@@ -190,47 +178,50 @@ function Messages (props) {
                     {(arMessages.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={() => {Get()}}>еще ...</button> : null}
                 </div>
                 <div className="col-lg-12">
-                    {arMessages.map(function (message, i) {
+                    <div className="list-group">
+                        {arMessages.map(function (message, i) {
 
-                        //получить пользователя
-                        //message.user = SearchUser(message.from_id)
+                            //чужое сообщение
+                            message.my = false
+                            message.user = message._to_id
 
-                        let user = message._from_id._id
-                        if (props.myUser._id === message.from_id)
-                            user = message._to_id._id
+                            //мое сообщение
+                            if (props.myUser._id === message.from_id) {
+                                message.my = true
+                                message.user = message._from_id
+                            }
 
-                        //{user.photo ? `${global.urlServer}/${user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg"}
-                        let photo = 'https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg'
+                            //нет фото
+                            let photo = 'https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg'
+                            if ((message.user._photo) && (message.user._photo.url)) photo = `/${message.user._photo.url}` //есть фото
 
-                        return <div key={i} className="list-group">
-                            <div className="list-group-item list-group-item-action">
+                            //формируем список
+                            return <div key={i} className="list-group-item list-group-item-action">
                                 <div className="row">
                                     <div className="col-12">
-                                        <div style={{
-                                            maxHeight: '100px',
-                                            maxWidth: '100px',
-                                            float: 'left'
-                                        }}>
-                                            <img style={{maxHeight: '75px', maxWidth: '75px'}} src={photo} alt="..."/>
+                                        <div className="img">
+                                            <img src={photo} alt="..."/>
                                         </div>
-                                        <div style={{marginLeft: '100px'}}>
-                                            <div>
-                                                <b>{user.first_name}</b>
-                                                {message.create_date}
-                                                <button style={{float: 'right'}} type="button" className="btn-close" aria-label="Close" onClick={()=>{Delete(message._id)}}></button>
-                                            </div>
-                                            <div>
-                                                {MessageInRead(message)}
-                                            </div>
-                                            <div className="row">
-                                                {ElementFiles(message.file_ids)}
-                                            </div>
+                                        <button style={{float: 'right'}} type="button" className="btn-close" aria-label="Close" onClick={()=>{Delete(message._id)}}></button>
+                                        <p className="name"><b>{message.user.first_name}</b></p>
+                                        <p className="date"><small>{message.create_date}</small></p>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-12">
+
+                                        <div className="row">
+                                            {StatusInRead(message)}
                                         </div>
+                                        <div className="row">
+                                            {ElementFiles(message.file_ids)}
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    })}
+                        })}
+                    </div>
                 </div>
             </div>
 
@@ -238,21 +229,22 @@ function Messages (props) {
     }
 
     return (
-        <>
-            <div className='row'>
-                <div className='col-lg-12'>
-                    Сообщения пользователю id: {params.id}
-                    {result(response.items)}
+        <div className="container message-user">
+
+            <div className="row">
+                <div className="col-lg-12 block">
+                    {MessageList(response.items)}
                 </div>
             </div>
-            <hr/>
+
             <div className='row'>
-                <div className='col-lg-12'>
-                    <ElementMessageAdd add={ElementAdd} user_id={params.id}/>
+                <div className='col-lg-12 block'>
+                    <MessageAdd add={ElementAdd} user_id={params.id}/>
                 </div>
             </div>
-        </>
-    );
+
+        </div>
+    )
 }
 
 export default connect (

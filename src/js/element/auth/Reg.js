@@ -134,8 +134,8 @@ export default connect (
 
     }),
     dispatch => ({
-        Store_myUser: (id, login, tokenId, tokenKey, remember) => {
-            dispatch({type: 'AUTH', id: id, login: login, tokenId: tokenId, tokenKey: tokenKey, remember: remember});
+        Store_myUser: (_id, login, tokenId, tokenKey, remember) => {
+            dispatch({type: 'AUTH', _id: _id, login: login, tokenId: tokenId, tokenKey: tokenKey, remember: remember});
         }
     })
 )(Reg);

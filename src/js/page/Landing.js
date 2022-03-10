@@ -18,7 +18,7 @@ function Landing  (props) {
     //отслеживаем изменение props
     useEffect (async ()=>{
         await GetCount()
-    }, [props.myUser.id])
+    }, [props.myUser._id])
 
     const GetCount = async () => {
         //let id = id;

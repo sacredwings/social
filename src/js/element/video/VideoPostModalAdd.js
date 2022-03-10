@@ -16,7 +16,7 @@ function Group (props) {
 
     let [listGroup, setListGroup] = useState([])
     let [ownerId, setOwnerId] = useState({
-        user_id: props.myUser.id,
+        user_id: props.myUser._id,
         group_id: null
     })
 
@@ -104,7 +104,7 @@ function Group (props) {
     }
     const UserList = () => {
         return <div className="list-group">
-            <button type="button" className="list-group-item list-group-item-action" onClick={()=>{ChangeId('user', props.myUser.id)}}>Мой профиль</button>
+            <button type="button" className="list-group-item list-group-item-action" onClick={()=>{ChangeId('user', props.myUser._id)}}>Мой профиль</button>
         </div>
     }
     const GroupList = () => {

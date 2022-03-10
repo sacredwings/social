@@ -46,10 +46,10 @@ function User (props) {
 
         //userId = Number (userId);
         /*if (!user_id)
-            user_id = props.myUser.id;*/
+            user_id = props.myUser._id;*/
 
         let access = false
-        if (userId === props.myUser.id) access = true
+        if (userId === props.myUser._id) access = true
 
         let attributes = {
             autoplay: 'autoplay',

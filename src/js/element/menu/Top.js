@@ -40,7 +40,7 @@ function MenuTop (props) {
                     </a>
                     <ul className="dropdown-menu dropdown-menu-right"
                         aria-labelledby="navbarDropdownMenuLink">
-                        <li><Link className="dropdown-item" to={`/user/${props.myUser.id}`}>Моя страница</Link></li>
+                        <li><Link className="dropdown-item" to={`/user/${props.myUser._id}`}>Моя страница</Link></li>
                         <li><Link className="dropdown-item" to="/settings">Настройки</Link></li>
                         <div className="dropdown-divider"/>
                         <li><Link className="dropdown-item" to="#" onClick={logout}>Выход</Link></li>
@@ -93,8 +93,8 @@ export default connect (
         myUser: state.myUser,
     }),
     dispatch => ({
-        login: (id, login) => {
-            dispatch({type: 'USER_LOGIN', id: id, login: login});
+        login: (_id, login) => {
+            dispatch({type: 'USER_LOGIN', _id: _id, login: login});
         },
         logout: () => {
             dispatch({type: 'USER_LOGOUT'});

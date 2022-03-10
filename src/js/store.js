@@ -21,12 +21,12 @@ function app (state = stateApp, action) {
 
 //Активный пользователь
 const stateMyUser = {
-    id: null,
+    _id: null,
     auth: false,
     login: 'unknown',
     tokenId: null,
     tokenKey: null
-};
+}
 
 function myUser (state = stateMyUser, action) {
     switch (action.type) {
@@ -48,7 +48,7 @@ function myUser (state = stateMyUser, action) {
             return {
                 ...state,
                 auth: true,
-                id: action.id,
+                _id: action._id,
                 login: action.login,
                 tokenId: action.tokenId,
                 tokenKey: action.tokenKey
@@ -58,14 +58,8 @@ function myUser (state = stateMyUser, action) {
             return {
                 ...state,
                 auth: true,
-                id: action.id,
+                _id: action._id,
                 login: action.login
-            };
-
-        case 'SET_PHONE':
-            return {
-                ...state,
-                has_phone: action.has_phone
             };
 
         case 'USER_LOGOUT':
@@ -76,14 +70,7 @@ function myUser (state = stateMyUser, action) {
                 ...state,
                 tokenId: null,
                 tokenKey: null,
-                has_phone: false,
                 auth: false,
-            };
-
-        case 'WALLET_UPDATE':
-            return {
-                ...state,
-                wallet: action.wallet
             };
 
         default:

@@ -11,7 +11,7 @@ class WidgetLetMenu extends Component {
                    <>
                        <nav className="nav flex-column menu-left">
                            <Link className="nav-link " to="/search"><i className="fas fa-search"></i> Поиск</Link>
-                           <Link className="nav-link " to={`/user/${this.props.myUser.id}`}><i className="far fa-address-card"></i> Моя страница</Link>
+                           <Link className="nav-link " to={`/user/${this.props.myUser._id}`}><i className="far fa-address-card"></i> Моя страница</Link>
                            <Link className="nav-link " to="/messages"><i className="fas fa-sms"></i> Сообщения</Link>
                            {/*
                            <Link className="nav-link " to="/video"><i className="fas fa-film"></i> Видео</Link>
