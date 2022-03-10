@@ -4,7 +4,7 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 
 
-function Messages () {
+function Messages (props) {
     //настройки запроса
     const count = 1000 //количество элементов в запросе
 
@@ -24,7 +24,7 @@ function Messages () {
     const Get = async (start) => {
 
         //запрос
-        const url = `/api/message/get?offset=${(start) ? 0 : response.offset + count}&count=${count}`;
+        const url = `/api/message/getChat?offset=${(start) ? 0 : response.offset + count}&count=${count}`;
 
         let result = await axios.get(url);
 
@@ -35,7 +35,6 @@ function Messages () {
             offset: (start) ? 0 : prev.offset + count,
             count: result.response.count,
             items: (start) ? result.response.items : [...prev.items, ...result.response.items],
-            arUsers: [...prev.arUsers, ...result.response.users],
         }))
     }
 
@@ -78,16 +77,19 @@ function Messages () {
 
     }
 
-    const result = (arMessages) => {
+    const result = (arChat) => {
         return (
             <div className="row">
                 <div className="col-lg-12">
-                    {arMessages.map(function (message, i) {
+                    {arChat.map(function (chat, i) {
 
-                        //получить пользователя
-                        message.user = SearchUser(message.user_id)
+                        //достаем пользователя который не я
+                        let user = chat._user_ids[0]
+                        if (props.myUser._id === chat._user_ids[0]._id)
+                            user = chat._user_ids[1]
+
                         return <div key={i} className="list-group">
-                            <div  className="list-group-item list-group-item-action" aria-current="true">
+                            <Link to={`/messages/${user._id}`} className="list-group-item list-group-item-action">
 
                                 <div className="row">
                                     <div className="col-12">
@@ -100,23 +102,21 @@ function Messages () {
                                         </div>
                                         <div style={{marginLeft: '100px'}}>
                                             <div>
-                                                <b>{message.user.first_name}</b>
-                                                <button style={{float: 'right'}} type="button" className="btn-close" aria-label="Close" onClick={()=>{DeleteAll(message.user.id)}}></button>
+                                                <button style={{float: 'right'}} type="button" className="btn-close" aria-label="Close" onClick={()=>{DeleteAll(user._id)}}></button>
+                                                <p><b>{user.first_name}</b></p>
+                                                <p>{chat._message_id.message}</p>
                                             </div>
-                                            <Link to={`/messages/${message.user.id}`}>
-                                                {MessageInRead(message)}
-                                            </Link>
                                         </div>
                                     </div>
                                 </div>
 
-                            </div>
+                            </Link>
                         </div>
 
                     })}
                 </div>
                 <div className="col-lg-12">
-                    {(arMessages.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={() => {Get()}}>еще ...</button> : null}
+                    {(arChat.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={() => {Get()}}>еще ...</button> : null}
                 </div>
             </div>
 

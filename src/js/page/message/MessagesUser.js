@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
-import ElementMessageAdd from "../element/MessageAdd";
-import ElementFile from "../object/ElementFile";
-import io from "../util/websocket";
-
+import ElementMessageAdd from "../../element/message/MessageAdd";
+import ElementFile from "../../object/ElementFile";
+import io from "../../util/websocket";
+import {useParams} from "react-router-dom";
 
 function Messages (props) {
     //настройки запроса
@@ -14,24 +14,19 @@ function Messages (props) {
     let [response, setResponse] = useState({
         offset: 0, //смещение для запроса
         count: 0, //количество записей в результате запроса
-        items: [],
-        arUsers: []
+        items: []
     })
+
+    const params = useParams()
 
     //отслеживаем изменение props
     useEffect (async ()=>{
         await Get(true) //с обнулением
-    }, [props.match.params.id])
+    }, [params.id])
 
     //отслеживаем изменение props
     useEffect (async ()=>{
-        //для одноразового выполнения
-        io.socket.on('MessageAdd', (data)=> {
-
-            //загрузка сообщения
-            if (Number (props.match.params.id) === Number(data.from_id))
-                GetById(data.id)
-        })
+        //await Get(true) //с обнулением
     }, [])
 
 
@@ -54,9 +49,20 @@ function Messages (props) {
     }
 
     const Get = async (start) => {
+        let offset = 0
+        if (!start)
+            offset = response.items.length
+
+        let arFields = {
+            params: {
+                to_id: params.id,
+                offset: offset,
+                count: count
+            }
+        }
 
         //запрос
-        let result = await axios.get(`/api/message/getByUserId?to_id=${props.match.params.id}&offset=${(start) ? 0 : response.offset}&count=${count}`);
+        let result = await axios.get(`/api/message/getByUser`, arFields)
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
@@ -65,7 +71,6 @@ function Messages (props) {
             offset: (start) ? count : prev.offset + count,
             count: result.response.count,
             items: (start) ? result.response.items : [...prev.items, ...result.response.items],
-            arUsers: [...prev.arUsers, ...result.response.users],
         }))
     }
 
@@ -82,7 +87,6 @@ function Messages (props) {
             offset: prev.offset + 1,
             count: prev.count,
             items: [...prev.items, ...result.response.items],
-            arUsers: [...prev.arUsers, ...result.response.users],
         }))
     }
 
@@ -178,7 +182,7 @@ function Messages (props) {
 
     const result = (arMessages) => {
 
-        arMessages = arMessages.sort(compareNumericMessages);
+        //arMessages = arMessages.sort(compareNumericMessages)
 
         return (
             <div className="row">
@@ -189,7 +193,14 @@ function Messages (props) {
                     {arMessages.map(function (message, i) {
 
                         //получить пользователя
-                        message.user = SearchUser(message.from_id)
+                        //message.user = SearchUser(message.from_id)
+
+                        let user = message._from_id._id
+                        if (props.myUser._id === message.from_id)
+                            user = message._to_id._id
+
+                        //{user.photo ? `${global.urlServer}/${user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg"}
+                        let photo = 'https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg'
 
                         return <div key={i} className="list-group">
                             <div className="list-group-item list-group-item-action">
@@ -200,13 +211,13 @@ function Messages (props) {
                                             maxWidth: '100px',
                                             float: 'left'
                                         }}>
-                                            <img style={{maxHeight: '75px', maxWidth: '75px'}} src={message.user.photo ? `${global.urlServer}/${message.user.photo.url}` : "https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg"} alt="..."/>
+                                            <img style={{maxHeight: '75px', maxWidth: '75px'}} src={photo} alt="..."/>
                                         </div>
                                         <div style={{marginLeft: '100px'}}>
                                             <div>
-                                                <b>{message.user.first_name}</b>
+                                                <b>{user.first_name}</b>
                                                 {message.create_date}
-                                                <button style={{float: 'right'}} type="button" className="btn-close" aria-label="Close" onClick={()=>{Delete(message.id)}}></button>
+                                                <button style={{float: 'right'}} type="button" className="btn-close" aria-label="Close" onClick={()=>{Delete(message._id)}}></button>
                                             </div>
                                             <div>
                                                 {MessageInRead(message)}
@@ -228,17 +239,16 @@ function Messages (props) {
 
     return (
         <>
-            {console.log(response)}
             <div className='row'>
                 <div className='col-lg-12'>
-                    Сообщения пользователю id: {props.match.params.id}
+                    Сообщения пользователю id: {params.id}
                     {result(response.items)}
                 </div>
             </div>
             <hr/>
             <div className='row'>
                 <div className='col-lg-12'>
-                    <ElementMessageAdd add={ElementAdd} user_id={props.match.params.id}/>
+                    <ElementMessageAdd add={ElementAdd} user_id={params.id}/>
                 </div>
             </div>
         </>

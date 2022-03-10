@@ -3,7 +3,7 @@ import {useParams, Link} from 'react-router-dom'
 import {connect} from "react-redux";
 import axios from "axios";
 
-import ElementMessageAddModal from "../../element/MessageAddModal";
+import MessageAddModal from "../../element/message/MessageAddModal";
 import ElementVideo from "../../element/video/VideoBlock";
 //import ElementTopic from "../element/topic/TopicBlock";
 import ElementGroup from "../../element/group/GroupBlock";
@@ -75,7 +75,8 @@ function User (props) {
                             <>
 
                                 <div className="d-grid gap-2">
-                                    {/*<button type="button" className="btn btn-primary btn-sm btn-block" data-bs-toggle="modal" data-bs-target="#modalMessageAdd">Написать сообщение</button>*/}
+                                    <MessageAddModal user_id={userId}/>
+                                    <button type="button" className="btn btn-primary btn-sm btn-block" data-bs-toggle="modal" data-bs-target="#modalMessageAdd">Написать сообщение</button>
                                     {/*<FriendButton user_id={userId}/>*/}
                                 </div>
 

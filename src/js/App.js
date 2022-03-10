@@ -27,8 +27,8 @@ import User from "./page/user/User";
 import Group from "./page/group/Group";
 import Settings from "./page/user/Settings";
 import NoPage from "./page/NoPage";
-//import MessagesUserId from "./page/MessagesUserId";
-//import Messages from "./page/Messages";
+import MessagesUser from "./page/message/MessagesUser";
+import Messages from "./page/message/Messages";
 import GroupSettings from "./page/group/Settings";
 //import GroupPay from "./page/group/Pay";
 import RegActivate from "./page/RegActivate";
@@ -70,8 +70,8 @@ function App (props) {
         //массив
         let pages = [
             {path: '/settings', element: <Settings/>},
-            //{path: '/messages/:id', element: <MessagesUserId/>},
-            //{path: '/messages', element: <Messages/>},
+            {path: '/messages/:id', element: <MessagesUser/>},
+            {path: '/messages', element: <Messages/>},
             {path: '/group/:id/settings', element: <GroupSettings/>},
             //{path: '/group/:id/settings/pay', element: <GroupPay/>},
             //{path: '/friends', element: <Friend/>},
