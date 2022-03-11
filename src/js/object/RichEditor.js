@@ -6,7 +6,8 @@ import {Link} from "react-router-dom"
 function RichEditor (props) {
 
     const refRichEditor = useRef(null)
-    let [content, setContent] = useState([])
+    let [content, setContent] = useState('')
+
     let [formLoad, setFormLoad] = useState({
         processBarLoaded: 0,
         processBarTotal: 0,
@@ -14,9 +15,17 @@ function RichEditor (props) {
     })
 
     useEffect (async ()=>{
+        if (props.content === '')
+            refRichEditor.current.innerHTML = ''
+
+    }, [props.content])
+
+    /*
+    useEffect (async ()=>{
         //onResult(refRichEditor.current.innerHTML)
         setContent(props.content)
     }, [])
+    */
 
     const Get = async (str) => {
         //разбор строки / достаем id
@@ -25,8 +34,6 @@ function RichEditor (props) {
         //запрос
         let result = await axios.get(`/api/video/getById?ids=${id}`, {})
         result = result.data
-
-        console.log(result)
 
         //ответ со всеми значениями
         if ((!result) || (result.err !== 0)) return false
@@ -70,7 +77,6 @@ function RichEditor (props) {
     }
     //Изменение текста в редакторе
     const OnKeyDown = (e) => {
-        console.log(e)
         if (e.keyCode === 13) {
             document.execCommand('insertLineBreak')
             e.preventDefault()
@@ -128,7 +134,6 @@ function RichEditor (props) {
         console.log('ищу на сайте')
 
         let file = await Get(content)
-        console.log(file)
 
         //файла нет
         if (!file) {
@@ -213,7 +218,6 @@ function RichEditor (props) {
                 'Content-Type': 'multipart/form-data'
             },
             onUploadProgress: function (progressEvent) {
-                console.log(progressEvent)
                 if (progressEvent.lengthComputable) {
                     let percentage = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
                     console.log(progressEvent.loaded + ' ' + progressEvent.total + ' ' + percentage);
@@ -467,13 +471,15 @@ function RichEditor (props) {
         </div>
     }
 
-
+    function DangerouslySetInnerHTML() {
+        return {__html: content}
+    }
 
     return (
         <div className="rich-edit">
             {(props.btnPosition.right) ? Buttons('vertical') : null}
             {(props.btnPosition.top) ? <Buttons/> : null}
-            <div className="content-editable" contentEditable={true} suppressContentEditableWarning={true} ref={refRichEditor} onPaste={OnPaste} onInput={OnInput} onKeyDown={OnKeyDown} dangerouslySetInnerHTML={{ __html: content }}></div>
+            <div className="content-editable" contentEditable={true} suppressContentEditableWarning={true} ref={refRichEditor} onPaste={OnPaste} onInput={OnInput} onKeyDown={OnKeyDown} dangerouslySetInnerHTML={{__html: content}}></div>
             {(props.btnPosition.bottom) ? <Buttons/> : null}
         </div>
     )
