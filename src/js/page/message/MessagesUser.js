@@ -84,18 +84,11 @@ function Messages (props) {
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
 
-
         setResponse(prev => ({
             offset: prev.offset + 1,
             count: prev.count,
             items: [...prev.items, ...result.response.items],
         }))
-    }
-
-    const SearchUser = (id) => {
-        for (let user of response.arUsers) {
-            if (id === user.id) return user
-        }
     }
 
     //удаляет из массива
@@ -111,7 +104,9 @@ function Messages (props) {
 
     //добавляет в массив
     const ElementAdd = async (arr) => {
-        await GetById(arr.id)
+        console.log(arr)
+
+        //await GetById(arr.id)
         /*
         let arFields = {
             create_date: "",
@@ -142,7 +137,7 @@ function Messages (props) {
 
     //подготовка текста сообщения
     const StatusInRead = (message) => {
-        let result = <p className="message">{message.message}</p>
+        let result = <div className="message" dangerouslySetInnerHTML={{__html: message.message}}></div>
 
         //чтение
         if (message.read)
@@ -214,7 +209,7 @@ function Messages (props) {
                                             {StatusInRead(message)}
                                         </div>
                                         <div className="row">
-                                            {ElementFiles(message.file_ids)}
+                                            {ElementFiles(message._file_ids)}
                                         </div>
 
                                     </div>

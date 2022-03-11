@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {connect} from 'react-redux';
-import axios from "axios";
-import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-import AddFile from "../../object/AddFile";
+import React, {useState, useEffect} from 'react'
+import {connect} from 'react-redux'
+import axios from "axios"
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
+import AddFile from "../../object/AddFile"
+import RichEditor from '../../object/RichEditor'
 
 
 function MessageAdd (props) {
@@ -13,8 +14,8 @@ function MessageAdd (props) {
         setFileIds(arIds)
     }
 
-    const onChangeText = (e) => {
-        setMessage(e.target.value)
+    const onChangeText = (message) => {
+        setMessage(message)
     }
 
     const onFormSubmit = async (e) => {
@@ -40,7 +41,7 @@ function MessageAdd (props) {
 
         //добавление сообщения в список (в модульном окне нет этой функции)
         props.add({
-            id: result.response.id,
+            _id: result.response._id,
             message: message
         })
 
@@ -55,7 +56,7 @@ function MessageAdd (props) {
             <div className="row">
                 <div className="col-12">
                     <label htmlFor="message" className="form-label">Новое сообщение</label>
-                    <textarea className="form-control" id="message" rows="5" onChange={onChangeText} value={message}></textarea>
+                    <RichEditor content={message} onResult={onChangeText} btnPosition={{top: true, right: true, bottom: false}} user_id={props.user_id} group_id={props.group_id}/>
                 </div>
             </div>
             <br/>

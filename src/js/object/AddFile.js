@@ -78,7 +78,7 @@ function AddFile (props) {
     }
 
     return (
-        <div>
+        <div className="button-file">
 
             <AddPhoto SendFile={SendFile} SendId={SendId} user_id={props.user_id} group_id={props.group_id}/>
             <AddVideo SendFile={SendFile} SendId={SendId} user_id={props.user_id} group_id={props.group_id}/>
