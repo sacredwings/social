@@ -38,16 +38,16 @@ function Messages (props) {
         await ElementDelete(id)
 
         let arFields = {
-            ids: id,
+            id: id,
         }
 
         //запрос
-        const url = `/api/message/delete`;
+        const url = `/api/message/delete`
 
-        let result = await axios.post(url, arFields);
+        let result = await axios.post(url, arFields)
 
-        result = result.data;
-        if (result.err) return; //ошибка, не продолжаем обработку
+        result = result.data
+        if (result.err) return //ошибка, не продолжаем обработку
     }
 
     const Get = async (start) => {
@@ -76,30 +76,28 @@ function Messages (props) {
         }))
     }
 
-    const GetById = async (id) => {
-
+    const GetById = async (message) => {
         //запрос
-        let result = await axios.get(`/api/message/getById?id=${id}`);
+        let result = await axios.get(`/api/message/getById?ids=${message._id}`);
 
         result = result.data;
         if (result.err) return; //ошибка, не продолжаем обработку
 
         setResponse(prev => ({
-            offset: prev.offset + 1,
-            count: prev.count,
-            items: [...prev.items, ...result.response.items],
+            items: [...prev.items, ...result.response],
         }))
     }
 
     //удаляет из массива
     const ElementDelete = async (id) => {
         let items = response.items.filter((item, i)=>{
-            if (id === item.id) return false
+            if (id === item._id) return false
             return true
         })
 
-        //обновляем
-        setResponse(prev => ({... prev, items}))
+        setResponse(prev => ({
+            items: items
+        }))
     }
 
     //добавляет в массив
@@ -234,7 +232,7 @@ function Messages (props) {
 
             <div className='row'>
                 <div className='col-lg-12 block'>
-                    <MessageAdd add={ElementAdd} user_id={params.id}/>
+                    <MessageAdd add={GetById} user_id={params.id}/>
                 </div>
             </div>
 
