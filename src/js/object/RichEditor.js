@@ -14,18 +14,18 @@ function RichEditor (props) {
         processBar: 0
     })
 
+    //при любом изменении входящего контента
     useEffect (async ()=>{
         if (props.content === '')
             refRichEditor.current.innerHTML = ''
 
     }, [props.content])
 
-    /*
+    //при инициализации
     useEffect (async ()=>{
         //onResult(refRichEditor.current.innerHTML)
         setContent(props.content)
     }, [])
-    */
 
     const Get = async (str) => {
         //разбор строки / достаем id
