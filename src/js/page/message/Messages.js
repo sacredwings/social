@@ -63,12 +63,15 @@ function Messages (props) {
     //подготовка текста сообщения
     const StatusInRead = (chat) => {
         let message = chat._message_id.message
-        if (!chat.read)
+        if (!chat._message_id.read)
             message = <div className="alert alert-secondary" role="alert">{message}</div>
 
+        /*
         //чтение
         if (chat.read)
             return message
+*/
+
 
         //достаем пользователя который не я
         chat.user = chat._user_ids[0]
@@ -78,6 +81,10 @@ function Messages (props) {
         //нет фото
         let photo = 'https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg'
         if ((chat.user._photo) && (chat.user._photo.url)) photo = `/${chat.user._photo.url}` //есть фото
+
+        //без картинки
+        if (chat._message_id.from_id !== props.myUser._id)
+            return message
 
         return <div>
             <div className="img2">

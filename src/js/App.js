@@ -110,8 +110,8 @@ function App (props) {
         return pages
     }
 
-    return (
-        <BrowserRouter>
+    function Social () {
+        return <>
             <MenuTop/>
 
             {/* сайт */}
@@ -157,7 +157,21 @@ function App (props) {
             </div>
 
             <Footer/>
+        </>
+    }
 
+    function SocialNo () {
+        return <>
+            Нету
+        </>
+    }
+
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="*" element={<Social />} />
+                <Route path="/embed/video/:id" element={<Embed />} />
+            </Routes>
         </BrowserRouter>
     )
 }

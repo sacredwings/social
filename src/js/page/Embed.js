@@ -36,15 +36,20 @@ function User (props) {
 
     function File () {
         let style = {
-            maxHeight: '360px',
-            maxWidth: '640px'
+            maxHeight: '56%',
+            width: '100%'
         }
         return (
-            <div className="file">
-                <video controls={true} style={style} preload="none" poster={`${global.urlServer}/${file._file_id.url}`} >
-                    <source src={`${global.urlServer}/${file.url}`} type={file.type}/>
-                </video>
+            <div className="embed">
+                <div className="player">
+                    <div >
+                        <video className="html5-video-player" controls={true} style={style} preload="none" poster={`${global.urlServer}/${file._file_id.url}`} >
+                            <source src={`${global.urlServer}/${file.url}`} type={file.type}/>
+                        </video>
+                    </div>
+                </div>
             </div>
+
         )
     }
 

@@ -142,9 +142,14 @@ function RichEditor (props) {
         }
 
         //
+        /*
         let video = `<div class="voenset-video"><div class="ratio ratio-16x9"><video controls={true} poster="${global.urlServer}/${file._file_id.url}" >
             <source src="${global.urlServer}/${file.url}" type="${file.type}"/>
-        </video></div><small><a href="${global.urlServer}/video/${file._id}">${file.title}</Link></small></div><br/><br/>`
+        </video></div><small><a href="${global.urlServer}/video/${file._id}">${file.title}</Link></small></div><br/><br/>`*/
+
+        let video = `<div class="ratio ratio-16x9">
+                <iframe src="${global.urlServer}/embed/video/${file._id}" title="YouTube video" allowfullscreen></iframe>
+            </div><br/><br/>`
 
         document.execCommand('insertHTML', false, video)
 
