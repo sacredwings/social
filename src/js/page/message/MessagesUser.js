@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import axios from "axios"
 import MessageAdd from "../../element/message/MessageAdd"
 import ElementFile from "../../object/ElementFile"
-import io from "../../util/websocket"
+//import io from "../../util/websocket"
 import {useParams} from "react-router-dom"
 
 function Messages (props) {

@@ -13,8 +13,9 @@ import store from './js/store'
 import App from './js/App';
 import * as serviceWorker from './serviceWorker';
 
-import io from "./js/util/websocket";
-io.socket = io()
+import {IO} from "./js/util/websocket";
+IO.socket = IO()
+IO.socket.Message()
 
 const rootElement = document.getElementById('root');
 render(

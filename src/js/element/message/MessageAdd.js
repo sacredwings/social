@@ -4,11 +4,15 @@ import axios from "axios"
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
 import AddFile from "../../object/AddFile"
 import RichEditor from '../../object/RichEditor'
-
+import { IO } from "../../util/websocket"
 
 function MessageAdd (props) {
     let [message, setMessage] = useState('')
     let [fileIds, setFileIds] = useState('')
+
+    useEffect (async ()=>{
+        //console.log(IO.socket.Message.Add('61a9fdb194f73f29366e9bb5',))
+    }, [])
 
     const ArFileIds = (arIds) => {
         setFileIds(arIds)
@@ -20,6 +24,8 @@ function MessageAdd (props) {
 
     const onFormSubmit = async (e) => {
         e.preventDefault() // Stop form submit
+
+        //IO.socket.Message()
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'message')
 
