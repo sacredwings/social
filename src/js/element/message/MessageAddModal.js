@@ -2,12 +2,18 @@ import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import MessageAdd from "./MessageAdd";
 
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
+}
 
 function MessageAddModal (props) {
+    let [formCode, setFormCode] = useState(getRandomInt(0, 9999))
 
     //при добавлении сообщения закрываем модульное окно
     const Add = () => {
-        window.$('#modalMessageAdd').modal('hide');
+        window.$(`#modalMessageAdd${formCode}_close`).trigger('click')
     }
 
     return (
@@ -24,7 +30,7 @@ function MessageAddModal (props) {
                         <MessageAdd user_id={props.user_id} add={Add}/>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" id={`modalMessageAdd${formCode}_close`}>Закрыть</button>
                     </div>
                 </div>
             </div>
