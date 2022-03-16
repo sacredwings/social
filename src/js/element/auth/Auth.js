@@ -52,9 +52,14 @@ function Auth (props) {
     const onChange = (event) => {
         if (event.target.value.length <= 30) {
             const name = event.target.name;
+            let value = event.target.value
+
+            //удаление пробелов
+            if ((name === 'profileLogin') || (name === 'profilePassword'))
+                value = value.replace(/\s/g, '');
 
             setForm(prev => ({
-                ...prev, [name]: event.target.value
+                ...prev, [name]: value
             }))
         }
 

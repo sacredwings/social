@@ -27,6 +27,9 @@ function Reg (props) {
 
             let gtoken = await reCaptchaExecute(global.gappkey, 'reg')
 
+            //let login = form.login.replace(' ', '')
+            //let password = form.password.replace(' ', '')
+
             //запрос
             let result = await axios.post(`/api/user/reg`, {
                 login: form.login,
@@ -56,8 +59,13 @@ function Reg (props) {
     function onChange (event) {
         if (event.target.value.length <= 30) {
             const name = event.target.name
+            let value = event.target.value
 
-            setForm(prev => ({...prev, ...{[name]: event.target.value}}))
+            //удаление пробелов
+            if ((name === 'email') || (name === 'login'))
+                value = value.replace(/\s/g, '');
+
+            setForm(prev => ({...prev, ...{[name]: value}}))
         }
         setForm(prev => ({...prev, ...{info: null}}))
     }
