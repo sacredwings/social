@@ -55,7 +55,7 @@ function Auth (props) {
             let value = event.target.value
 
             //удаление пробелов
-            if ((name === 'profileLogin') || (name === 'profilePassword'))
+            if (name === 'profileLogin')
                 value = value.replace(/\s/g, '');
 
             setForm(prev => ({
