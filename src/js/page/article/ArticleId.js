@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
-import {connect} from 'react-redux';
-import axios from "axios";
-import SelectAlbum from "../../object/SelectAlbum";
-import Comment from "../../element/Comment";
+import React, {useState, useEffect} from 'react'
+import {connect} from 'react-redux'
+import axios from "axios"
+import SelectAlbum from "../../object/SelectAlbum"
+import Comment from "../../element/comment/Get"
 import ElementFile from "../../object/ElementFile";
-import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
 import {useParams, Link} from 'react-router-dom'
 import RichEditor from '../../object/RichEditor'
 
@@ -61,6 +61,11 @@ function ArticleId (props) {
     }
 
     const Element = (video) => {
+        //оступ к объекту
+        let access = false
+        if (video.from_id === props.myUser._id)
+            access = true
+
         return <>
             <div className="row">
                 <div className="col-12">
@@ -69,12 +74,9 @@ function ArticleId (props) {
 
                 </div>
             </div>
-            {/*
             <div className="row">
-                <div className="col-12">
-                    <Comment module='video' object_id={video.id}/>
-                </div>
-            </div>*/}
+                <Comment module={'post'} object_id={video._id} access={access}/>
+            </div>
         </>
     }
 

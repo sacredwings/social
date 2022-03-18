@@ -5,11 +5,12 @@ import ElementFile from "../../object/ElementFile";
 import PostAdd from "./PostAdd";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import RichEditor from '../../object/RichEditor'
+import Comment from '../comment/Get'
 
 function Post (props) {
     //запрос
     let [response, setResponse] = useState({
-        step: 10,
+        step: 3,
         count: 0,
         items: [],
         users: []
@@ -195,33 +196,42 @@ function Post (props) {
             if (user._photo)
                 photo = `${global.urlServer}/${user._photo.url}`
 
-            return (<div className="social block white" key={i}>
+            return (<div className="block white" key={i}>
 
-                {(props.access) ? <button type="button" className="btn-close" aria-label="Close" style={{float: "right"}} onClick={() => {Delete(item._id)}}></button> : null}
-                <div className="header">
-                    <div className="img">
-                        <img src={photo}/>
+                <div className="row post">
+
+
+                    <div className="header">
+                        {(props.access) ? <button type="button" className="btn-close" aria-label="Close" style={{float: "right"}} onClick={() => {Delete(item._id)}}></button> : null}
+                        <div className="img">
+                            <img src={photo}/>
+                        </div>
+                        <p className="name">
+                            {user.first_name} {user.last_name} {(props.access) ? <button type="button" className="btn btn-outline-secondary btn-sm" onClick={()=>OnChecked(item)}><i className="fas fa-edit"></i></button> : null}
+                        </p>
+
                     </div>
-                    <p className="name">
-                        {user.first_name} {user.last_name} {(props.access) ? <button type="button" className="btn btn-outline-secondary btn-sm" onClick={()=>OnChecked(item)}><i className="fas fa-edit"></i></button> : null}
-                    </p>
+                    {(item.checked) ?
+                        <div>
+                            <RichEditor content={item.text} id={item._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}}/>
+                            <button type="button" className="btn btn-primary btn-sm" onClick={()=>OnSave(item._id)}>Сохранить</button>
+                        </div>
+                        : <div dangerouslySetInnerHTML={{__html: item.text}}></div>}
+                    <div className="row">
+                        {item._file_ids ? ListFiles(item._file_ids) : null}
+                    </div>
+
                 </div>
-                {(item.checked) ?
-                    <div>
-                        <RichEditor content={item.text} id={item._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}}/>
-                        <button type="button" className="btn btn-primary btn-sm" onClick={()=>OnSave(item._id)}>Сохранить</button>
-                    </div>
-                    : <div dangerouslySetInnerHTML={{__html: item.text}}></div>}
+
                 <div className="row">
-                    {item._file_ids ? ListFiles(item._file_ids) : null}
+                    <Comment module={'post'} object_id={item._id} access={props.access}/>
                 </div>
-
 
             </div>)
         })}
 
     const Add = () => {
-        return <div className="social block white add">
+        return <div className="block white add">
             <PostAdd user_id={props.user_id} group_id={props.group_id}/>
         </div>
     }

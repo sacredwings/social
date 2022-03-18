@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react'
 import {connect} from 'react-redux';
 import axios from "axios";
-import SelectAlbum from "../../object/SelectAlbum";
-import Comment from "../../element/Comment";
-import ElementFile from "../../object/ElementFile";
-import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import SelectAlbum from "../../object/SelectAlbum"
+import Comment from "../../element/comment/Get"
+import ElementFile from "../../object/ElementFile"
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
 import {useParams, Link} from 'react-router-dom'
 
 
@@ -77,6 +77,11 @@ function VideoId (props) {
 */
     const Element = (video) => {
 
+        //оступ к объекту
+        let access = false
+        if (video.from_id === props.myUser._id)
+            access = true
+
         return <>
             <div className="row">
                 <div className="col-12">
@@ -85,6 +90,9 @@ function VideoId (props) {
                     <ElementFile file={video} attributes={{controls: true}}/>
                     <p>{video.text}</p>
                 </div>
+            </div>
+            <div className="row">
+                <Comment module={'post'} object_id={video._id} access={access}/>
             </div>
             {/*
             <div className="row">
