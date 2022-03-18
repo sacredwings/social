@@ -177,13 +177,11 @@ function Messages (props) {
 
                             //чужое сообщение
                             message.my = false
-                            message.user = message._to_id
+                            message.user = message._from_id
 
                             //мое сообщение
-                            if (props.myUser._id === message.from_id) {
+                            if (props.myUser._id === message.from_id)
                                 message.my = true
-                                message.user = message._from_id
-                            }
 
                             //нет фото
                             let photo = 'https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg'
