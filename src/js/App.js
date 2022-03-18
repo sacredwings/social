@@ -1,4 +1,4 @@
-import React, {Component, useEffect} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {connect} from "react-redux";
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import { loadReCaptcha }  from 'recaptcha-v3-react-function-async';
@@ -40,6 +40,7 @@ import Search from "./page/search/Search";
 //import Friend from "./page/friend/friend";
 //import VideoAll from "./page/video/Video";
 import Embed from "./page/Embed"
+import axios from "axios";
 
 /*
 import Reg from "./pages/Reg";
@@ -53,6 +54,11 @@ window.$ = window.jQuery = require('jquery');
 
 function App (props) {
 
+    //для левого меню
+    let [menuLeft, setMenuLeft] = useState({
+        message: 0
+    })
+
     useEffect(async () => {
         loadReCaptcha(
             global.gappkey,
@@ -63,7 +69,28 @@ function App (props) {
             .catch((e) => {
                 console.error('Error when load ReCaptcha', e)
             })
+
+        await getUser()
     }, [])
+
+    const getUser = async () => {
+        if (props.myUser.auth) return;
+
+        try {
+            let result = await axios.get(`/api/account/get`);
+
+            if (result.data && result.data.response) {
+                let response = result.data.response;
+                props.login(response._id, response.login);
+
+                setMenuLeft({
+                    message: response.message
+                })
+            }
+
+        } catch (err) {
+        }
+    }
 
     //страницы с авторизацией
     function pageAuth () {
@@ -120,7 +147,7 @@ function App (props) {
 
                     {/* левое меню */}
                     <div className="col-lg-2">
-                        <MenuLeft />
+                        <MenuLeft data={menuLeft}/>
                     </div>
 
                     {/* контент социальной сети */}
@@ -179,5 +206,13 @@ function App (props) {
 export default connect (
     state => ({
         myUser: state.myUser,
+    }),
+    dispatch => ({
+        login: (_id, login) => {
+            dispatch({type: 'USER_LOGIN', _id: _id, login: login});
+        },
+        logout: () => {
+            dispatch({type: 'USER_LOGOUT'});
+        }
     })
 )(App);

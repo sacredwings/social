@@ -241,7 +241,8 @@ function Post (props) {
 
         {(response.items.length) ? List(response.items) : null}
 
-        {(response.items.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>Get()}>еще ...</button> : null}
+        {/*(response.items.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>Get()}>еще ...</button> : null*/}
+        {(response.items.length < response.count) ? <div className="d-grid gap-2"><button type="button" style={{marginTop: '10px'}} className="btn btn-secondary btn-sm" onClick={()=>Get()}>еще ...</button></div> : null}
     </div>
 }
 

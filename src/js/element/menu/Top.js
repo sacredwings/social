@@ -6,7 +6,7 @@ import axios from "axios";
 
 function MenuTop (props) {
     useEffect(async () => {
-        await getUser()
+        //await getUser()
     }, [])
 
     const getUser = async () => {

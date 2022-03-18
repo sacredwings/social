@@ -101,7 +101,8 @@ function Messages (props) {
         return (
             <div className="row">
                 <div className="col-lg-12">
-                    {(arChat.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={() => {Get()}}>еще ...</button> : null}
+                    {/*(arChat.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={() => {Get()}}>еще ...</button> : null*/}
+                    {(arChat.length < response.count) ? <div className="d-grid gap-2"><button type="button" style={{marginTop: '10px'}} className="btn btn-outline-secondary btn-sm" onClick={()=>Get()}>еще ...</button></div> : null}
                 </div>
                 <div className="col-lg-12">
                     <div className="list-group">
