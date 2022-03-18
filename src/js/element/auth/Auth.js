@@ -37,6 +37,9 @@ function Auth (props) {
             if ((!result.err) && (result.response)) {
                 //запоминаем состояние
                 props.Store_myUser(result.response._id, result.response.login, result.response.tid, result.response.token, form.remember);
+                props.func({
+                    message: result.response.message
+                })
                 //document.location.href = `/user/${result.response._id}`
                 //this.props.history.push('/accounts')
             } else {

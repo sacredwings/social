@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import ElementAuth from "../auth/Auth";
 
 class WidgetLetMenu extends Component {
+
     render() {
         return (
            <div className="row">
@@ -22,7 +23,7 @@ class WidgetLetMenu extends Component {
                        </nav>
                    </>
                    :
-                   <ElementAuth />}
+                   <ElementAuth func={this.props.func}/>}
 
            </div>
         )

@@ -137,6 +137,11 @@ function App (props) {
         return pages
     }
 
+    //вспомогательная функция
+    const DataMenuLeft = (data) => {
+        setMenuLeft(data)
+    }
+
     function Social () {
         return <>
             <MenuTop/>
@@ -147,7 +152,7 @@ function App (props) {
 
                     {/* левое меню */}
                     <div className="col-lg-2">
-                        <MenuLeft data={menuLeft}/>
+                        <MenuLeft data={menuLeft} func={DataMenuLeft}/>
                     </div>
 
                     {/* контент социальной сети */}
