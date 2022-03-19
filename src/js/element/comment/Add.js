@@ -26,13 +26,13 @@ function PostAdd (props) {
         console.log(form)
     }, [form])
 
-    const onChangeText = (e) => {
+    const onChangeText = (content) => {
         //console.log(content)
-        let name = e.target.id;
-        let value = e.target.value;
+        //let name = e.target.id;
+        //let value = e.target.value;
 
         setForm(prev => ({
-            ...prev, ['inputText']: e.target.value
+            ...prev, ['inputText']: content
         }))
     }
 
@@ -77,8 +77,8 @@ function PostAdd (props) {
         return <form onSubmit={onFormSubmit} className="">
 
             <div className="mb-3">
-                <textarea className="form-control" id="inputText" rows="1" placeholder="" onChange={onChangeText} value={form.inputText}></textarea>
-                {/*<RichEditor content={form.inputText} onResult={onChangeText} btnPosition={{top: true, right: false, bottom: false}} user_id={props.user_id} group_id={props.group_id}/>*/}
+                {/*<textarea className="form-control" id="inputText" rows="1" placeholder="" onChange={onChangeText} value={form.inputText}></textarea>*/}
+                {<RichEditor content={form.inputText} onResult={onChangeText} btnPosition={{top: true, right: false, bottom: false}} user_id={props.user_id} group_id={props.group_id}/>}
             </div>
             <div className="row button-file">
                 <div className="col-12">

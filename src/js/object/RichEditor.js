@@ -267,12 +267,6 @@ function RichEditor (props) {
         return result.data.response
     }
 
-    const Buttons111 = (format = 'line') => {
-        var range = document.createRange();
-        range.setStart(refRichEditor.current, 1);
-    }
-
-
     const Buttons = (format = 'line') => {
         let className = `btn-group`
         let style = {}
@@ -289,10 +283,6 @@ function RichEditor (props) {
 
         return <div className="btn-group-line" style={style}>
             <div className={className} role="group" aria-label="Button group with nested dropdown">
-                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="bold" onClick={()=>{Buttons111()}}>
-                    <i className="fa fa-bold"></i>
-                </button>
-
                 <button type="button" className="btn btn-outline-secondary btn-sm" data-element="bold" onClick={()=>{OnClickButton('bold')}}>
                     <i className="fa fa-bold"></i>
                 </button>
