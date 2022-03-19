@@ -131,7 +131,7 @@ function AlbumVideo (props) {
     const ElementAlbum = (_image_id, _video_id, video_title, video) => {
         let attributes = {
             controls: true,
-            autoplay: 'autoplay',
+            //autoplay: 'autoplay',
             muted: 'muted',
             loop: 'loop'
         }
