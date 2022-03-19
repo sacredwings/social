@@ -70,17 +70,6 @@ function User (props) {
                         </div>
                     </div>
 
-                    <div className="social block white social_block_info">
-                        <div className="alert alert-light" role="alert">
-                            Все плейлисты и видео --> <Link to={`/group/${id}/video`}>открыть</Link>
-                        </div>
-                    </div>
-                    <div className="social block white social_block_info">
-                        <div className="alert alert-light" role="alert">
-                            Все разделы и статьи группы --> <Link to={`/group/${id}/article`}>открыть</Link>
-                        </div>
-                    </div>
-
                     {(!pay) ? <ElementPay group_id={id}/> : null}
                     <ElementPost group_id={group._id} access={access}/>
 
