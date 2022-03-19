@@ -47,7 +47,7 @@ function RichEditor (props) {
         //разбор строки / достаем id
         let id = str.substr(str.length-11, 11)
 
-        let video = `<div class="ratio ratio-16x9">
+        let video = `<br/><div class="ratio ratio-16x9">
                 <iframe src="https://www.youtube.com/embed/${id}" title="YouTube video" allowfullscreen></iframe>
             </div><br/><br/>`
 
@@ -142,14 +142,24 @@ function RichEditor (props) {
         }
 
         //
-        /*
-        let video = `<div class="voenset-video"><div class="ratio ratio-16x9"><video controls={true} poster="${global.urlServer}/${file._file_id.url}" >
-            <source src="${global.urlServer}/${file.url}" type="${file.type}"/>
-        </video></div><small><a href="${global.urlServer}/video/${file._id}">${file.title}</Link></small></div><br/><br/>`*/
 
-        let video = `<div class="ratio ratio-16x9">
+        let video = `<br/>
+<div class="voenset-video">
+    <div class="ratio ratio-16x9">
+        <video controls={true} poster="${global.urlServer}/${file._file_id.url}" >
+            <source src="${global.urlServer}/${file.url}" type="${file.type}"/>
+        </video>
+    </div>
+    <small>
+        <a href="${global.urlServer}/video/${file._id}">${file.title}</a>
+    </small>
+</div>
+<br/>`
+
+        /*
+        let video = `<br/><div class="ratio ratio-16x9">
                 <iframe src="${global.urlServer}/embed/video/${file._id}" title="YouTube video" allowfullscreen></iframe>
-            </div><br/><br/>`
+            </div><br/><br/>`*/
 
         document.execCommand('insertHTML', false, video)
 
@@ -164,14 +174,26 @@ function RichEditor (props) {
 
         let html = await Promise.all(arFiles.map(async (item, i)=>{
             if (item.type === 'image/jpeg')
-                return `<div class="voenset-img"><img  key={i} src="${global.urlServer}/${item.url}" className="img-fluid" alt=${item.title}></div><br/><br/>`
+                return `<br/><div class="voenset-img"><img  key={i} src="${global.urlServer}/${item.url}" className="img-fluid" alt=${item.title}></div><br/><br/>`
 
             if (item.type === 'video/mp4') {
                 let poster = ''
                 if (item._file_id)
                     poster = `${global.urlServer}/${item._file_id.url}`
 
-                return `<div class="voenset-video"></div><div class="ratio ratio-16x9"><video controls="${true}" poster="${poster}" ><source src="${global.urlServer}/${item.url}" type="${item.type}"/></video></div><small><a href="${global.urlServer}/video/${item._id}">${item.title}</Link></small><div></div><br/><br/>`
+                return `<br/>
+<div class="voenset-video">
+    <div class="ratio ratio-16x9">
+        <video controls="${true}" poster="${poster}">
+            <source src="${global.urlServer}/${item.url}" type="${item.type}"/>
+        </video>
+    </div>
+    <small>
+        <a href="${global.urlServer}/video/${item._id}">${item.title}
+        </a>
+    </small>
+<div>
+<br/>`
             }
 
         }))
@@ -245,6 +267,12 @@ function RichEditor (props) {
         return result.data.response
     }
 
+    const Buttons111 = (format = 'line') => {
+        var range = document.createRange();
+        range.setStart(refRichEditor.current, 1);
+    }
+
+
     const Buttons = (format = 'line') => {
         let className = `btn-group`
         let style = {}
@@ -261,6 +289,10 @@ function RichEditor (props) {
 
         return <div className="btn-group-line" style={style}>
             <div className={className} role="group" aria-label="Button group with nested dropdown">
+                <button type="button" className="btn btn-outline-secondary btn-sm" data-element="bold" onClick={()=>{Buttons111()}}>
+                    <i className="fa fa-bold"></i>
+                </button>
+
                 <button type="button" className="btn btn-outline-secondary btn-sm" data-element="bold" onClick={()=>{OnClickButton('bold')}}>
                     <i className="fa fa-bold"></i>
                 </button>
