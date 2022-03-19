@@ -4,6 +4,18 @@ import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
 import {Link} from "react-router-dom"
 
 function RichEditor (props) {
+    let [buttonVisible, setButtonVisible] = useState({
+        top: false,
+        left: false,
+        right: false,
+        bottom: false
+    })
+
+    //при любом изменении входящего контента
+    useEffect (async ()=>{
+        console.log('aaaaaaaaaaaa')
+
+    }, [buttonVisible])
 
     const refRichEditor = useRef(null)
     let [content, setContent] = useState('')
@@ -281,7 +293,8 @@ function RichEditor (props) {
             }
         }
 
-        return <div className="btn-group-line" style={style}>
+        return <div className="d-grid gap-2">
+        <div className="btn-group-line" style={style}>
             <div className={className} role="group" aria-label="Button group with nested dropdown">
                 <button type="button" className="btn btn-outline-secondary btn-sm" data-element="bold" onClick={()=>{OnClickButton('bold')}}>
                     <i className="fa fa-bold"></i>
@@ -496,18 +509,47 @@ function RichEditor (props) {
                 </div>
             </div>
         </div>
+        </div>
     }
 
     function DangerouslySetInnerHTML() {
         return {__html: content}
     }
 
+    const ButtonVisible = (position) => {
+        let newButtonVisible = buttonVisible
+
+        if (position === 'left')
+            setButtonVisible(prev => ({...prev, left: !prev.left}))
+
+        if (position === 'top')
+            setButtonVisible(prev => ({...prev, top: !prev.top}))
+
+        if (position === 'bottom')
+            setButtonVisible(prev => ({...prev, bottom: !prev.bottom}))
+
+        if (position === 'right')
+            setButtonVisible(prev => ({...prev, right: !prev.right}))
+
+    }
+
     return (
         <div className="rich-edit">
-            {(props.btnPosition.right) ? Buttons('vertical') : null}
-            {(props.btnPosition.top) ? <Buttons/> : null}
+
+            {(buttonVisible.right) ? Buttons('vertical') : null}
+            {(buttonVisible.top) ? <Buttons/> : null}
+
+            {<div className="d-grid gap-2">
+                <div className="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" className="btn btn-outline-secondary btn-sm" onClick={()=>{ButtonVisible('top')}}>верх</button>
+                    <button type="button" className="btn btn-outline-secondary btn-sm" onClick={()=>{ButtonVisible('bottom')}}>низ</button>
+                    <button type="button" className="btn btn-outline-secondary btn-sm" onClick={()=>{ButtonVisible('right')}}>право</button>
+                </div>
+
+            </div>}
             <div className="content-editable" contentEditable={true} suppressContentEditableWarning={true} ref={refRichEditor} onPaste={OnPaste} onInput={OnInput} onKeyDown={OnKeyDown} dangerouslySetInnerHTML={{__html: content}}></div>
-            {(props.btnPosition.bottom) ? <Buttons/> : null}
+
+            {(buttonVisible.bottom) ? <Buttons/> : null}
         </div>
     )
 }
