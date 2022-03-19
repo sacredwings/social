@@ -62,7 +62,18 @@ function Messages (props) {
 
     //подготовка текста сообщения
     const StatusInRead = (chat) => {
+        //достаем текст
         let message = chat._message_id.message
+        //удаляем теги
+        message = message.replace(/<[^>]+>/g,'')
+        //message = message.replace(/[^a-zA-Z ]/g, "")
+
+        //обрезаем сообщение
+        if (message.length > 50)
+            message = `${message.substr(0, 50)} ...`
+        else
+            message = message.substr(0, 50)
+
         if (!chat._message_id.read)
             message = <div className="alert alert-secondary" role="alert">{message}</div>
 
