@@ -65,7 +65,11 @@ function Messages (props) {
         //достаем текст
         let message = chat._message_id.message
         //удаляем теги
-        message = message.replace(/<[^>]+>/g,'')
+        if (message)
+            message = message.replace(/<[^>]+>/g,'')
+        else
+            message = ''
+
         //message = message.replace(/[^a-zA-Z ]/g, "")
 
         //обрезаем сообщение

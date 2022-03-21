@@ -137,6 +137,13 @@ function Messages (props) {
     const StatusInRead = (message) => {
         let result = <div className="message" dangerouslySetInnerHTML={{__html: message.message}}></div>
 
+        result = <>
+            <div className="row">{result}</div>
+            <div className="row">
+                {ElementFiles(message._file_ids)}
+            </div>
+        </>
+
         //чтение
         if (message.read)
             return result
@@ -148,13 +155,35 @@ function Messages (props) {
     }
 
     const ElementFiles = (files) => {
+        let attributes = {
+            controls: true,
+        }
 
         if (!files) return null
 
+        let classFile = "col-lg-12"
+
+        switch (files.length) {
+            case 1:
+                classFile = "col-lg-12"
+                break;
+            case 2:
+                classFile = "col-lg-6"
+                break;
+            case 3:
+                classFile = "col-lg-4"
+                break;
+            case 4:
+                classFile = "col-lg-3"
+                break;
+            default:
+                classFile = "col-lg-3"
+        }
+
         return <>
             { files.map((file, i) => {
-                return <div key={i} className="col-md-4">
-                    <ElementFile  file={file}/>
+                return <div key={i} className={classFile}>
+                    <ElementFile  file={file} attributes={attributes}/>
                 </div>
             })}
         </>
@@ -201,14 +230,7 @@ function Messages (props) {
                                 </div>
                                 <div className="row">
                                     <div className="col-12">
-
-                                        <div className="row">
-                                            {StatusInRead(message)}
-                                        </div>
-                                        <div className="row">
-                                            {ElementFiles(message._file_ids)}
-                                        </div>
-
+                                        {StatusInRead(message)}
                                     </div>
                                 </div>
                             </div>
