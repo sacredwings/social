@@ -154,7 +154,7 @@ function RichEditor (props) {
         }
 
         //
-
+/*
         let video = `<br/>
 <div class="voenset-video">
     <div class="ratio ratio-16x9">
@@ -167,11 +167,22 @@ function RichEditor (props) {
     </small>
 </div>
 <br/>`
-
-        /*
+*/
+/*
         let video = `<br/><div class="ratio ratio-16x9">
-                <iframe src="${global.urlServer}/embed/video/${file._id}" title="YouTube video" allowfullscreen></iframe>
-            </div><br/><br/>`*/
+                <iframe  src="${global.urlServer}/embed/${file._id}" title="VoenSet video" allowfullscreen></iframe>
+            </div><br/>`*/
+
+        let video = `<br/>
+<div class="voenset-video">
+    <div class="ratio ratio-16x9">
+        <iframe  src="${global.urlServer}/embed/${file._id}" title="VoenSet video" allowfullscreen></iframe>
+    </div>
+    <small>
+        <a href="${global.urlServer}/video/${file._id}">${file.title}</a>
+    </small>
+<div>
+<br/>`
 
         document.execCommand('insertHTML', false, video)
 
@@ -196,13 +207,10 @@ function RichEditor (props) {
                 return `<br/>
 <div class="voenset-video">
     <div class="ratio ratio-16x9">
-        <video controls="${true}" poster="${poster}">
-            <source src="${global.urlServer}/${item.url}" type="${item.type}"/>
-        </video>
+        <iframe  src="${global.urlServer}/embed/${item._id}" title="VoenSet video" allowfullscreen></iframe>
     </div>
     <small>
-        <a href="${global.urlServer}/video/${item._id}">${item.title}
-        </a>
+        <a href="${global.urlServer}/video/${item._id}">${item.title}</a>
     </small>
 <div>
 <br/>`

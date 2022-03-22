@@ -202,7 +202,7 @@ function App (props) {
         <BrowserRouter>
             <Routes>
                 <Route path="*" element={<Social />} />
-                <Route path="/embed/video/:id" element={<Embed />} />
+                <Route path="/embed/:id" element={<Embed />} />
             </Routes>
         </BrowserRouter>
     )
