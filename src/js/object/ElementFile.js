@@ -4,6 +4,7 @@ import {Link, useParams} from "react-router-dom";
 export default (props) => {
 
     let [imgNot] = useState('https://elk21.ru/assets/images/34534535.jpg')
+    const urlVideo = `/video`
 
     useEffect (()=>{
     }, [])
@@ -31,9 +32,17 @@ export default (props) => {
         if ((props.attributes) && (props.attributes.muted)) attributes.muted = props.attributes.muted
         if ((props.attributes) && (props.attributes.loop)) attributes.loop = props.attributes.loop
 
-        return <video controls={attributes.controls} style={style} preload="none" poster={url} autoPlay={attributes.autoplay} muted={attributes.muted} loop={attributes.loop}>
-            <source src={`${global.urlServer}/${file.url}`} type={file.type}/>
-        </video>
+        return <>
+            <video controls={attributes.controls} style={style} preload="none" poster={url} autoPlay={attributes.autoplay} muted={attributes.muted} loop={attributes.loop}>
+                <source src={`${urlVideo}/${file.url}`} type={file.type}/>
+            </video>
+            {
+                (props.link) ?
+                <small>
+                        <Link to={`${urlVideo}/${file._id}`}>{file.title}</Link>
+                </small> : null
+            }
+        </>
     }
 
     const Image = (file) => {

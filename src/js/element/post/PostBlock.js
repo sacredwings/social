@@ -119,7 +119,7 @@ function Post (props) {
         return <>
             { files.map((file, i) => {
                 return <div key={i} className={classFile}>
-                    <ElementFile  file={file} attributes={attributes}/>
+                    <ElementFile  file={file} attributes={attributes} link={true}/>
                 </div>
             })}
         </>
