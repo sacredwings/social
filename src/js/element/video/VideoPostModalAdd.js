@@ -14,6 +14,7 @@ function Group (props) {
         items: [],
     })
 
+    let [q, setQ] = useState('')
     let [listGroup, setListGroup] = useState([])
     let [ownerId, setOwnerId] = useState({
         user_id: props.myUser._id,
@@ -46,7 +47,8 @@ function Group (props) {
         let arFields = {
             params: {
                 offset: offset,
-                count: response.step
+                count: response.step,
+                q: q
             }
         }
 
@@ -115,8 +117,22 @@ function Group (props) {
         </div>
     }
 
+    function onChangeSearchText(e) {
+        let name = e.target.id;
+        let value = e.target.value;
+
+        setQ(value)
+    }
+
     const List = (arr) => {
         return <>
+            <form>
+                <div className="input-group mb-3">
+                    <input type="text" className="form-control" placeholder="Название видео"
+                           aria-label="Recipient's username" aria-describedby="button-addon2" value={q} onChange={onChangeSearchText}/>
+                        <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={() => Get(true)}>найти</button>
+                </div>
+            </form>
             <UserList/>
             <GroupList/>
             {arr.map(function (video, i) {

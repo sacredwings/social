@@ -13,8 +13,6 @@ function RichEditor (props) {
 
     //при любом изменении входящего контента
     useEffect (async ()=>{
-        console.log('aaaaaaaaaaaa')
-
     }, [buttonVisible])
 
     const refRichEditor = useRef(null)
@@ -146,10 +144,11 @@ function RichEditor (props) {
         console.log('ищу на сайте')
 
         let file = await Get(content)
+        console.log(file)
 
         //файла нет
         if (!file) {
-            document.execCommand('insertHTML', false, content)
+            document.execCommand('createLink', false, content)
             return true
         }
 
