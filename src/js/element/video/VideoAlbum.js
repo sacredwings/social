@@ -16,7 +16,7 @@ function AlbumVideo (props) {
         processBar: 0
     })
     let [response, setResponse] = useState({
-        step: 20,
+        step: 200,
         count: 0,
         items: [],
     })
