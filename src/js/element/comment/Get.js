@@ -18,7 +18,7 @@ function Comment (props) {
 
     //запрос
     let [response, setResponse] = useState({
-        step: 10,
+        step: 30,
         count: 0,
         items: []
     })

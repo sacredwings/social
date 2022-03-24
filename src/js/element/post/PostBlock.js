@@ -10,7 +10,7 @@ import Comment from '../comment/Get'
 function Post (props) {
     //запрос
     let [response, setResponse] = useState({
-        step: 3,
+        step: 20,
         count: 0,
         items: [],
         users: []
