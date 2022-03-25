@@ -5,6 +5,8 @@ import MessageAdd from "../../element/message/MessageAdd"
 import ElementFile from "../../object/ElementFile"
 //import io from "../../util/websocket"
 import {useParams} from "react-router-dom"
+import RichEditor from "../../object/RichEditor";
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 
 function Messages (props) {
     //настройки запроса
@@ -98,6 +100,59 @@ function Messages (props) {
         setResponse(prev => ({
             items: items
         }))
+    }
+
+    const OnChecked = async (element) => {
+        let newList = response.items.map(function(item, i, arr) {
+            if (item._id === element._id) {
+                item.checked = !item.checked
+            }
+
+            return item
+        })
+        setResponse(prev => ({...prev, ...{
+                items: newList,
+            }}))
+    }
+
+    const OnResult = (content, id) => {
+        let newList = response.items.map(function(item, i, arr) {
+            if (item._id === id) {
+                item.message = content
+            }
+
+            return item
+        })
+        setResponse(prev => ({...prev, ...{
+                items: newList,
+            }}))
+    }
+
+    const OnSave = async (id) => {
+        let element = null
+        response.items.forEach(function(item, i, arr) {
+            if (item._id === id) {
+                element = item
+            }
+        })
+
+        if (!element) return false
+        await OnChecked(element)
+
+        let arFields = {
+            id: element._id,
+            message: element.message,
+
+            gtoken: await reCaptchaExecute(global.gappkey, 'post')
+        }
+        const url = `/api/message/edit`
+
+        let result = await axios.post(url, arFields)
+
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
+
+        if (!result.response) return
     }
 
     //добавляет в массив
@@ -224,13 +279,18 @@ function Messages (props) {
                                             <img src={photo} alt="..."/>
                                         </div>
                                         <button style={{float: 'right'}} type="button" className="btn-close" aria-label="Close" onClick={()=>{Delete(message._id)}}></button>
-                                        <p className="name"><b>{message.user.first_name}</b></p>
+                                        <p className="name"><b>{message.user.first_name}</b>{(message.from_id === props.myUser._id) ? <button type="button" className="btn btn-outline-secondary btn-sm" onClick={()=>OnChecked(message)}><i className="fas fa-edit"></i></button> : null}</p>
                                         <p className="date"><small>{message.create_date}</small></p>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-12">
-                                        {StatusInRead(message)}
+                                        {(message.checked) ?
+                                            <div>
+                                                <RichEditor content={message.message} id={message._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}}/>
+                                                <button type="button" className="btn btn-primary btn-sm" onClick={()=>OnSave(message._id)}>Сохранить</button>
+                                            </div>
+                                            : StatusInRead(message)}
                                     </div>
                                 </div>
                             </div>
