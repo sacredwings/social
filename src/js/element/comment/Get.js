@@ -4,6 +4,7 @@ import axios from "axios";
 import ElementFile from "../../object/ElementFile";
 import CommentAdd from "./Add";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import RichEditor from "../../object/RichEditor";
 //import Comment from "../Comment";
 //import RichEditor from '../../object/RichEditor'
 
@@ -82,6 +83,59 @@ function Comment (props) {
 
     }
 
+    const OnChecked = async (element) => {
+        let newList = response.items.map(function(item, i, arr) {
+            if (item._id === element._id) {
+                item.checked = !item.checked
+            }
+
+            return item
+        })
+        setResponse(prev => ({...prev, ...{
+                items: newList,
+            }}))
+    }
+
+    const OnResult = (content, id) => {
+        let newList = response.items.map(function(item, i, arr) {
+            if (item._id === id) {
+                item.text = content
+            }
+
+            return item
+        })
+        setResponse(prev => ({...prev, ...{
+                items: newList,
+            }}))
+    }
+
+    const OnSave = async (id) => {
+        let element = null
+        response.items.forEach(function(item, i, arr) {
+            if (item._id === id) {
+                element = item
+            }
+        })
+
+        if (!element) return false
+        await OnChecked(element)
+
+        let arFields = {
+            id: element._id,
+            text: element.text,
+
+            gtoken: await reCaptchaExecute(global.gappkey, 'post')
+        }
+        const url = `/api/comment/edit`
+
+        let result = await axios.post(url, arFields)
+
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
+
+        if (!result.response) return
+    }
+
     const ListFiles = (files) => {
 
         let attributes = {
@@ -144,10 +198,15 @@ function Comment (props) {
                         <img src={photo}/>
                     </div>
                     <p className="name">
-                        {user.first_name} {user.last_name}
+                        {user.first_name} {user.last_name} {(access) ? <button type="button" className="btn btn-outline-secondary btn-sm" onClick={()=>OnChecked(item)}><i className="fas fa-edit"></i></button> : null}
                     </p>
                 </div>
-                <div className="content" dangerouslySetInnerHTML={{__html: item.text}}></div>
+                {(item.checked) ?
+                    <div>
+                        <RichEditor content={item.text} id={item._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}}/>
+                        <button type="button" className="btn btn-primary btn-sm" onClick={()=>OnSave(item._id)}>Сохранить</button>
+                    </div>
+                    : <div dangerouslySetInnerHTML={{__html: item.text}}></div>}
                 <div className="row">
                     {item._file_ids ? ListFiles(item._file_ids) : null}
                 </div>
