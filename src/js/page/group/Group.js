@@ -55,26 +55,7 @@ function User (props) {
         return (
 
             <div className="row user">
-                <div className="col-lg-8">
-
-                    <div className="social block white social_block_info">
-                        <div className="row">
-                            <div className="col-lg-12">
-                                <ElementFile file={group._photo_big} attributes={attributes}/>
-                            </div>
-
-                            <div className="col-lg-12 block-white">
-                                <h1 className="user-name">{group.title}</h1>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    {(!pay) ? <ElementPay group_id={id}/> : null}
-                    <ElementPost group_id={group._id} access={access}/>
-
-                </div>
-                <div className="col-lg-4">
+                <div className="col-lg-4 ">
 
                     {/* аватарка блок */}
                     <div className="social block" style={{padding: 0}}>
@@ -97,6 +78,26 @@ function User (props) {
                     {/*<ElementTopic group_id={group._id} access={access}/>*/}
 
                 </div>
+                <div className="col-lg-8 order-lg-first">
+
+                    <div className="social block white social_block_info">
+                        <div className="row">
+                            <div className="col-lg-12">
+                                <ElementFile file={group._photo_big} attributes={attributes}/>
+                            </div>
+
+                            <div className="col-lg-12 block-white">
+                                <h1 className="user-name">{group.title}</h1>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    {(!pay) ? <ElementPay group_id={id}/> : null}
+                    <ElementPost group_id={group._id} access={access}/>
+
+                </div>
+
 
             </div>
 
