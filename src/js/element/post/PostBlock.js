@@ -261,7 +261,7 @@ function Post (props) {
                 </div>
                 <LikeBlock object={item} objectEdit={Like}/>
                 <div className="row">
-                    <Comment module={'post'} object_id={item._id} access={props.access}/>
+                    {/*<Comment module={'post'} object_id={item._id} access={props.access}/>*/}
                 </div>
 
             </div>)

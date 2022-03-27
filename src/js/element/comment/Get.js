@@ -222,25 +222,11 @@ function Comment (props) {
 
     return <div className="">
         <br/>
-        <div className="accordion-item">
-            <h2 className="accordion-header" id={`headingOne-${formCode}`}>
-                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target={`#collapseOne-${formCode}`}  aria-expanded="false" aria-controls={`collapseOne-${formCode}`} >
-                    Комментарии {response.count}
-                </button>
-            </h2>
-            <div id={`collapseOne-${formCode}`}  className="accordion-collapse collapse" aria-labelledby={`headingOne-${formCode}`}
-                 data-bs-parent="#accordionExample">
-                <div className="accordion-body">
-                    {(response.items.length) ? List(response.items) : null}
+        {(response.items.length) ? List(response.items) : null}
 
-                    {(response.items.length < response.count) ? <div className="d-grid gap-2"><button type="button" style={{marginTop: '10px'}} className="btn btn-outline-secondary btn-sm" onClick={()=>Get()}>еще ...</button></div> : null}
+        {(response.items.length < response.count) ? <div className="d-grid gap-2"><button type="button" style={{marginTop: '10px'}} className="btn btn-outline-secondary btn-sm" onClick={()=>Get()}>еще ...</button></div> : null}
 
-                    {(true) ? Add() : null}
-                </div>
-            </div>
-        </div>
-
+        {(true) ? Add() : null}
 
     </div>
 }

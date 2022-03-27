@@ -2,9 +2,11 @@ import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import axios from "axios";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
-
+import Comment from '../comment/Get'
 
 function InfoBlock (props) {
+
+    let [commentView, setCommentView] = useState(false)
 
     const LikeAdd = async (id, paramDislike) => {
         props.objectEdit(id, paramDislike)
@@ -45,7 +47,13 @@ function InfoBlock (props) {
             <button type="button" className="btn btn-light" onClick={()=>LikeAdd(object._id, true)}>
                 <i className="far fa-thumbs-down"></i>&nbsp;
                 <span className={`badge bg-${dislike} text-dark`} >{object.dislike.count}</span>
+            </button>&nbsp;
+            <button type="button" className="btn btn-light" onClick={()=> {setCommentView(prevState => !prevState)}}>
+                + <i className="far fa-comment"></i>&nbsp;
+                <span className={`badge bg-light text-dark`} >{object.comment.count}</span>
             </button>
+
+            {(commentView) ? <Comment module={'post'} object_id={object._id} access={props.access}/> : null}
         </div>
     }
 
