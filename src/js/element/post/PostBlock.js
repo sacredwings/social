@@ -29,7 +29,6 @@ function Post (props) {
     }
     let urlLink = useRef(`/${urlOwner.current}/${urlOwnerId.current}/post`)
 
-    //отслеживаем изменение props
     useEffect (async ()=>{
         await Get(true) //с обнулением
     }, [props])
@@ -185,7 +184,65 @@ function Post (props) {
         if (!result.response) return
     }
 
+    const Like = async (id, dislike) => {
+        await LikeAdd(id, dislike)
 
+        let newList = response.items.map(function(item, i, arr) {
+            if (item._id !== id) return item
+
+            if (!dislike) {
+                item.like.my = !item.like.my
+                if (item.like.my)
+                    item.like.count ++
+                else
+                    item.like.count --
+
+                if (item.dislike.my) {
+                    item.dislike.my = !item.dislike.my
+                    item.dislike.count --
+                }
+
+
+            } else {
+                item.dislike.my = !item.dislike.my
+                if (item.dislike.my)
+                    item.dislike.count ++
+                else
+                    item.dislike.count --
+
+                if (item.like.my) {
+                    item.like.my = !item.like.my
+                    item.like.count --
+                }
+            }
+
+            return item
+        })
+        setResponse(prev => ({...prev, ...{
+                items: newList,
+            }}))
+    }
+
+    const LikeAdd = async (id, paramDislike) => {
+        let dislike = 0
+        if (paramDislike)
+            dislike = 1
+
+        let arFields = {
+            object_id: id,
+            dislike: dislike,
+
+            gtoken: await reCaptchaExecute(global.gappkey, 'like')
+        }
+        const url = `/api/like/add`
+
+        let result = await axios.post(url, arFields)
+
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
+
+        if (!result.response) return
+    }
 
     const List = (arVideo) => {
         return arVideo.map(function (item, i) {
@@ -195,6 +252,13 @@ function Post (props) {
             let photo = 'https://n.sked-stv.ru/wa-data/public/site/sked/unnamed.jpg'
             if (user._photo)
                 photo = `${global.urlServer}/${user._photo.url}`
+
+            let like = `light`
+            let dislike = `light`
+            if (item.like.my)
+                like = `success`
+            if (item.dislike.my)
+                dislike = `warning`
 
             return (<div className="block white" key={i}>
 
@@ -222,7 +286,16 @@ function Post (props) {
                     </div>
 
                 </div>
-
+                <div className="alert alert-light" role="alert">
+                    <button type="button" className="btn btn-light" onClick={()=>Like(item._id, false)}>
+                        <i className="far fa-thumbs-up"></i>
+                        <span className={`badge bg-${like} text-dark`} >{item.like.count}</span>
+                    </button>
+                    <button type="button" className="btn btn-light" onClick={()=>Like(item._id, true)}>
+                        <i className="far fa-thumbs-down"></i>
+                        <span className={`badge bg-${dislike} text-dark`} >{item.dislike.count}</span>
+                    </button>
+                </div>
                 <div className="row">
                     <Comment module={'post'} object_id={item._id} access={props.access}/>
                 </div>
