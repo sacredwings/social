@@ -1,9 +1,10 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {connect} from 'react-redux';
-import axios from "axios";
-import ElementFile from "../../object/ElementFile";
-import PostAdd from "./PostAdd";
-import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import React, {useState, useEffect, useRef} from 'react'
+import {connect} from 'react-redux'
+import axios from "axios"
+import ElementFile from "../../object/ElementFile"
+import PostAdd from "./PostAdd"
+import LikeBlock from "../like/Block"
+import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
 import RichEditor from '../../object/RichEditor'
 import Comment from '../comment/Get'
 
@@ -124,13 +125,6 @@ function Post (props) {
         </>
     }
 
-    const SearchUser = (id) => {
-        for (let user of response.users) {
-            if (Number(id) === Number(user.id)) return user
-        }
-
-    }
-
     const OnChecked = async (element) => {
         let newList = response.items.map(function(item, i, arr) {
             if (item._id === element._id) {
@@ -185,7 +179,7 @@ function Post (props) {
     }
 
     const Like = async (id, dislike) => {
-        await LikeAdd(id, dislike)
+        //await LikeAdd(id, dislike)
 
         let newList = response.items.map(function(item, i, arr) {
             if (item._id !== id) return item
@@ -221,27 +215,6 @@ function Post (props) {
         setResponse(prev => ({...prev, ...{
                 items: newList,
             }}))
-    }
-
-    const LikeAdd = async (id, paramDislike) => {
-        let dislike = 0
-        if (paramDislike)
-            dislike = 1
-
-        let arFields = {
-            object_id: id,
-            dislike: dislike,
-
-            gtoken: await reCaptchaExecute(global.gappkey, 'like')
-        }
-        const url = `/api/like/add`
-
-        let result = await axios.post(url, arFields)
-
-        result = result.data;
-        if (result.err) return; //ошибка, не продолжаем обработку
-
-        if (!result.response) return
     }
 
     const List = (arVideo) => {
@@ -286,16 +259,7 @@ function Post (props) {
                     </div>
 
                 </div>
-                <div className="alert alert-light" role="alert">
-                    <button type="button" className="btn btn-light" onClick={()=>Like(item._id, false)}>
-                        <i className="far fa-thumbs-up"></i>
-                        <span className={`badge bg-${like} text-dark`} >{item.like.count}</span>
-                    </button>
-                    <button type="button" className="btn btn-light" onClick={()=>Like(item._id, true)}>
-                        <i className="far fa-thumbs-down"></i>
-                        <span className={`badge bg-${dislike} text-dark`} >{item.dislike.count}</span>
-                    </button>
-                </div>
+                <LikeBlock object={item} objectEdit={Like}/>
                 <div className="row">
                     <Comment module={'post'} object_id={item._id} access={props.access}/>
                 </div>
