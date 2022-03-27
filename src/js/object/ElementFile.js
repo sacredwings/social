@@ -34,7 +34,7 @@ export default (props) => {
 
         return <>
             <video controls={attributes.controls} style={style} preload="none" poster={url} autoPlay={attributes.autoplay} muted={attributes.muted} loop={attributes.loop}>
-                <source src={`${urlVideo}/${file.url}`} type={file.type}/>
+                <source src={`${global.urlServer}/${file.url}`} type={file.type}/>
             </video>
             {
                 (props.link) ?
