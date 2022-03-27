@@ -2,6 +2,8 @@ import React, {useEffect, useRef, useState} from 'react'
 import axios from "axios"
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
 import {Link} from "react-router-dom"
+import VideoPostModalAdd from "../element/video/VideoPostModalAdd";
+import AddVideo from "./AddVideo";
 
 function RichEditor (props) {
     let [buttonVisible, setButtonVisible] = useState({
@@ -41,6 +43,18 @@ function RichEditor (props) {
         //разбор строки / достаем id
         let id = str.substr(str.length-24, 24)
 
+        //запрос
+        let result = await axios.get(`/api/video/getById?ids=${id}`, {})
+        result = result.data
+
+        //ответ со всеми значениями
+        if ((!result) || (result.err !== 0)) return false
+
+        if ((!result.response) || (!result.response[0])) return false
+
+        return result.response[0]
+    }
+    const GetById = async (id) => {
         //запрос
         let result = await axios.get(`/api/video/getById?ids=${id}`, {})
         result = result.data
@@ -286,6 +300,25 @@ function RichEditor (props) {
         return result.data.response
     }
 
+    const SelectVideoId = async (ids) => {
+        let file = await GetById(ids)
+
+            let html = `<br/>
+<div class="voenset-video">
+    <div class="ratio ratio-16x9">
+        <iframe  src="${global.urlServer}/embed/${file._id}" title="VoenSet video" allowfullscreen></iframe>
+    </div>
+    <small>
+        <a href="${global.urlServer}/video/${file._id}">${file.title}</a>
+    </small>
+<div>
+<br/>`
+        document.execCommand('insertHTML', false, html)
+        //console.log(ids)
+        //передача id файлов родителю
+        //props.ArFileIds(ids)
+    }
+
     const Buttons = (format = 'line') => {
         let className = `btn-group`
         let style = {}
@@ -328,9 +361,10 @@ function RichEditor (props) {
                         <i className="fa fa-image"></i>
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <div className="mb-3">
-                                <input style={{width: "max-content"}} className="form-control form-control-sm" type="file" onChange={OnChangeImg}/>
-                            </div>
+                        <div className="mb-3">
+                            <input style={{width: "max-content"}} className="form-control form-control-sm" type="file" onChange={OnChangeImg}/>
+                        </div>
+                        <VideoPostModalAdd user_id={props.user_id} group_id={props.group_id} SelectVideoId={SelectVideoId}/>
                     </ul>
                 </div>
 
