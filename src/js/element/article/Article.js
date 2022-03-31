@@ -22,6 +22,8 @@ function Article (props) {
         users: []
     })
 
+    let [responseAlbum, setResponseAlbum] = useState(null)
+
     //показ формы ввода
     let [formViewer, setFormViewer] = useState(false)
 
@@ -36,6 +38,8 @@ function Article (props) {
     //отслеживаем изменение props
     useEffect (async ()=>{
         await Get(true) //с обнулением
+
+        await GetById(props.album_id)
     }, [props])
 
     const onChangeFile = (e) => {
@@ -62,6 +66,29 @@ function Article (props) {
                 title: name
             }
         }))
+    }
+
+    const GetById = async (id) => {
+        if (!id) {
+            setResponseAlbum(null)
+            return
+        }
+
+        let arFields = {
+            params: {
+                ids: id
+            }
+        }
+
+        let url = `/api/album/getById`
+
+        let result = await axios.get(url, arFields);
+        result = result.data;
+        if (result.err) return; //ошибка, не продолжаем обработку
+
+        if (!result.response) return
+
+        setResponseAlbum(result.response[0])
     }
 
     const Get = async (start) => {
@@ -229,8 +256,10 @@ function Article (props) {
                             <button type="button" className="btn btn-success btn-sm" onClick={()=>{setFormViewer(!formViewer)}}>{(formViewer) ? `-` : `+`}</button>
                             : null
                         }&#160;
-                        Статьи
+                        &#160;{(responseAlbum) ? `Раздел: ${responseAlbum.title}` : 'Статья'}
                     </p>
+
+                    {(responseAlbum) ? <ElementFile file={responseAlbum._image_id} attributes={{controls: true, autoplay: 'autoplay', muted: 'muted'}}/> : ''}
 
                     {(props.access && formViewer)  ? <ArticleAdd group_id={props.group_id} user_id={props.user_id}/> : null}&#160;
 
