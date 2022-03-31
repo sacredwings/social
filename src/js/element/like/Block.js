@@ -9,7 +9,9 @@ function InfoBlock (props) {
     let [commentView, setCommentView] = useState(false)
 
     const LikeAdd = async (id, paramDislike) => {
-        props.objectEdit(id, paramDislike)
+        //если функция есть
+        if (props.objectEdit)
+            props.objectEdit(id, paramDislike)
 
         let dislike = 0
         if (paramDislike)
@@ -32,6 +34,8 @@ function InfoBlock (props) {
     }
 
     const Block = (object) => {
+        console.log('+++++++++++++++')
+        console.log(object)
         let like = `light`
         let dislike = `light`
         if (object.like.my)

@@ -6,27 +6,12 @@ import Comment from "../../element/comment/Get"
 import ElementFile from "../../object/ElementFile"
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
 import {useParams, Link} from 'react-router-dom'
+import LikeBlock from "../../element/like/Block";
 
 
 function VideoId (props) {
     const { id } = useParams()
-    let [video, setVideo] = useState({
-        title: '',
-        text: '',
-        inputFilePreview: null,
-
-        arSelectAlbums: [],
-
-        response: {
-            count: 0,
-            items: []
-        },
-        count: 100,
-        offset: 0,
-        arAlbums: [],
-
-
-    })
+    let [video, setVideo] = useState(null)
 
     let [formEdit, setFormEdit] = useState(false)
 
@@ -75,6 +60,50 @@ function VideoId (props) {
             }}))
     }
 */
+
+    const Like = async (id, dislike) => {
+        //await LikeAdd(id, dislike)
+
+        const result = async (prev) => {
+            let items = [prev]
+            let newList = items.map(function(item, i, arr) {
+                if (item._id !== id) return item
+
+                if (!dislike) {
+                    item.like.my = !item.like.my
+                    if (item.like.my)
+                        item.like.count ++
+                    else
+                        item.like.count --
+
+                    if (item.dislike.my) {
+                        item.dislike.my = !item.dislike.my
+                        item.dislike.count --
+                    }
+
+
+                } else {
+                    item.dislike.my = !item.dislike.my
+                    if (item.dislike.my)
+                        item.dislike.count ++
+                    else
+                        item.dislike.count --
+
+                    if (item.like.my) {
+                        item.like.my = !item.like.my
+                        item.like.count --
+                    }
+                }
+
+                return item
+            })
+
+            return newList[0]
+        }
+
+        setVideo(result)
+    }
+
     const Element = (video) => {
 
         //оступ к объекту
@@ -91,9 +120,7 @@ function VideoId (props) {
                     <p>{video.text}</p>
                 </div>
             </div>
-            <div className="row">
-                <Comment module={'post'} object_id={video._id} access={access}/>
-            </div>
+            <LikeBlock object={video} objectEdit={Like}/>
             {/*
             <div className="row">
                 <div className="col-12">

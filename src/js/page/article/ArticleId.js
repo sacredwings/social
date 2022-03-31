@@ -16,7 +16,7 @@ function ArticleId (props) {
     let [video, setVideo] = useState({
         title: '',
         text: '',
-        inputFilePreview: null,
+        inputFileImg: null,
 
         arSelectAlbums: [],
 
@@ -70,6 +70,7 @@ function ArticleId (props) {
             <div className="row">
                 <div className="col-12">
                     <h1>{video.title} <button type="button" className="btn btn-outline-secondary" onClick={onChangeForm}><i className="far fa-edit"></i></button></h1>
+                    <ElementFile file={video._image_id} attributes={{controls: true}}/>
                     <div dangerouslySetInnerHTML={{__html: video.text}}></div>
 
                 </div>
@@ -119,8 +120,8 @@ function ArticleId (props) {
         formData.append('gtoken', gtoken)
 
         //файл есть
-        if (video.inputFilePreview)
-            formData.append('file_preview', video.inputFilePreview)
+        if (video.inputFileImg)
+            formData.append('file_img', video.inputFileImg)
 
         //альбомы выбраны
         if (video.arSelectAlbums.length)
@@ -148,8 +149,9 @@ function ArticleId (props) {
             <form onSubmit={onFormSubmitFile}>
 
                 <div className="mb-3">
-                    <label htmlFor="inputFilePreview" className="form-label">Картинка (значек)</label>
-                    <input className="form-control form-control-sm" id="inputFilePreview" type="file" onChange={onChangeFile}/>
+                    <label htmlFor="inputFileImg" className="form-label">Картинка (значек)</label>
+                    <input className="form-control form-control-sm" id="inputFileImg" type="file" onChange={onChangeFile}/>
+                    <ElementFile file={video._image_id} attributes={{controls: true}}/>
                 </div>
 
                 <div className="mb-3">
