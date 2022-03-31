@@ -139,7 +139,7 @@ function AlbumVideo (props) {
 
         return (<div className="row">
             <div className="col-lg-12">
-                <ElementFile file={_image_id} attributes={attributes} link={link}/>
+                <ElementFile file={_image_id} attributes={attributes}/>
             </div>
             <div className="col-lg-12">
                 <Link to={link} className="">{video_title}</Link>
