@@ -140,7 +140,7 @@ function Article (props) {
                 <ElementFile file={_image_id} attributes={{controls: true}}/>
             </div>
             <div className="col-lg-8">
-                <Link to={`/article/${video_id}`} >{video_title}</Link>
+                <Link to={`/article/${video_id}`} dangerouslySetInnerHTML={{__html: video_title}}></Link>
                 <p>
                     {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
                 </p>
@@ -263,7 +263,7 @@ function Article (props) {
 
                     {(props.access && formViewer)  ? <ArticleAdd group_id={props.group_id} user_id={props.user_id}/> : null}&#160;
 
-                    {(response.items.length) ? List(response.items) : <p>Статей нет</p>}
+                    {(response.items.length) ? List(response.items) : <p>Разделов нет</p>}
 
                     {(response.items.length < response.count) ? <button type="button" style={{marginTop: '10px'}} className="btn btn-light" onClick={()=>Get()}>еще ...</button> : null}
 
