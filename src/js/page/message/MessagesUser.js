@@ -128,6 +128,10 @@ function Messages (props) {
             }}))
     }
 
+    const OnSaveButton = async (id) => {
+        await OnSave(id)
+    }
+
     const OnSave = async (id) => {
         let element = null
         response.items.forEach(function(item, i, arr) {
@@ -287,7 +291,7 @@ function Messages (props) {
                                     <div className="col-12">
                                         {(message.checked) ?
                                             <div>
-                                                <RichEditor content={message.message} id={message._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}}/>
+                                                <RichEditor content={message.message} id={message._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}} onSave={OnSaveButton}/>
                                                 <button type="button" className="btn btn-primary btn-sm" onClick={()=>OnSave(message._id)}>Сохранить</button>
                                             </div>
                                             : StatusInRead(message)}

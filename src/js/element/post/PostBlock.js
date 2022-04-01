@@ -138,7 +138,7 @@ function Post (props) {
             }}))
     }
 
-    const OnResult = (content, id) => {
+    const OnResult = async (content, id, save) => {
         let newList = response.items.map(function(item, i, arr) {
             if (item._id === id) {
                 item.text = content
@@ -149,6 +149,12 @@ function Post (props) {
         setResponse(prev => ({...prev, ...{
                 items: newList,
             }}))
+
+   }
+
+
+    const OnSaveButton = async (id) => {
+        await OnSave(id)
     }
 
     const OnSave = async (id) => {
@@ -250,7 +256,7 @@ function Post (props) {
                     </div>
                     {(item.checked) ?
                         <div>
-                            <RichEditor content={item.text} id={item._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}}/>
+                            <RichEditor content={item.text} id={item._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}} onSave={OnSaveButton}/>
                             <button type="button" className="btn btn-primary btn-sm" onClick={()=>OnSave(item._id)}>Сохранить</button>
                         </div>
                         : <div dangerouslySetInnerHTML={{__html: item.text}}></div>}

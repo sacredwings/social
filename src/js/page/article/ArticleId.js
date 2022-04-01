@@ -103,8 +103,13 @@ function ArticleId (props) {
         setFormEdit(!formEdit)
     }
 
+    const OnSave = async () => {
+        await onFormSubmitFile()
+    }
+
     const onFormSubmitFile = async (e) => {
-        e.preventDefault() // Stop form submit
+        if (e)
+            e.preventDefault() // Stop form submit
 
         onChangeForm()
 
@@ -169,7 +174,7 @@ function ArticleId (props) {
 
                 <div className="mb-3">
                     <label className="form-label">Текст</label>
-                    <RichEditor content={video.text} onResult={onResult} btnPosition={{top: true, right: true, bottom: true}}/>
+                    <RichEditor content={video.text} onResult={onResult} btnPosition={{top: true, right: true, bottom: true}} onSave={OnSave}/>
                 </div>
 
                 {/*

@@ -109,6 +109,10 @@ function Comment (props) {
             }}))
     }
 
+    const OnSaveButton = async (id) => {
+        await OnSave(id)
+    }
+
     const OnSave = async (id) => {
         let element = null
         response.items.forEach(function(item, i, arr) {
@@ -203,7 +207,7 @@ function Comment (props) {
                 </div>
                 {(item.checked) ?
                     <div>
-                        <RichEditor content={item.text} id={item._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}}/>
+                        <RichEditor content={item.text} id={item._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}} onSave={OnSaveButton}/>
                         <button type="button" className="btn btn-primary btn-sm" onClick={()=>OnSave(item._id)}>Сохранить</button>
                     </div>
                     : <div dangerouslySetInnerHTML={{__html: item.text}}></div>}

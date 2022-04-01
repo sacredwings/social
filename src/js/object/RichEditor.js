@@ -85,6 +85,11 @@ function RichEditor (props) {
         //console.log(content)
     }*/
 
+    const OnSave = () => {
+        if (props.onSave)
+            props.onSave(props.id)
+    }
+
     //Нажатие кнопки
     const OnClickButton = (commandId, showUi = false, value = null) => {
         /*
@@ -546,9 +551,14 @@ function RichEditor (props) {
                         <li><button type="button" className="dropdown-item" onClick={()=>{OnClickButton('backColor', false, "rgba(0, 0, 128,1)")}}>
                             <i className="fas fa-fire-extinguisher" style={{color: 'rgba(0, 0, 128,1)'}}></i> Флот
                         </button></li>
+
                     </ul>
                 </div>
+                <button type="button" className="btn btn-outline-success btn-sm" data-element="bold" onClick={OnSave}>
+                    <i className="fas fa-check"></i>
+                </button>
             </div>
+
         </div>
         </div>
     }

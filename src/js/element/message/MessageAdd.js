@@ -22,8 +22,13 @@ function MessageAdd (props) {
         setMessage(message)
     }
 
+    const OnSave = async () => {
+        await onFormSubmit()
+    }
+
     const onFormSubmit = async (e) => {
-        e.preventDefault() // Stop form submit
+        if (e)
+            e.preventDefault() // Stop form submit
 
         //IO.socket.Message()
 
@@ -62,7 +67,7 @@ function MessageAdd (props) {
             <div className="row">
                 <div className="col-12">
                     <label htmlFor="message" className="form-label">Новое сообщение</label>
-                    <RichEditor content={message} onResult={onChangeText} btnPosition={{top: true, right: true, bottom: false}} user_id={props.user_id} group_id={props.group_id}/>
+                    <RichEditor content={message} onResult={onChangeText} btnPosition={{top: true, right: true, bottom: false}} user_id={props.user_id} group_id={props.group_id} onSave={OnSave}/>
                 </div>
             </div>
             <br/>

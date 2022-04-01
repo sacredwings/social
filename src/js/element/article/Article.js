@@ -161,7 +161,8 @@ function Article (props) {
     }
 
     const onFormSubmitFile = async (e) => {
-        e.preventDefault() // Stop form submit
+        if (e)
+            e.preventDefault() // Stop form submit
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'article')
 

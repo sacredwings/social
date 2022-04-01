@@ -44,8 +44,13 @@ function PostAdd (props) {
         }))
     }
 
+    const OnSave = async () => {
+        await onFormSubmit()
+    }
+
     const onFormSubmit = async (e) => {
-        e.preventDefault() // Stop form submit
+        if (e)
+            e.preventDefault() // Stop form submit
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'post')
 
@@ -78,7 +83,7 @@ function PostAdd (props) {
 
             <div className="mb-3">
                 {/*<textarea className="form-control" id="inputText" rows="1" placeholder="" onChange={onChangeText} value={form.inputText}></textarea>*/}
-                {<RichEditor content={form.inputText} onResult={onChangeText} btnPosition={{top: true, right: false, bottom: false}} user_id={props.user_id} group_id={props.group_id}/>}
+                {<RichEditor content={form.inputText} onResult={onChangeText} btnPosition={{top: true, right: false, bottom: false}} user_id={props.user_id} group_id={props.group_id} onSave={OnSave}/>}
             </div>
             <div className="row button-file">
                 <div className="col-12">
@@ -103,7 +108,7 @@ function PostAdd (props) {
             </div>
 
         return <div className="alert alert-success" role="alert">
-            Пост добавлен !
+            Комментарий добавлен !
         </div>
     }
 
