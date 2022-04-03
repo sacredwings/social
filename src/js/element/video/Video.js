@@ -133,14 +133,27 @@ function Video (props) {
 
     const Delete = async (id) => {
 
-        let url = `/api/video/delete`;
+        let gtoken = await reCaptchaExecute(global.gappkey, 'post')
 
-        let result = await axios.post(url, {id: id});
+        let url = `/api/video/delete`
 
-        result = result.data;
-        if (result.err) return; //ошибка, не продолжаем обработку
+        let result = await axios.post(url, {id: id, gtoken: gtoken})
+
+        result = result.data
+        if (result.err) return //ошибка, не продолжаем обработку
 
         if (!result.response) return
+
+        let newList = []
+        response.items.forEach(function(item, i, arr) {
+            if (item._id !== id) {
+                newList.push(item)
+            }
+        })
+
+        setResponse(prev => ({...prev, ...{
+                items: newList,
+            }}))
 
     }
 
@@ -154,10 +167,11 @@ function Video (props) {
                 <ElementFile file={video} attributes={attributes}/>
             </div>
             <div className="col-lg-8">
+                {(props.access) ? <button type="button" className="btn-close" aria-label="Close" style={{float: "right"}} onClick={() => {Delete(video_id)}}></button> : null}
                 <Link to={`/video/${video_id}`} >{video_title}</Link>
-                <p>
+                {(props.access) ? <p>
                     {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
-                </p>
+                </p> : null}
             </div>
         </div>)
     }

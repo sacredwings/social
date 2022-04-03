@@ -83,7 +83,10 @@ function Video  (props) {
     }
 
     function Data () {
-        let access = true
+        let access = false
+
+        if ((userId.current) && (props.myUser._id === userId.current))
+            access = true
 
         //у пользователя нет такой вложенной переенной и покажеть ошибку
         if (params.owner === 'group')
@@ -119,5 +122,12 @@ function Video  (props) {
     return (owner) ? Result() : null
 }
 
-export default Video
+export default connect (
+    state => ({
+        myUser: state.myUser,
+    }),
+    dispatch => ({
+
+    })
+)(Video)
 
