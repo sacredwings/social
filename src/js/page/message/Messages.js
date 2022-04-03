@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import axios from "axios";
 import {Link} from "react-router-dom";
 import MessageAdd from "../../element/message/MessageAdd";
+import {DateFormat} from "../../util/time";
 
 
 function Messages (props) {
@@ -139,7 +140,7 @@ function Messages (props) {
                                             <img src={photo} alt="..."/>
                                         </div>
                                         <button style={{float: 'right'}} type="button" className="btn-close" aria-label="Close" onClick={()=>{DeleteAll(chat._id)}}></button>
-                                        <p className="name"><b>{chat.user.first_name}</b> <small>{chat.change_date}</small></p>
+                                        <p className="name"><b>{chat.user.first_name}</b> <small>{DateFormat(chat.change_date)}</small></p>
 
                                         <div className="message">{StatusInRead(chat)}</div>
                                     </div>

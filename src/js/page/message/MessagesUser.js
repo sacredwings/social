@@ -7,6 +7,7 @@ import ElementFile from "../../object/ElementFile"
 import {useParams} from "react-router-dom"
 import RichEditor from "../../object/RichEditor";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import {DateFormat} from "../../util/time";
 
 function Messages (props) {
     //настройки запроса
@@ -284,7 +285,7 @@ function Messages (props) {
                                         </div>
                                         <button style={{float: 'right'}} type="button" className="btn-close" aria-label="Close" onClick={()=>{Delete(message._id)}}></button>
                                         <p className="name"><b>{message.user.first_name}</b>{(message.from_id === props.myUser._id) ? <button type="button" className="btn btn-outline-secondary btn-sm" onClick={()=>OnChecked(message)}><i className="fas fa-edit"></i></button> : null}</p>
-                                        <p className="date"><small>{message.create_date}</small></p>
+                                        <p className="date"><small>{DateFormat(message.create_date)}</small></p>
                                     </div>
                                 </div>
                                 <div className="row">

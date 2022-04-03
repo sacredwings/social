@@ -6,7 +6,7 @@ import PostAdd from "./PostAdd"
 import LikeBlock from "../like/Block"
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
 import RichEditor from '../../object/RichEditor'
-import Comment from '../comment/Get'
+import {DateFormat} from '../../util/time'
 
 function Post (props) {
     //запрос
@@ -250,8 +250,9 @@ function Post (props) {
                             <img src={photo}/>
                         </div>
                         <p className="name">
-                            {user.first_name} {user.last_name} {(props.access) ? <button type="button" className="btn btn-outline-secondary btn-sm" onClick={()=>OnChecked(item)}><i className="fas fa-edit"></i></button> : null}
+                            {user.first_name} {user.last_name} <small>{DateFormat(item.create_date)}</small> {(props.access) ? <button type="button" className="btn btn-outline-secondary btn-sm" onClick={()=>OnChecked(item)}><i className="fas fa-edit"></i></button> : null}
                         </p>
+
 
                     </div>
                     {(item.checked) ?
