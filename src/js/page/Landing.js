@@ -66,7 +66,8 @@ function Landing  (props) {
                                         type="video/mp4"/>
                             </video>
 
-                            <Link className="btn btn-primary" to="/reg" role="button">Регистрация</Link>
+                            <Link className="btn btn-primary" to="/reg" role="button">Регистрация</Link>&nbsp;
+                            <Link className="btn btn-primary" to="/auth" role="button">Вход</Link>
 
                         </div>
 
@@ -85,7 +86,8 @@ function Landing  (props) {
                                         type="video/mp4"/>
                             </video>
 
-                            <Link className="btn btn-primary" to="/group/61a9fdb494f73f29366ecdde" role="button">Страница в ВоенСети</Link>
+                            <Link className="btn btn-primary" to="/group/61a9fdb494f73f29366ecdde" role="button">Сайт</Link>&nbsp;
+                            <Link className="btn btn-primary" to="/group/61a9fdb494f73f29366ecddf" role="button">Открытая группа</Link>
 
                         </div>
 
