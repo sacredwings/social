@@ -217,6 +217,9 @@ function RichEditor (props) {
             if (item.type === 'image/jpeg')
                 return `<br/><div class="voenset-img"><img  key={i} src="${global.urlServer}/${item.url}" className="img-fluid" alt=${item.title}></div><br/><br/>`
 
+            if (item.type === 'image/png')
+                return `<br/><div class="voenset-img"><img  key={i} src="${global.urlServer}/${item.url}" className="img-fluid" alt=${item.title}></div><br/><br/>`
+
             if (item.type === 'video/mp4') {
                 let poster = ''
                 if (item._file_id)
