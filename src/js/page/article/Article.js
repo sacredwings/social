@@ -110,7 +110,7 @@ function Article  (props) {
             if ((owner.status.pay) || (owner.status.access)) pay = true //оплачено
         }
 
-        return ((params.owner === 'group') && (!pay)) ? <ElementPay/> : Data()
+        return ((params.owner === 'group') && (!pay)) ? <ElementPay group_id={groupId.current}/> : Data()
     }
 
     return (owner) ? Result() : null
