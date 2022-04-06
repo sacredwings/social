@@ -62,7 +62,7 @@ function Landing  (props) {
                             <h2 className="">Как зарегистрироваться</h2>
 
                             <video controls={true} preload="preload" style={{width: '100%'}}>
-                                <source src="https://voenset.ru/files/f1/97/f197b1a41bd0b659d5db8f73c5badd64.mp4"
+                                <source src="https://voenset.ru/files/fc/8f/fc8fe2cdfabb4871fe5e5160ea27f4ba.mp4"
                                         type="video/mp4"/>
                             </video>
 

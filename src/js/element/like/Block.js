@@ -34,8 +34,7 @@ function InfoBlock (props) {
     }
 
     const Block = (object) => {
-        console.log('+++++++++++++++')
-        console.log(object)
+
         let like = `light`
         let dislike = `light`
         if (object.like.my)
