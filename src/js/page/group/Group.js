@@ -88,7 +88,7 @@ function User (props) {
 
                             <div className="col-lg-12 block-white">
                                 <h1 className="user-name">{group.title}</h1>
-
+                                <p className="user-info">{group.info}</p>
                             </div>
                         </div>
                     </div>

@@ -8,6 +8,8 @@ import {useParams, Link} from 'react-router-dom'
 function GroupSettings (props) {
     const { id } = useParams()
     let formDefault = {
+        title: '',
+        info: '',
         password: '',
         password_replay: '',
         err: null,
@@ -47,7 +49,9 @@ function GroupSettings (props) {
             setForm(prevState => ({
                 ...prevState,
                 price: result[0].price,
-                _id: result[0]._id
+                _id: result[0]._id,
+                title: result[0].title,
+                info: result[0].info,
             }))
         }
 
@@ -151,11 +155,46 @@ function GroupSettings (props) {
         result = result.data;
     }
 
+    const onSaveName = async (e) => {
+        e.preventDefault();
+        let gtoken = await reCaptchaExecute(global.gappkey, 'setting')
+
+        //запрос
+        let result = await axios.post(`/api/group/setName`, {
+            title: form.title,
+            info: form.info,
+            group_id: form._id,
+
+            gtoken: gtoken
+        });
+        result = result.data;
+
+
+    }
+
     return (
         <div className="container my-3">
             <div className="row">
                 <div className="col">
                     <h2 className="mb-3">Настройки группы</h2>
+
+                    <div className="card mt-3">
+                        <div className="card-header">
+                            Название и описание
+                        </div>
+                        <div className="card-body">
+                            <form onSubmit={onSaveName}>
+                                <div className="mb-3">
+                                    <input type="text" className="form-control" placeholder="Название" name="title" id="title" value={form.title} onChange={onChange}/>
+                                </div>
+                                <div className="mb-3">
+                                    <textarea className="form-control" name="info" id="info" value={form.info} onChange={onChange} rows="3" placeholder="Описание"></textarea>
+                                </div>
+                                <button type="submit" className="btn btn-primary">Сохранить</button>
+                            </form>
+                        </div>
+                    </div>
+
 
                     <div className="card mt-3">
                         <div className="card-header">
