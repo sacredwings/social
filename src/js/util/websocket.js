@@ -2,7 +2,7 @@ import { io } from "socket.io-client"
 
 export function IO () {
     //const socket = io()
-    const socket = io.connect('https://voenset.ru');
+    const socket = io.connect();
     console.log(socket)
 
     //socket.on('connect', () => {

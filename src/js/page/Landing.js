@@ -61,9 +61,8 @@ function Landing  (props) {
                         <div className="col-lg-12">
                             <h2 className="">Как зарегистрироваться</h2>
 
-                            <video controls={true} preload="preload" style={{width: '100%'}}>
-                                <source src="https://voenset.ru/files/fc/8f/fc8fe2cdfabb4871fe5e5160ea27f4ba.mp4"
-                                        type="video/mp4"/>
+                            <video controls={true} preload="preload" style={{width: '100%'}} poster={'https://voenset.ru/files/fc/8f/fc8fe2cdfabb4871fe5e5160ea27f4ba.jpeg'}>
+                                <source src="https://voenset.ru/files/fc/8f/fc8fe2cdfabb4871fe5e5160ea27f4ba.mp4" type="video/mp4"/>
                             </video>
 
                             <Link className="btn btn-primary" to="/reg" role="button">Регистрация</Link>&nbsp;
