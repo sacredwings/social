@@ -55,12 +55,46 @@ function PostId (props) {
             <div className="row">
                 <div className="col-12">
                     <button type="button" className="btn btn-outline-secondary" onClick={onChangeForm}><i className="far fa-edit"></i></button>
-                    <ElementFile file={video._image_id} attributes={{controls: true}}/>
                     <div dangerouslySetInnerHTML={{__html: video.text}}></div>
-
+                    {video._file_ids ? ListFiles(video._file_ids) : null}
                 </div>
             </div>
             <LikeBlock object={video} objectEdit={Like}/>
+        </>
+    }
+
+    const ListFiles = (files) => {
+        let attributes = {
+            controls: true,
+        }
+
+        if (!files) return null
+
+        let classFile = "col-lg-12"
+
+        switch (files.length) {
+            case 1:
+                classFile = "col-lg-12"
+                break;
+            case 2:
+                classFile = "col-lg-6"
+                break;
+            case 3:
+                classFile = "col-lg-4"
+                break;
+            case 4:
+                classFile = "col-lg-3"
+                break;
+            default:
+                classFile = "col-lg-3"
+        }
+
+        return <>
+            { files.map((file, i) => {
+                return <div key={i} className={classFile}>
+                    <ElementFile  file={file} attributes={attributes} link={true}/>
+                </div>
+            })}
         </>
     }
 
