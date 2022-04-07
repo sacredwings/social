@@ -2,34 +2,18 @@ import React, {useState, useEffect} from 'react'
 import {connect} from 'react-redux'
 import axios from "axios"
 import SelectAlbum from "../../object/SelectAlbum"
-import Comment from "../../element/comment/Get"
 import ElementFile from "../../object/ElementFile";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
 import {useParams, Link} from 'react-router-dom'
 import RichEditor from '../../object/RichEditor'
+import LikeBlock from "../../element/like/Block"
 
 
 function ArticleId (props) {
     const { id } = useParams()
     let [newContent, setNewContent] = useState('')
 
-    let [video, setVideo] = useState({
-        title: '',
-        text: '',
-        inputFileImg: null,
-
-        arSelectAlbums: [],
-
-        response: {
-            count: 0,
-            items: []
-        },
-        count: 100,
-        offset: 0,
-        arAlbums: [],
-
-
-    })
+    let [video, setVideo] = useState(null)
 
     let [formEdit, setFormEdit] = useState(false)
 
@@ -76,10 +60,48 @@ function ArticleId (props) {
 
                 </div>
             </div>
-            <div className="row">
-                <Comment module={'post'} object_id={video._id} access={access}/>
-            </div>
+            <LikeBlock object={video} objectEdit={Like}/>
         </>
+    }
+
+    const Like = async (id, dislike) => {
+
+        const result = (prev) => {
+
+            let arDislike = prev.dislike
+            let arLike = prev.like
+
+            if (!dislike) {
+                arLike.my = !prev.like.my
+                if (prev.like.my)
+                    arLike.count ++
+                else
+                    arLike.count --
+
+                if (prev.dislike.my) {
+                    arDislike.my = !prev.dislike.my
+                    arDislike.count --
+                }
+            } else {
+                arDislike.my = !prev.dislike.my
+                if (prev.dislike.my)
+                    arDislike.count ++
+                else
+                    arDislike.count --
+
+                if (prev.like.my) {
+                    arLike.my = !prev.like.my
+                    arLike.count --
+                }
+            }
+
+
+            return {...prev, ...{
+                dislike: arDislike, like: arLike
+            }}
+        }
+
+        setVideo(result)
     }
 
     const onChangeFile = (e) => {
@@ -203,7 +225,9 @@ function ArticleId (props) {
         <div className="container article">
             <div className="row">
                 <div className="col-lg-12 block">
-                    {(formEdit) ? ElementEdit(video) : Element(video)}
+                    {(video) ?
+                        (formEdit) ? ElementEdit(video) : Element(video)
+                        : null}
                 </div>
             </div>
         </div>

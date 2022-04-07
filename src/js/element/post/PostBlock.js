@@ -7,6 +7,7 @@ import LikeBlock from "../like/Block"
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
 import RichEditor from '../../object/RichEditor'
 import {DateFormat} from '../../util/time'
+import {Link} from "react-router-dom";
 
 function Post (props) {
     //запрос
@@ -251,6 +252,9 @@ function Post (props) {
                         </div>
                         <p className="name">
                             {user.first_name} {user.last_name} <small>{DateFormat(item.create_date)}</small> {(props.access) ? <button type="button" className="btn btn-outline-secondary btn-sm" onClick={()=>OnChecked(item)}><i className="fas fa-edit"></i></button> : null}
+                        </p>
+                        <p className="name-link">
+                            <Link to={`/post/${item._id}`}>cсылка на пост</Link>
                         </p>
 
 

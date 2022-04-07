@@ -17,8 +17,7 @@ import Footer from "./element/Footer";
 //элементы
 import Auth from "./element/auth/Auth";
 import Reg from "./element/auth/Reg";
-import Video from "./page/video/Video";
-import Article from "./page/article/Article";
+
 
 //страницы
 import Landing from "./page/Landing";
@@ -30,6 +29,9 @@ import NoPage from "./page/NoPage";
 import MessagesUser from "./page/message/MessagesUser";
 import Messages from "./page/message/Messages";
 import GroupSettings from "./page/group/Settings";
+import Video from "./page/video/Video";
+import Article from "./page/article/Article";
+import PostId from "./page/post/PostId";
 //import GroupPay from "./page/group/Pay";
 import RegActivate from "./page/RegActivate";
 //import TopicId from "./page/TopicId";
@@ -165,6 +167,8 @@ function App (props) {
 
                             {/*<Route exact path="/topic/:id" element={<TopicId />} />*/}
                             <Route path="/article/:id" element={<ArticleId />} />
+
+                            <Route path="/post/:id" element={<PostId />} />
 
                             {<Route path="/video/:id" element={<VideoId />} />}
                             {/*<Route exact path="/video" element={<VideoAll />} />*/}

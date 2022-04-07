@@ -1,16 +1,19 @@
 import React, {useState, useEffect} from 'react'
-import {connect} from 'react-redux';
-import axios from "axios";
+import {connect} from 'react-redux'
+import axios from "axios"
 import SelectAlbum from "../../object/SelectAlbum"
 import Comment from "../../element/comment/Get"
-import ElementFile from "../../object/ElementFile"
+import ElementFile from "../../object/ElementFile";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
 import {useParams, Link} from 'react-router-dom'
-import LikeBlock from "../../element/like/Block"
+import RichEditor from '../../object/RichEditor'
+import LikeBlock from "../../element/like/Block";
 
 
-function VideoId (props) {
+function PostId (props) {
     const { id } = useParams()
+    let [newContent, setNewContent] = useState('')
+
     let [video, setVideo] = useState(null)
 
     let [formEdit, setFormEdit] = useState(false)
@@ -30,7 +33,7 @@ function VideoId (props) {
     const Get = async (event) => {
         //let id = id;
 
-        const url = `/api/video/getById?ids=${id}`;
+        const url = `/api/post/getById?ids=${id}`;
 
         let result = await axios.get(url);
 
@@ -41,25 +44,25 @@ function VideoId (props) {
 
         setVideo(prev => ({...prev, ...result.response[0]}))
     }
-/*
-    const GetAlbums = async (start) => {
-        const url = `/api/video/getAlbums?owner_id=${props.owner_id}&offset=${video.offset}&count=${video.count}`;
 
-        let result = await axios.get(url);
+    const Element = (video) => {
+        //оступ к объекту
+        let access = false
+        if (video.from_id === props.myUser._id)
+            access = true
 
-        result = result.data;
-        if (result.err) return; //ошибка, не продолжаем обработку
+        return <>
+            <div className="row">
+                <div className="col-12">
+                    <button type="button" className="btn btn-outline-secondary" onClick={onChangeForm}><i className="far fa-edit"></i></button>
+                    <ElementFile file={video._image_id} attributes={{controls: true}}/>
+                    <div dangerouslySetInnerHTML={{__html: video.text}}></div>
 
-        if (!result.response) return
-
-        setVideo(prev => ({...prev, ...{
-                offset: (start) ? 0 : prev.offset + video.count,
-                count: result.response.count,
-                response: result.response,
-                arAlbums: (start) ? result.response.items : [...prev.arAlbums, ...result.response.items],
-            }}))
+                </div>
+            </div>
+            <LikeBlock object={video} objectEdit={Like}/>
+        </>
     }
-*/
 
     const Like = async (id, dislike) => {
 
@@ -101,32 +104,6 @@ function VideoId (props) {
         setVideo(result)
     }
 
-    const Element = (video) => {
-
-        //оступ к объекту
-        let access = false
-        if (video.from_id === props.myUser._id)
-            access = true
-
-        return <>
-            <div className="row">
-                <div className="col-12">
-                    <h1>Видео <button type="button" className="btn btn-success btn-sm" onClick={onChangeForm}>Редактировать</button></h1>
-                    <h2>{video.title}</h2>
-                    <ElementFile file={video} attributes={{controls: true}}/>
-                    <p>{video.text}</p>
-                </div>
-            </div>
-            <LikeBlock object={video} objectEdit={Like}/>
-            {/*
-            <div className="row">
-                <div className="col-12">
-                    <Comment module='video' object_id={id}/>
-                </div>
-            </div>*/}
-        </>
-    }
-
     const onChangeFile = (e) => {
         let name = e.target.id;
 
@@ -148,34 +125,34 @@ function VideoId (props) {
         setFormEdit(!formEdit)
     }
 
+    const OnSave = async () => {
+        await onFormSubmitFile()
+    }
+
     const onFormSubmitFile = async (e) => {
-        e.preventDefault() // Stop form submit
+        if (e)
+            e.preventDefault() // Stop form submit
 
         onChangeForm()
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
-        const url = `/api/video/edit`;
+        const url = `/api/post/edit`;
         const formData = new FormData();
 
         console.log(video)
 
-        formData.append('id', video.id)
-        formData.append('title', video.title)
-        formData.append('text', video.text)
+        formData.append('id', video._id)
+        formData.append('text', newContent) //новый контент
         formData.append('gtoken', gtoken)
 
         //файл есть
-        if (video.inputFilePreview)
-            formData.append('file_preview', video.inputFilePreview)
+        if (video.inputFileImg)
+            formData.append('file_img', video.inputFileImg)
 
         //альбомы выбраны
         if (video.arSelectAlbums.length)
             formData.append('albums', video.arSelectAlbums.join(','))
-
-        //если это группа, то отправляем ее id
-        if ((props.owner_id) && (props.owner_id<0))
-            formData.append('group_id', -props.owner_id)
 
         axios.post(url, formData, {
 
@@ -185,7 +162,13 @@ function VideoId (props) {
 
         })
 
-        await Get()
+        setVideo(prev => ({...prev, text: newContent}))
+        //await Get()
+    }
+
+    const onResult = (content) => {
+        console.log(content)
+        setNewContent(content)
     }
 
     const ElementEdit = (video) => {
@@ -193,8 +176,9 @@ function VideoId (props) {
             <form onSubmit={onFormSubmitFile}>
 
                 <div className="mb-3">
-                    <label htmlFor="inputFilePreview" className="form-label">Картинка (значек)</label>
-                    <input className="form-control form-control-sm" id="inputFilePreview" type="file" onChange={onChangeFile}/>
+                    <label htmlFor="inputFileImg" className="form-label">Картинка (значек)</label>
+                    <input className="form-control form-control-sm" id="inputFileImg" type="file" onChange={onChangeFile}/>
+                    <ElementFile file={video._image_id} attributes={{controls: true}}/>
                 </div>
 
                 <div className="mb-3">
@@ -204,20 +188,30 @@ function VideoId (props) {
                 </div>
 
                 <div className="mb-3">
-                    <label htmlFor="inputTitle" className="form-label">Название</label>
+                    <label htmlFor="title" className="form-label">Название</label>
                     <input type="text" className="form-control" id="title"
                            onChange={onChangeText} value={video.title}/>
                 </div>
+
                 <div className="mb-3">
+                    <label className="form-label">Текст</label>
+                    <RichEditor content={video.text} onResult={onResult} btnPosition={{top: true, right: true, bottom: true}} onSave={OnSave}/>
+                </div>
+
+                {/*
+                <hr/>
+                <h3>Результат</h3>
+                <div dangerouslySetInnerHTML={{ __html: newContent }}></div>
+                <br/>*/}
+                {/*<div className="mb-3">
                     <label htmlFor="inputText" className="form-label">Описание</label>
                     <textarea className="form-control" id="text" rows="5"
                               onChange={onChangeText} value={video.text}></textarea>
-                </div>
-
+                </div>*/}
 
                 <div className="">
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={onChangeForm}>Отмена</button>
-                    <button type="submit" className="btn btn-primary" >
+                    <button type="button" className="btn btn-secondary btn-sm" onClick={onChangeForm}>Отмена</button>&nbsp;
+                    <button type="submit" className="btn btn-primary btn-sm">
                         Сохранить
                     </button>
                 </div>
@@ -227,9 +221,9 @@ function VideoId (props) {
     }
 
     return (
-        <div className="container">
+        <div className="container article">
             <div className="row">
-                <div className="col-lg-12">
+                <div className="col-lg-12 block">
                     {(video) ?
                         (formEdit) ? ElementEdit(video) : Element(video)
                         : null}
@@ -246,5 +240,5 @@ export default connect (
     dispatch => ({
 
     })
-)(VideoId);
+)(PostId);
 
