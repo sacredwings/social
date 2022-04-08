@@ -5,6 +5,7 @@ import axios from "axios"
 import ArticleAdd from "../../element/AddArticle"
 import ElementFile from "../../object/ElementFile"
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
+import LikeBlockMini from "../like/BlockMini";
 
 
 function Article (props) {
@@ -134,18 +135,33 @@ function Article (props) {
     const ElementAlbum = (_image_id, video_id, video_title, video) => {
         //let owner = (props.owner_id>0) ? 'user' : 'group'
         //let id = (props.owner_id>0) ? props.owner_id : -props.owner_id
-
-        return (<div className="row">
-            <div className="col-lg-4">
-                <ElementFile file={_image_id} attributes={{controls: true}}/>
+        if (_image_id)
+            return <div className="row">
+                <div className="col-lg-4">
+                    <ElementFile file={_image_id} attributes={{controls: true}}/>
+                </div>
+                <div className="col-lg-8">
+                    <Link to={`/article/${video_id}`} dangerouslySetInnerHTML={{__html: video_title}}></Link>
+                    <p>
+                        {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
+                    </p>
+                </div>
+                <div className="col-lg-12">
+                    <LikeBlockMini object={video}/>
+                </div>
             </div>
-            <div className="col-lg-8">
+
+        return <div className="row">
+            <div className="col-lg-12">
                 <Link to={`/article/${video_id}`} dangerouslySetInnerHTML={{__html: video_title}}></Link>
                 <p>
                     {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
                 </p>
             </div>
-        </div>)
+            <div className="col-lg-12">
+                <LikeBlockMini object={video}/>
+            </div>
+        </div>
     }
 
     const List = (arAlbums) => {
@@ -153,7 +169,7 @@ function Article (props) {
             <div className="list-group">
                 { arAlbums.map(function (video, i) {
                     return ( <div className="list-group-item list-group-item-action" key={i}>
-                        {(form.id === video._id) ? ElementEdit() : ElementAlbum(video._image_id, video._id, video.title)}
+                        {(form.id === video._id) ? ElementEdit() : ElementAlbum(video._image_id, video._id, video.title, video)}
                     </div>)
                 })}
             </div>

@@ -5,6 +5,7 @@ import axios from "axios";
 import VideoAddModal from "./VideoAddModal";
 import ElementFile from "../../object/ElementFile";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
+import LikeBlockMini from "../like/BlockMini";
 
 
 function Video (props) {
@@ -173,6 +174,10 @@ function Video (props) {
                     {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
                 </p> : null}
             </div>
+            <div className="col-lg-12">
+                <LikeBlockMini object={video}/>
+            </div>
+
         </div>)
     }
 
