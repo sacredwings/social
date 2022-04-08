@@ -9,6 +9,7 @@ import ElementVideo from "../../element/video/VideoBlock";
 import ElementGroup from "../../element/group/GroupBlock";
 import ElementPost from "../../element/post/PostBlock";
 import ElementArticle from "../../element/article/ArticleBlock";
+import {DateFormat, DateFormatUser} from '../../util/time'
 //import FriendButton from "../element/friend/FriendButton";
 
 import ElementFile from "../../object/ElementFile";
@@ -104,8 +105,8 @@ function User (props) {
                             </div>
 
                             <div className="col-lg-12 block-white">
+                                <p className="online">{DateFormatUser(user.last_action_date)}</p>
                                 <h1 className="user-name">{user.first_name} {user.last_name}</h1>
-
                             </div>
                         </div>
                     </div>
