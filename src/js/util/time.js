@@ -123,9 +123,23 @@ function DateFormatUser (date) {
     return `${newDateJson.date} ${monthTxt} в ${hourTxt}:${minutesTxt}`
 }
 
+function UserOnline (date) {
+    let style = {
+        color: 'green'
+    }
+    let nowDate = new Date()
+    let newDate = new Date(date)
+
+    if (nowDate - newDate < 1000*60*15)
+        return  <i className="fas fa-globe" style={style}></i>
+
+    return null
+}
+
 export {
     DateFormat,
-    DateFormatUser
+    DateFormatUser,
+    UserOnline
 }
 
 /*
