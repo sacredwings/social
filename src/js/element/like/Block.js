@@ -54,6 +54,10 @@ function InfoBlock (props) {
             <button type="button" className="btn btn-light" onClick={()=> {setCommentView(prevState => !prevState)}}>
                 + <i className="far fa-comment"></i>&nbsp;
                 <span className={`badge bg-light text-dark`} >{object.comment.count}</span>
+            </button>&nbsp;
+            <button type="button" className="btn btn-light">
+                <i className="far fa-eye"></i>&nbsp;
+                <span className={`badge bg-light text-dark`} >{object.view.count}</span>
             </button>
 
             {(commentView) ? <Comment module={'post'} object_id={object._id} access={props.access}/> : null}
