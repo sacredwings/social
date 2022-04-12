@@ -26,6 +26,7 @@ function ArticleId (props) {
 
     //получаем результат выбранных альбомов от checked
     const ChangeSelectAlbums = (arSelectAlbums) => {
+        console.log(arSelectAlbums)
         setVideo(prev => ({...prev, arSelectAlbums: arSelectAlbums}))
     }
 
@@ -137,8 +138,8 @@ function ArticleId (props) {
 
         let gtoken = await reCaptchaExecute(global.gappkey, 'video')
 
-        const url = `/api/article/edit`;
-        const formData = new FormData();
+        const url = `/api/article/edit`
+        const formData = new FormData()
 
         console.log(video)
 
@@ -151,9 +152,10 @@ function ArticleId (props) {
         if (video.inputFileImg)
             formData.append('file_img', video.inputFileImg)
 
+        console.log(video.arSelectAlbums)
         //альбомы выбраны
         if (video.arSelectAlbums.length)
-            formData.append('albums', video.arSelectAlbums.join(','))
+            formData.append('album_ids', video.arSelectAlbums)
 
         axios.post(url, formData, {
 
@@ -185,7 +187,7 @@ function ArticleId (props) {
                 <div className="mb-3">
                     <label htmlFor="" className="form-label">Альбомы</label>
                     {/* checked массив альбомов */}
-                    <SelectAlbum albums={video.arAlbums} func={ChangeSelectAlbums}/>
+                    <SelectAlbum albums={video._album_ids} module={'article'} user_id={video.to_user_id} group_id={video.to_group_id} func={ChangeSelectAlbums}/>
                 </div>
 
                 <div className="mb-3">

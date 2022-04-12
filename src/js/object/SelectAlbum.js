@@ -1,20 +1,60 @@
 import React, {useState, useEffect} from 'react';
+import axios from "axios";
 
-export default function ({albums, func}) {
+export default function ({albums, module, user_id, group_id, func}) {
+    let [old, setOld] = useState(albums)
+    let [download, setDownload] = useState([])
     let [checked, setChecked] = useState(albums)
 
-    //отслеживаем изменение props
-    useEffect (()=>{
+    //уже которые выбраны запоминаем
+    useEffect (async ()=>{
+        setOld(albums)
+        await Get()
+    }, [])
 
-        //нет свойства checked в props
-        albums = albums.map((item, i)=>{
-            item.checked = false
+    //загрузка альбомов произошла
+    useEffect (()=>{
+        //альбомы для отображения
+        let rsAlbums = download.map((item, i)=>{
+            for (let itemOld of old) {
+                if (itemOld._id === item._id)
+                    item.checked = true
+            }
             return item
         })
 
         //сохраняем в state для контроля checked
-        setChecked(albums)
-    }, [albums])
+        setChecked(rsAlbums)
+
+        console.log(rsAlbums)
+    }, [download])
+
+    //загрузка альбомов
+    const Get = async () => {
+        const url = `/api/album/get`
+
+        let arFields = {
+            params: {
+                module: module,
+                user_id: user_id,
+                count: 200
+            }
+        }
+
+        if (user_id)
+            arFields.params.user_id = user_id
+        if (group_id)
+            arFields.params.group_id = group_id
+
+        let result = await axios.get(url, arFields)
+
+        result = result.data
+        if (result.err) return //ошибка, не продолжаем обработку
+        if ((!result.response) || (!result.response.items)) return
+
+
+        setDownload(result.response.items)
+    }
 
     //меняем свойство checked у элемента в state
     function onChangeChecked (id) {

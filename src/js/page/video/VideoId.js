@@ -200,7 +200,7 @@ function VideoId (props) {
                 <div className="mb-3">
                     <label htmlFor="" className="form-label">Альбомы</label>
                     {/* checked массив альбомов */}
-                    <SelectAlbum albums={video.arAlbums} func={ChangeSelectAlbums}/>
+                    <SelectAlbum albums={video._album_ids} module={'article'} user_id={video.to_user_id} group_id={video.to_group_id} func={ChangeSelectAlbums}/>
                 </div>
 
                 <div className="mb-3">
