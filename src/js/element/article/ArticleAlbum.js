@@ -114,9 +114,7 @@ function AlbumArticle (props) {
                     </div>
                     <div className="col-lg-12">
                         <Link to={`/${urlOwner.current}/${urlOwnerId.current}/article/${_video_id}`} className="">{video_title}</Link>
-                        <p>
-                            {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(_video_id, video_title)}>Редактировать</button>}
-                        </p>
+                        {props.access ? <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => onChangeForm(_video_id, video_title)}><i className="far fa-edit"></i></button> : null}
                     </div>
                 </div>)
     }
