@@ -57,6 +57,8 @@ function ArticleId (props) {
                     <button type="button" className="btn btn-outline-secondary" onClick={onChangeForm}><i className="far fa-edit"></i></button>
                     <h1 dangerouslySetInnerHTML={{__html: video.title}}></h1>
                     <ElementFile file={video._image_id} attributes={{controls: true}}/>
+                    <br/>
+                    <br/>
                     <div dangerouslySetInnerHTML={{__html: video.text}}></div>
 
                 </div>

@@ -132,7 +132,19 @@ function Article (props) {
             }}))
     }
 
-    const ElementAlbum = (_image_id, video_id, video_title, video) => {
+    const ElementAlbum = (arAlbums) => {
+        if ((arAlbums) && (arAlbums.length))
+            return arAlbums.map((item, i) => {
+                let style = {
+                    marginLeft: '3px'
+                }
+                return <span style={style} className="badge bg-info text-dark" key={i}>{item.title}</span>
+            })
+
+        return null
+    }
+
+    const ElementArticle = (_image_id, video_id, video_title, video) => {
         //let owner = (props.owner_id>0) ? 'user' : 'group'
         //let id = (props.owner_id>0) ? props.owner_id : -props.owner_id
         if (_image_id)
@@ -142,9 +154,9 @@ function Article (props) {
                 </div>
                 <div className="col-lg-8">
                     <Link to={`/article/${video_id}`} dangerouslySetInnerHTML={{__html: video_title}}></Link>
-                    <p>
-                        {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
-                    </p>
+                    {/*(props.access) ? <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => onChangeForm(video_id, video_title)}><i className="far fa-edit"></i></button> : null*/}
+                    <br/>
+                    {ElementAlbum(video._album_ids)}
                 </div>
                 <div className="col-lg-12">
                     <LikeBlockMini object={video}/>
@@ -154,9 +166,9 @@ function Article (props) {
         return <div className="row">
             <div className="col-lg-12">
                 <Link to={`/article/${video_id}`} dangerouslySetInnerHTML={{__html: video_title}}></Link>
-                <p>
-                    {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
-                </p>
+                {/*(props.access) ? <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => onChangeForm(video_id, video_title)}><i className="far fa-edit"></i></button> : null*/}
+                <br/>
+                {ElementAlbum(video._album_ids)}
             </div>
             <div className="col-lg-12">
                 <LikeBlockMini object={video}/>
@@ -169,7 +181,7 @@ function Article (props) {
             <div className="list-group">
                 { arAlbums.map(function (video, i) {
                     return ( <div className="list-group-item list-group-item-action" key={i}>
-                        {(form.id === video._id) ? ElementEdit() : ElementAlbum(video._image_id, video._id, video.title, video)}
+                        {(form.id === video._id) ? ElementEdit() : ElementArticle(video._image_id, video._id, video.title, video)}
                     </div>)
                 })}
             </div>

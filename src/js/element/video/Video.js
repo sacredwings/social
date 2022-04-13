@@ -158,7 +158,19 @@ function Video (props) {
 
     }
 
-    const ElementAlbum = (video, video_id, video_title) => {
+    const ElementAlbum = (arAlbums) => {
+        if ((arAlbums) && (arAlbums.length))
+            return arAlbums.map((item, i) => {
+                let style = {
+                    marginLeft: '3px'
+                }
+                return <span style={style} className="badge bg-info text-dark" key={i}>{item.title}</span>
+            })
+
+        return null
+    }
+
+    const ElementVideo = (video, video_id, video_title) => {
         let attributes = {
             controls: true,
         }
@@ -170,9 +182,8 @@ function Video (props) {
             <div className="col-lg-8">
                 {(props.access) ? <button type="button" className="btn-close" aria-label="Close" style={{float: "right"}} onClick={() => {Delete(video_id)}}></button> : null}
                 <Link to={`/video/${video_id}`} >{video_title}</Link>
-                {(props.access) ? <p>
-                    {<button type="button" className="btn btn-success btn-sm" onClick={() => onChangeForm(video_id, video_title)}>Редактировать</button>}
-                </p> : null}
+                <br/>
+                {ElementAlbum(video._album_ids)}
             </div>
             <div className="col-lg-12">
                 <LikeBlockMini object={video}/>
@@ -186,7 +197,7 @@ function Video (props) {
             <div className="list-group">
                 { arAlbums.map(function (video, i) {
                     return ( <div className="list-group-item list-group-item-action" key={i}>
-                        {(form.id === video._id) ? ElementEdit() : ElementAlbum(video, video._id, video.title)}
+                        {(form.id === video._id) ? ElementEdit() : ElementVideo(video, video._id, video.title)}
                     </div>)
                 })}
             </div>
@@ -276,32 +287,6 @@ function Video (props) {
                 </div>
             </form>
         </>
-    }
-
-    const ListVideo1 = (arVideo) => {
-        return (
-            <div className="row">
-                { arVideo.map(function (video, i, arVideo) {
-
-                    return ( <div className="col-lg-6" key={i}>
-                        <div className="card">
-                            <div className="card-body">
-                                <ElementFile file={video}/>
-
-                                {/* <video controls style={{width: '100%'}} preload="none" poster={`${global.urlServer}/${video.file_id.url}`}>
-                                    <source src={`${global.urlServer}/${video.url}`} type={video.type}/>
-                                </video> */}
-
-                                <p className="card-text">
-                                    <Link to={`/video/${video.id}`} >{video.title}</Link>
-                                </p>
-                            </div>
-
-                        </div>
-                    </div>)
-                })}
-            </div>
-        )
     }
 
     return (
