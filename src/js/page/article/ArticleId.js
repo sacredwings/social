@@ -152,9 +152,8 @@ function ArticleId (props) {
         if (video.inputFileImg)
             formData.append('file_img', video.inputFileImg)
 
-        console.log(video.arSelectAlbums)
         //альбомы выбраны
-        if (video.arSelectAlbums.length)
+        if ((video.arSelectAlbums) && (video.arSelectAlbums.length))
             formData.append('album_ids', video.arSelectAlbums)
 
         axios.post(url, formData, {
@@ -170,7 +169,6 @@ function ArticleId (props) {
     }
 
     const onResult = (content) => {
-        console.log(content)
         setNewContent(content)
     }
 

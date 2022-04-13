@@ -125,8 +125,8 @@ function VideoAddModal (props) {
             formData.append('file_preview', form.inputFilePreview)
 
         //альбомы выбраны
-        if (form.arSelectAlbums.length)
-            formData.append('albums', form.arSelectAlbums.join(','))
+        if ((form.arSelectAlbums) && (form.arSelectAlbums.length))
+            formData.append('album_ids', form.arSelectAlbums)
 
         //если это группа, то отправляем ее id
         if (props.group_id)
@@ -184,7 +184,7 @@ function VideoAddModal (props) {
                             <div className="mb-3">
                                 <label htmlFor="" className="form-label">Альбомы</label>
                                 {/* checked массив альбомов */}
-                                <SelectAlbum albums={response.items} func={ChangeSelectAlbums}/>
+                                <SelectAlbum albums={[]} module={'video'} user_id={props.user_id} group_id={props.group_id} func={ChangeSelectAlbums}/>
                             </div>
 
                             <div className="mb-3">

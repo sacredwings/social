@@ -160,7 +160,7 @@ function VideoId (props) {
 
         console.log(video)
 
-        formData.append('id', video.id)
+        formData.append('id', video._id)
         formData.append('title', video.title)
         formData.append('text', video.text)
         formData.append('gtoken', gtoken)
@@ -170,12 +170,8 @@ function VideoId (props) {
             formData.append('file_preview', video.inputFilePreview)
 
         //альбомы выбраны
-        if (video.arSelectAlbums.length)
-            formData.append('albums', video.arSelectAlbums.join(','))
-
-        //если это группа, то отправляем ее id
-        if ((props.owner_id) && (props.owner_id<0))
-            formData.append('group_id', -props.owner_id)
+        if ((video.arSelectAlbums) && (video.arSelectAlbums.length))
+            formData.append('album_ids', video.arSelectAlbums)
 
         axios.post(url, formData, {
 
@@ -200,7 +196,7 @@ function VideoId (props) {
                 <div className="mb-3">
                     <label htmlFor="" className="form-label">Альбомы</label>
                     {/* checked массив альбомов */}
-                    <SelectAlbum albums={video._album_ids} module={'article'} user_id={video.to_user_id} group_id={video.to_group_id} func={ChangeSelectAlbums}/>
+                    <SelectAlbum albums={video._album_ids} module={'video'} user_id={video.to_user_id} group_id={video.to_group_id} func={ChangeSelectAlbums}/>
                 </div>
 
                 <div className="mb-3">
