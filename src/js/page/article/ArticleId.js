@@ -54,7 +54,7 @@ function ArticleId (props) {
         return <>
             <div className="row">
                 <div className="col-12">
-                    <button type="button" className="btn btn-outline-secondary" onClick={onChangeForm}><i className="far fa-edit"></i></button>
+                    {(access) ? <button type="button" className="btn btn-outline-secondary" onClick={onChangeForm}><i className="far fa-edit"></i></button> : null}
                     <h1 dangerouslySetInnerHTML={{__html: video.title}}></h1>
                     <ElementFile file={video._image_id} attributes={{controls: true}}/>
                     <br/>

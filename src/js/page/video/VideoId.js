@@ -111,7 +111,7 @@ function VideoId (props) {
         return <>
             <div className="row">
                 <div className="col-12">
-                    <h1>Видео <button type="button" className="btn btn-success btn-sm" onClick={onChangeForm}>Редактировать</button></h1>
+                    {(access) ? <h1>Видео <button type="button" className="btn btn-success btn-sm" onClick={onChangeForm}>Редактировать</button></h1> : null}
                     <h2>{video.title}</h2>
                     <ElementFile file={video} attributes={{controls: true}}/>
                     <p>{video.text}</p>
