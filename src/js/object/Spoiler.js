@@ -12,14 +12,14 @@ function Spoiler (props) {
 
     let element = useRef()
 
-    let [visible, setVisible] = useState(false)
+    let [visible, setVisible] = useState(true)
     let [buttonStyle, setButtonStyle] = useState({
         margin: '10px'
     })
 
     useEffect (async (e)=>{
-        if ((element.current) && (element.current.offsetHeight > props.height))
-            setVisible(true)
+        if ((element.current) && (element.current.offsetHeight < props.height))
+            setVisible(false)
     }, [element])
 
 
