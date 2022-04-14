@@ -261,7 +261,7 @@ function Post (props) {
 
 
                     </div>
-                    <Spoiler>
+                    <Spoiler height={400}>
                         {(item.checked) ?
                             <div>
                                 <RichEditor content={item.text} id={item._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}} onSave={OnSaveButton}/>

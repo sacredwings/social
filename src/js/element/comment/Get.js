@@ -5,7 +5,7 @@ import ElementFile from "../../object/ElementFile";
 import CommentAdd from "./Add";
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async";
 import RichEditor from "../../object/RichEditor";
-//import Comment from "../Comment";
+import Spoiler from "../../object/Spoiler"
 //import RichEditor from '../../object/RichEditor'
 
 function getRandomInt(min, max) {
@@ -205,15 +205,17 @@ function Comment (props) {
                         {user.first_name} {user.last_name} {(access) ? <button type="button" className="btn btn-outline-secondary btn-sm" onClick={()=>OnChecked(item)}><i className="fas fa-edit"></i></button> : null}
                     </p>
                 </div>
-                {(item.checked) ?
-                    <div>
-                        <RichEditor content={item.text} id={item._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}} onSave={OnSaveButton}/>
-                        <button type="button" className="btn btn-primary btn-sm" onClick={()=>OnSave(item._id)}>Сохранить</button>
+                <Spoiler height={200}>
+                    {(item.checked) ?
+                        <div>
+                            <RichEditor content={item.text} id={item._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}} onSave={OnSaveButton}/>
+                            <button type="button" className="btn btn-primary btn-sm" onClick={()=>OnSave(item._id)}>Сохранить</button>
+                        </div>
+                        : <div dangerouslySetInnerHTML={{__html: item.text}}></div>}
+                    <div className="row">
+                        {item._file_ids ? ListFiles(item._file_ids) : null}
                     </div>
-                    : <div dangerouslySetInnerHTML={{__html: item.text}}></div>}
-                <div className="row">
-                    {item._file_ids ? ListFiles(item._file_ids) : null}
-                </div>
+                </Spoiler>
 
             </div>)
         })}

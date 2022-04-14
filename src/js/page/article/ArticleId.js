@@ -7,7 +7,7 @@ import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
 import {useParams, Link} from 'react-router-dom'
 import RichEditor from '../../object/RichEditor'
 import LikeBlock from "../../element/like/Block"
-
+import Spoiler from "../../object/Spoiler"
 
 function ArticleId (props) {
     const { id } = useParams()
@@ -59,8 +59,9 @@ function ArticleId (props) {
                     <ElementFile file={video._image_id} attributes={{controls: true}}/>
                     <br/>
                     <br/>
-                    <div dangerouslySetInnerHTML={{__html: video.text}}></div>
-
+                    <Spoiler height={1500}>
+                        <div dangerouslySetInnerHTML={{__html: video.text}}></div>
+                    </Spoiler>
                 </div>
             </div>
             <LikeBlock object={video} objectEdit={Like} module={'article'}/>

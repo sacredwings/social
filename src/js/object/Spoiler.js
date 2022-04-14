@@ -3,7 +3,7 @@ import React, {useState, useEffect, useRef} from 'react'
 function Spoiler (props) {
     //запрос
     let [styleBlock1, setStyleBlock1] = useState({
-        maxHeight: '400px',
+        maxHeight: `${props.height}px`,
         overflow: 'hidden'
     })
     let [styleBlock2, setStyleBlock2] = useState({
@@ -18,7 +18,7 @@ function Spoiler (props) {
     })
 
     useEffect (async (e)=>{
-        if ((element.current) && (element.current.offsetHeight > 400))
+        if ((element.current) && (element.current.offsetHeight > props.height))
             setVisible(true)
     }, [element])
 
@@ -31,7 +31,7 @@ function Spoiler (props) {
         if (visible) {
             setStyleBlock1(prev => ({...prev, maxHeight: '100%'}))
         } else {
-            setStyleBlock1(prev => ({...prev, maxHeight: '400px'}))
+            setStyleBlock1(prev => ({...prev, maxHeight: `${props.height}px`,}))
         }
 
         setVisible(prev => (prev = !prev))
