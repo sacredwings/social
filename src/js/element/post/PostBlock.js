@@ -7,7 +7,9 @@ import LikeBlock from "../like/Block"
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
 import RichEditor from '../../object/RichEditor'
 import {DateFormat} from '../../util/time'
-import {Link} from "react-router-dom";
+import {Link} from "react-router-dom"
+import Spoiler from "../../object/Spoiler"
+
 
 function Post (props) {
     //запрос
@@ -259,15 +261,18 @@ function Post (props) {
 
 
                     </div>
-                    {(item.checked) ?
-                        <div>
-                            <RichEditor content={item.text} id={item._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}} onSave={OnSaveButton}/>
-                            <button type="button" className="btn btn-primary btn-sm" onClick={()=>OnSave(item._id)}>Сохранить</button>
+                    <Spoiler>
+                        {(item.checked) ?
+                            <div>
+                                <RichEditor content={item.text} id={item._id} onResult={OnResult} btnPosition={{top: true, right: true, bottom: true}} onSave={OnSaveButton}/>
+                                <button type="button" className="btn btn-primary btn-sm" onClick={()=>OnSave(item._id)}>Сохранить</button>
+                            </div>
+                            : <div dangerouslySetInnerHTML={{__html: item.text}}></div>}
+                        <div className="row">
+                            {item._file_ids ? ListFiles(item._file_ids) : null}
                         </div>
-                        : <div dangerouslySetInnerHTML={{__html: item.text}}></div>}
-                    <div className="row">
-                        {item._file_ids ? ListFiles(item._file_ids) : null}
-                    </div>
+                    </Spoiler>
+
 
                 </div>
                 <LikeBlock object={item} objectEdit={Like} module={'post'}/>
