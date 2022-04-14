@@ -61,7 +61,7 @@ function InfoBlock (props) {
                 <span className={`badge bg-light text-dark`} >{object.view.count}</span>
             </button>
 
-            {(commentView) ? <Comment module={'post'} object_id={object._id} access={props.access}/> : null}
+            {(commentView) ? <Comment module={props.module} object_id={object._id} access={props.access}/> : null}
         </div>
     }
 

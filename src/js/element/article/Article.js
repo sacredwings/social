@@ -162,7 +162,6 @@ function Article (props) {
                     <LikeBlockMini object={video}/>
                 </div>
             </div>
-
         return <div className="row">
             <div className="col-lg-12">
                 <Link to={`/article/${video_id}`} dangerouslySetInnerHTML={{__html: video_title}}></Link>
