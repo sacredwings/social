@@ -20,6 +20,7 @@ function InfoBlock (props) {
         let arFields = {
             object_id: id,
             dislike: dislike,
+            module: props.module,
 
             gtoken: await reCaptchaExecute(global.gappkey, 'like')
         }

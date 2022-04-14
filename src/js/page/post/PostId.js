@@ -59,7 +59,7 @@ function PostId (props) {
                     {video._file_ids ? ListFiles(video._file_ids) : null}
                 </div>
             </div>
-            <LikeBlock object={video} objectEdit={Like}/>
+            <LikeBlock object={video} objectEdit={Like} article={'post'}/>
         </>
     }
 

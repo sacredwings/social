@@ -117,7 +117,7 @@ function VideoId (props) {
                     <p>{video.text}</p>
                 </div>
             </div>
-            <LikeBlock object={video} objectEdit={Like}/>
+            <LikeBlock object={video} objectEdit={Like} module={'video'}/>
             {/*
             <div className="row">
                 <div className="col-12">

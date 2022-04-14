@@ -270,7 +270,7 @@ function Post (props) {
                     </div>
 
                 </div>
-                <LikeBlock object={item} objectEdit={Like}/>
+                <LikeBlock object={item} objectEdit={Like} module={'post'}/>
                 <div className="row">
                     {/*<Comment module={'post'} object_id={item._id} access={props.access}/>*/}
                 </div>

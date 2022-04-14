@@ -63,7 +63,7 @@ function ArticleId (props) {
 
                 </div>
             </div>
-            <LikeBlock object={video} objectEdit={Like}/>
+            <LikeBlock object={video} objectEdit={Like} module={'article'}/>
         </>
     }
 
