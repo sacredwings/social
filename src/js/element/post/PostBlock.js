@@ -268,12 +268,10 @@ function Post (props) {
                                 <button type="button" className="btn btn-primary btn-sm" onClick={()=>OnSave(item._id)}>Сохранить</button>
                             </div>
                             : <div dangerouslySetInnerHTML={{__html: item.text}}></div>}
-                        <div className="row">
-                            {item._file_ids ? ListFiles(item._file_ids) : null}
-                        </div>
                     </Spoiler>
-
-
+                    <div className="row">
+                        {item._file_ids ? ListFiles(item._file_ids) : null}
+                    </div>
                 </div>
                 <LikeBlock object={item} objectEdit={Like} module={'post'}/>
                 <div className="row">
