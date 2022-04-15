@@ -6,7 +6,7 @@ import ArticleAdd from "../../element/AddArticle"
 import ElementFile from "../../object/ElementFile"
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
 import LikeBlockMini from "../like/BlockMini";
-
+import Spoiler from "../../object/Spoiler"
 
 function Article (props) {
     let [form, setForm] = useState({
@@ -279,15 +279,27 @@ function Article (props) {
         <>
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    <p className="h3">
-                        {props.access ?
-                            <button type="button" className="btn btn-success btn-sm" onClick={()=>{setFormViewer(!formViewer)}}>{(formViewer) ? `-` : `+`}</button>
-                            : null
-                        }&#160;
-                        &#160;{(responseAlbum) ? `Раздел: ${responseAlbum.title}` : 'Статья'}
-                    </p>
+                    <div className="block white">
+                        <p className="h3">
+                            {props.access ?
+                                <button type="button" className="btn btn-success btn-sm" onClick={()=>{setFormViewer(!formViewer)}}>{(formViewer) ? `-` : `+`}</button>
+                                : null
+                            }&#160;
+                            &#160;{(responseAlbum) ? `Раздел: ${responseAlbum.title}` : 'Статья'}
+                        </p>
 
-                    {(responseAlbum) ? <ElementFile file={responseAlbum._image_id} attributes={{controls: true, autoplay: 'autoplay', muted: 'muted'}}/> : ''}
+                        {(responseAlbum) ? <ElementFile file={responseAlbum._image_id} attributes={{controls: true, autoplay: 'autoplay', muted: 'muted'}}/> : ''}
+                    </div>
+                    {(responseAlbum) ?
+
+                        <div className="block white">
+                            <p>Описание раздела</p>
+                            <Spoiler height={400}>
+                                <div dangerouslySetInnerHTML={{__html: responseAlbum.text}}></div>
+                            </Spoiler>
+                        </div>
+
+                        : null}
 
                     {(props.access && formViewer)  ? <ArticleAdd group_id={props.group_id} user_id={props.user_id}/> : null}&#160;
 
