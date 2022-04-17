@@ -43,10 +43,8 @@ function Landing  (props) {
 
                     <div className="row text-center">
                         <div className="col-lg-12">
-                            <h1 className="">Социальная сеть для военнослужащих</h1>
-                            <br/>
-                            <p>Исключительно для военных</p>
-                            <p>Анонимно</p>
+                            <h1 className="">ВоенСеть</h1>
+                            <h2>Анонимная и свободная социальная сеть</h2>
 
                             <Link className="btn btn-warning" to="/charity" role="button"><i className="far fa-money-bill-alt"></i> Пожертвовать на развитие</Link>
                         </div>
