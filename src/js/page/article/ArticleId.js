@@ -148,7 +148,7 @@ function ArticleId (props) {
 
         formData.append('id', video._id)
         formData.append('title', video.title)
-        formData.append('text', newContent) //новый контент
+        formData.append('text', video.text) //новый контент
         formData.append('gtoken', gtoken)
 
         //файл есть
@@ -167,12 +167,13 @@ function ArticleId (props) {
 
         })
 
-        setVideo(prev => ({...prev, text: newContent}))
+        //setVideo(prev => ({...prev, text: newContent}))
         //await Get()
     }
 
     const onResult = (content) => {
-        setNewContent(content)
+        //setNewContent(content)
+        setVideo(prev => ({...prev, text: content}))
     }
 
     const ElementEdit = (video) => {
