@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import {connect} from 'react-redux'
 import axios from "axios"
 import ElementFile from "../../object/ElementFile"
+import ElementFileDelete from "../../object/ElementFileDelete"
 import PostAdd from "./PostAdd"
 import LikeBlock from "../like/Block"
 import {reCaptchaExecute} from "recaptcha-v3-react-function-async"
@@ -174,6 +175,7 @@ function Post (props) {
         let arFields = {
             id: element._id,
             text: element.text,
+            file_ids: element.file_ids,
 
             gtoken: await reCaptchaExecute(global.gappkey, 'post')
         }
@@ -226,6 +228,18 @@ function Post (props) {
             }}))
     }
 
+    const ResultFile = (id, files, ids) => {
+        let newList = response.items.map(function(item, i, arr) {
+            if (item._id !== id) return item
+
+            item._file_ids = files
+            item.file_ids = ids
+            return item
+        })
+
+        setResponse(prev=>({...prev, items: newList}))
+    }
+
     const List = (arVideo) => {
         return arVideo.map(function (item, i) {
 
@@ -270,7 +284,11 @@ function Post (props) {
                             : <div dangerouslySetInnerHTML={{__html: item.text}}></div>}
                     </Spoiler>
                     <div className="row">
-                        {item._file_ids ? ListFiles(item._file_ids) : null}
+                        <div className="col">
+                            {(item.checked) ?
+                                <ElementFileDelete files={item._file_ids} object_id={item._id} result={ResultFile}/>
+                                : item._file_ids ? ListFiles(item._file_ids) : null }
+                        </div>
                     </div>
                 </div>
                 <LikeBlock object={item} objectEdit={Like} module={'post'}/>
