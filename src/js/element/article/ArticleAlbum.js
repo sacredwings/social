@@ -221,7 +221,7 @@ function AlbumArticle (props) {
         </>
     }
 
-    return (
+    return (props.q) ? null :
         <>
             <AlbumAddModal user_id={props.user_id} group_id={props.group_id} module={'article'}/>
 
@@ -240,7 +240,6 @@ function AlbumArticle (props) {
             </div>
             <hr />
         </>
-    )
 }
 /*
 

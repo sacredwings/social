@@ -117,6 +117,10 @@ function Video (props) {
         if (props.album_id)
             arFields.params.album_id = props.album_id
 
+        //поисковая фраза
+        if (props.q)
+            arFields.params.q = props.q
+
         let url = `/api/video/get`
 
         let result = await axios.get(url, arFields);

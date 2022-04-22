@@ -250,7 +250,7 @@ function AlbumVideo (props) {
         </>
     }
 
-    return (
+    return (props.q) ? null :
         <>
             <AlbumAddModal user_id={props.user_id} group_id={props.group_id} module={'video'}/>
 
@@ -270,7 +270,6 @@ function AlbumVideo (props) {
             </div>
             <hr />
         </>
-    )
 }
 /*
 

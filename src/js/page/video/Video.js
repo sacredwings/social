@@ -44,6 +44,8 @@ const AccessGroup = async (id) => {
 function Video  (props) {
     const params = useParams()
     let [owner, setOwner] = useState(null)
+    let [q, setQ] = useState('')
+    let inputSearch = useRef(null)
 
     //запрос
     let [response, setResponse] = useState({
@@ -82,6 +84,14 @@ function Video  (props) {
 
     }
 
+    function onChangeSearch(e) {
+        e.preventDefault()
+        //let name = e.target.id;
+        let value = inputSearch.current.value
+
+        setQ(value)
+    }
+
     function Data () {
         let access = false
 
@@ -93,15 +103,26 @@ function Video  (props) {
             access = owner.status.access
 
         return <>
+            <div className="block white">
+                <form className="row g-3" onSubmit={onChangeSearch}>
+                    <div className="mb-3">
+                        <div className="input-group mb-3">
+                            <input type="text" className="form-control" id="q" placeholder="Поиск" aria-label="Recipient's username" aria-describedby="button-addon2" ref={inputSearch}/>
+                            <button className="btn btn-outline-primary" type="submit" id="">Найти</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <br/>
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    <AlbumVideo access={access} user_id={userId.current} group_id={groupId.current} album_id={params.album_id}/>
+                    <AlbumVideo access={access} user_id={userId.current} group_id={groupId.current} album_id={params.album_id} q={q}/>
                 </div>
             </div>
 
             <div className="row">
                 <div className="col-lg-12 block-white">
-                    <ElementVideo access={access} user_id={userId.current} group_id={groupId.current} album_id={params.album_id}/>
+                    <ElementVideo access={access} user_id={userId.current} group_id={groupId.current} album_id={params.album_id} q={q}/>
                 </div>
             </div>
         </>
