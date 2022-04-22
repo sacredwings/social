@@ -30,15 +30,25 @@ function Pay (props) {
 
     }
 
-    return(
+    return props.myUser.auth ?
         <div className="alert alert-success" role=" alert">
-            Доступ к группе 200 руб.
+            Полный доступ к группе 200 руб./месяц
             <br/>
-
             <button type="button" className="btn btn-primary" onClick={Pay}>Оплатить</button>
         </div>
-    )
+        :
+        <div className="alert alert-warning" role=" alert">
+            Авторизуйтесь для доступа к группе
+            <br/>
+            <Link to={`/auth`} className="btn btn-primary">Авторизация</Link>
+        </div>
 }
 
 export default connect (
+    state => ({
+        myUser: state.myUser,
+    }),
+    dispatch => ({
+
+    })
 )(Pay);
