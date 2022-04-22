@@ -27,7 +27,7 @@ export default (props) => {
             {arFiles.map(function (item, i) {
                 return <li className="list-group-item" key={i}>
                     <button type="button" className="btn-close" aria-label="Close" style={{float: "right"}} onClick={() => {Delete(item._id)}}></button>
-                    An item
+                    {item.title}
                 </li>
             })}
         </ul>
