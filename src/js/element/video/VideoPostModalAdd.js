@@ -160,7 +160,19 @@ function Group (props) {
     }
 
     const NoList = () => {
-        return <p className="no">Видео нет</p>
+        return <>
+            <form>
+                <div className="input-group mb-3">
+                    <input type="text" className="form-control" placeholder="Название видео"
+                           aria-label="Recipient's username" aria-describedby="button-addon2" value={q} onChange={onChangeSearchText}/>
+                    <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={() => Get(true)}>найти</button>
+                </div>
+            </form>
+            <UserList/>
+            <GroupList/>
+            <p className="no"><b>Видео нет</b></p>
+        </>
+
     }
 
     return (
