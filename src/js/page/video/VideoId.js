@@ -167,7 +167,7 @@ function VideoId (props) {
 
         //файл есть
         if (video.inputFilePreview)
-            formData.append('file_preview', video.inputFilePreview)
+            formData.append('file_img', video.inputFilePreview)
 
         //альбомы выбраны
         if ((video.arSelectAlbums) && (video.arSelectAlbums.length))
